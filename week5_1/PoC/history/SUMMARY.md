@@ -2,7 +2,7 @@
 
 **Week5_1 PoC. Topic: search APIs & trend research. Product: a streaming, web-search-grounded
 research assistant, built to keep escalating UI/UX and overall product quality one more notch past
-Weeks 10-13.**
+Weeks 1-4.**
 
 ## What it is
 
@@ -26,7 +26,7 @@ archive, and the two disciplines (grounding verification, cost governance) that 
 recognized as important but that baseline skips. Full dimension-by-dimension comparison in
 `architecture.md` §2.
 
-## What's genuinely new this round (not reused from Weeks 10-13)
+## What's genuinely new this round (not reused from Weeks 1-4)
 
 - A live, unreliable external retrieval dependency (`ddgs`) handled with a real, per-request
   mock-fallback design — not just at bootstrap, but on every single query

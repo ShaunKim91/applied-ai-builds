@@ -13,7 +13,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
-      // Compass defaults to DARK (first of Weeks 10-14_1 to do so) — the
+      // Compass defaults to DARK (first of Weeks 1-5_1 to do so) — the
       // navy/brass "chart room at night" palette is the primary design,
       // with light ("chart room by day") as a fully-supported toggle, not
       // an afterthought. See docs/guide.html's UI Differentiation section.

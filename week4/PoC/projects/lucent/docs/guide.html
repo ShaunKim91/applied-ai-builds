@@ -240,7 +240,7 @@
   <p><span class="ko">Week1·11(파랑/사이드바), Week3(파치먼트/상단탭)에 이어 세 번째로 다른 시각 언어입니다 — 이번엔 "투명도"라는 명시적 요청에 따라 그라데이션 메시 배경 위에 반투명 유리 패널을 얹은 글래스모피즘을 적용했습니다.</span><span class="en">A third distinct visual language after Week1/2 (blue/sidebar) and Week3 (parchment/top-tabs) — per this round's explicit request for transparency, translucent glass panels float over a gradient mesh background.</span></p>
   <div class="table-scroll">
   <table>
-    <thead><tr><th></th><th>Week1~12</th><th>Lucent</th></tr></thead>
+    <thead><tr><th></th><th>Week1~3</th><th>Lucent</th></tr></thead>
     <tbody>
       <tr><td><span class="ko">배경</span><span class="en">Background</span></td><td><span class="ko">단색</span><span class="en">Solid color</span></td><td><span class="ko">그라데이션 메시</span><span class="en">Gradient mesh</span></td></tr>
       <tr><td><span class="ko">카드</span><span class="en">Cards</span></td><td><span class="ko">불투명</span><span class="en">Opaque</span></td><td><code>backdrop-blur</code> <span class="ko">진짜 유리</span><span class="en">real glass</span></td></tr>
@@ -431,7 +431,7 @@ flowchart TD
 
 <section id="scaling">
   <h2><span class="ko">상용/클라우드 확장 시 고려사항</span><span class="en">Production &amp; Cloud Scaling</span></h2>
-  <p><span class="ko">Week1~12 PoC와 동일한 확장 패턴이 적용되며, Lucent 고유 항목으로 스트리밍 응답의 세션 어피니티/메시지 큐 처리가 추가됩니다. 자세한 내용은 </span><span class="en">Same scaling pattern as the Week1-3 PoCs, plus one Lucent-specific item: session affinity or a message-queue-backed streaming layer for load-balanced streaming responses. Full detail in </span><code>architecture.md</code> §7.</p>
+  <p><span class="ko">Week1~3 PoC와 동일한 확장 패턴이 적용되며, Lucent 고유 항목으로 스트리밍 응답의 세션 어피니티/메시지 큐 처리가 추가됩니다. 자세한 내용은 </span><span class="en">Same scaling pattern as the Week1-3 PoCs, plus one Lucent-specific item: session affinity or a message-queue-backed streaming layer for load-balanced streaming responses. Full detail in </span><code>architecture.md</code> §7.</p>
   <div class="table-scroll">
   <table>
     <thead><tr><th><span class="ko">항목</span><span class="en">Item</span></th><th><span class="ko">월 예상 비용</span><span class="en">Est. monthly cost</span></th></tr></thead>
@@ -451,7 +451,7 @@ flowchart TD
 <section id="deployment">
   <h2><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></h2>
   <ul>
-    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS</strong>: Week1~12 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS</strong>: same principles as the Week1-3 PoCs.</span></li>
+    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS</strong>: Week1~3 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS</strong>: same principles as the Week1-3 PoCs.</span></li>
     <li><span class="ko"><strong>스트리밍 버퍼링 방지 (Lucent 고유)</strong>: 리버스 프록시/로드밸런서가 응답을 버퍼링하지 않도록 설정해야 합니다 — 그렇지 않으면 스트리밍 답변이 다시 블로킹 응답으로 바뀝니다.</span><span class="en"><strong>Disable proxy buffering (Lucent-specific)</strong>: the reverse proxy/load balancer must not buffer responses, or a streaming answer silently becomes a blocking one.</span></li>
   </ul>
 </section>

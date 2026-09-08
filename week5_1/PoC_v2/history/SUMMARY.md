@@ -21,7 +21,7 @@ against a real live-web-grounded Cost/Security/Approval-friction framework.
 The prior "Compass" PoC was functionally solid but never stated who it was for — a gap shared by
 every other product in this series (CommerceIQ, VoxIQ, Parchment, Lucent all used only a generic
 functional category name). This round's explicit feedback asked for a named target, a completely
-different approach from Weeks 10-13, and commercial-grade (not PoC-grade) quality. Verity answers
+different approach from Weeks 1-4, and commercial-grade (not PoC-grade) quality. Verity answers
 all three: a specific persona (Dana Whitfield) and company (Fenwick Mutual) stated on a public
 landing page before login, a sixth distinct design identity shared deliberately with its Week5_2
 companion Threshold as one product suite, and a real security/observability bar (rotating auth

@@ -96,7 +96,7 @@ once built out with a real target customer and a real security/observability bar
 
 ## 3. Design — "Fenwick Ledger," a shared suite identity
 
-This round's request asked for a completely different approach from Weeks 10-13 and this project's
+This round's request asked for a completely different approach from Weeks 1-4 and this project's
 own prior Compass build, at a materially higher quality bar, with an explicitly named target — and
 for Week5_1 and Week5_2 to read as one connected company's product suite rather than two
 independent weekly identities. Five prior distinct visual identities already exist in this

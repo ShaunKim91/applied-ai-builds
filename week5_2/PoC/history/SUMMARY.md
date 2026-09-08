@@ -28,7 +28,7 @@ the kind of audit trail meant to catch them. Cradle implements the thing that ki
 gestures at: one integrated agent, guardrails always in the path, HITL that actually pauses and
 resumes real execution, and the corrected check order — full comparison in `architecture.md` §2.
 
-## What's genuinely new this round (not reused from Weeks 10-14_1)
+## What's genuinely new this round (not reused from Weeks 1-5_1)
 
 - A resumable, DB-persisted agent loop — one shared generator function consumed two ways (live SSE
   for a fresh run, synchronous drain to resume a paused one), the first PoC in this series where a

@@ -8,7 +8,7 @@
 | More concise/beautiful/sophisticated than prior rounds | Single-font (Manrope) weight-driven hierarchy, gradient accent, dark-mode background tone shift (not just surface swap) | Same |
 | More advanced features | Real token-by-token streaming (local + cloud), multi-turn sessions, groundedness verification, Retrieval Lab bi/cross comparison | `backend/app/ml/llm.py`, `groundedness.py`, `verify_e2e.py` |
 | Verification done well | 13-check E2E incl. real streamed-response assembly and a genuine cross-lingual query; run 4 times clean; OpenRouter real-key tested twice; full clean-rebuild test | This file's sibling `v1.0.0.md` |
-| Much higher product value than Weeks 10-12 | Dimension-by-dimension comparison against a typical baseline implementation of this pattern (which has **no LLM call at all** by default) | `architecture.md` §2, `docs/guide.html` §Engineering Depth |
+| Much higher product value than Weeks 1-3 | Dimension-by-dimension comparison against a typical baseline implementation of this pattern (which has **no LLM call at all** by default) | `architecture.md` §2, `docs/guide.html` §Engineering Depth |
 
 ## Standing project requirements
 

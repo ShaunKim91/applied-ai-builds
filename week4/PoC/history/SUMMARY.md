@@ -2,7 +2,7 @@
 
 **Week4 PoC. Topic: document search & VectorDB/RAG. Product: a streaming, citation-grounded RAG
 chat assistant, built explicitly to be more advanced, more transparent in UI, and higher product
-value than Weeks 10-12.**
+value than Weeks 1-3.**
 
 ## What it is
 
@@ -20,14 +20,14 @@ baseline only gestures at: real generation, real multi-turn memory, a real persi
 store, real overlapping chunking, and a real automated check that the generated answer didn't
 drift from its sources. Full dimension-by-dimension comparison in `architecture.md` §2.
 
-## What's genuinely new this round (not reused from Weeks 10-12)
+## What's genuinely new this round (not reused from Weeks 1-3)
 
 - Real token-by-token streaming, both local (`TextIteratorStreamer` on a background thread) and
   cloud (hand-parsed OpenAI-compatible SSE over `httpx.stream`)
 - A groundedness verifier generalizing Week3's numeric cross-check into full-answer citation +
   content validation
 - A from-scratch glassmorphism design system (gradient-mesh background, translucent panels, a
-  floating glass sidebar) — a third distinct visual language after Weeks 10/11 and 12
+  floating glass sidebar) — a third distinct visual language after Weeks 1/2 and 12
 - A genuine cross-lingual retrieval demonstration, backed by a real Korean-language corpus on the
   same topic as the English one, not just an assertion that the embedding model is multilingual
 

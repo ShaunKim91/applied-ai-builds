@@ -460,7 +460,7 @@ flowchart TD
 
 <section id="scaling">
   <h2><span class="ko">상용/클라우드 확장 시 고려사항</span><span class="en">Production &amp; Cloud Scaling</span></h2>
-  <p><span class="ko">Week1~13 PoC와 유사한 확장 패턴이 적용되며, Compass 고유 항목으로 실제 라이선스 검색 API로의 전환과 예산 상한의 원자적 처리가 추가됩니다. 자세한 내용은 </span><span class="en">Similar scaling pattern to the Week1-4 PoCs, plus two Compass-specific items: swapping in a real licensed search API, and atomic budget-cap enforcement under concurrency. Full detail in </span><code>architecture.md</code> §7-8.</p>
+  <p><span class="ko">Week1~4 PoC와 유사한 확장 패턴이 적용되며, Compass 고유 항목으로 실제 라이선스 검색 API로의 전환과 예산 상한의 원자적 처리가 추가됩니다. 자세한 내용은 </span><span class="en">Similar scaling pattern to the Week1-4 PoCs, plus two Compass-specific items: swapping in a real licensed search API, and atomic budget-cap enforcement under concurrency. Full detail in </span><code>architecture.md</code> §7-8.</p>
   <div class="table-scroll">
   <table>
     <thead><tr><th><span class="ko">항목</span><span class="en">Item</span></th><th><span class="ko">월 예상 비용</span><span class="en">Est. monthly cost</span></th></tr></thead>
@@ -482,7 +482,7 @@ flowchart TD
 <section id="deployment">
   <h2><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></h2>
   <ul>
-    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS·스트리밍 버퍼링 방지</strong>: Week1~13 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS, no proxy buffering on streaming</strong>: same principles as the Week1-4 PoCs.</span></li>
+    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS·스트리밍 버퍼링 방지</strong>: Week1~4 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS, no proxy buffering on streaming</strong>: same principles as the Week1-4 PoCs.</span></li>
     <li><span class="ko"><strong>예산 상한의 원자성 (Compass 고유)</strong>: 현재 구현은 "확인 후 지출" 방식이라 동시 요청 하에서 경쟁 조건이 이론상 가능합니다 — 실 서비스에서는 DB 수준의 원자적 예약(예: 조건부 UPDATE)이 필요합니다.</span><span class="en"><strong>Budget-cap atomicity (Compass-specific)</strong>: the current check-then-spend implementation has a theoretical race under concurrent load — a real deployment needs a DB-level atomic reservation (e.g. a conditional UPDATE), not a read-then-compare in application code.</span></li>
   </ul>
 </section>

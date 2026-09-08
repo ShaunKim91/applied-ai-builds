@@ -5,7 +5,7 @@
 | Ask | Delivered as | Evidence |
 |---|---|---|
 | A clear, stated target (the round's core feedback) | A named persona (Priya Nakamura, Claims Processing Team Lead) stated explicitly on a public landing page | `docs/screenshots/00-landing.png`, README |
-| A completely different approach from Weeks 10-13 and this project's own prior Cradle build | New folder (`PoC_v2`), new product name, shared design system with Verity, amount-aware HITL redesign, a claims-processing tool set | Whole `threshold/` tree |
+| A completely different approach from Weeks 1-4 and this project's own prior Cradle build | New folder (`PoC_v2`), new product name, shared design system with Verity, amount-aware HITL redesign, a claims-processing tool set | Whole `threshold/` tree |
 | Two connected products, one company | Shares Fenwick Mutual and the "Fenwick Ledger" design system with Verity (copper as its own primary accent within the shared palette) | `architecture.md` §3 |
 | Commercial-grade, not PoC-grade (within local-Docker-only infra) | Organization data model, access+refresh token rotation, CSRF, account lockout, hash-chained audit log, rate limiting, real p50/p95/p99 metrics — identical security architecture to Verity, applied to the agent-console domain | `backend/app/{security,audit,metrics,rate_limit}.py` |
 | Take enough time, no hallucination | 1 real bug (two manifestations) found via direct trace inspection, with the actual captured malformed strings quoted in the write-up | `../debug/` |
