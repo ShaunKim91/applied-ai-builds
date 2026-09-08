@@ -1,4 +1,4 @@
-"""Word-overlap chunking — the same technique validated in the Week2/12
+"""Word-overlap chunking — the same technique validated in the Week2/3
 PoCs, and a real improvement over a naive chunker that slices by raw
 character count with **no overlap** at all (overlap is often discussed
 only as a conceptual code sample in introductory material, never actually

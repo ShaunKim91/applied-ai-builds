@@ -6,7 +6,7 @@ import { useI18n } from "../i18n";
 import { useTheme } from "../theme/ThemeContext";
 
 // A floating, centered, pill-shaped top nav bar — the fifth distinct
-// navigation pattern in this series (after Week1/11's flush sidebar,
+// navigation pattern in this series (after Week1/2's flush sidebar,
 // Week3's top tabs, Week4's floating glass sidebar, Week5_1's command
 // console + icon rail). The full-pill shape reads as one soft, rounded
 // object floating above the page — consistent with claymorphism's rounded

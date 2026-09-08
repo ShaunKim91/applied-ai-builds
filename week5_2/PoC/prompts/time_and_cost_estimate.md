@@ -2,7 +2,7 @@
 
 This document distinguishes **measured** numbers (real data from this actual build session) from
 **estimated** ones (reasoned projections, clearly labeled) — per this project's "no hallucinated
-numbers" rule. See the Week1-14_1 PoCs' own `prompts/time_and_cost_estimate.md` files for the same
+numbers" rule. See the Week1-5_1 PoCs' own `prompts/time_and_cost_estimate.md` files for the same
 exercise done for CommerceIQ, VoxIQ, Parchment, Lucent, and Compass.
 
 ## What was different about this build
@@ -14,7 +14,7 @@ two unrelated HTTP requests, arbitrarily far apart in time), a real Human-in-the
 execution path, and a proactively-avoided guardrail-ordering pitfall identified during design.
 Offsetting that, the backend infrastructure (auth, bootstrap isolation, readiness
 probing, the embedding module, the streaming SSE plumbing, the daily-budget-cap governance pattern)
-was reused verbatim from the Week2-14_1 PoCs, and this week needed no live-external-dependency
+was reused verbatim from the Week2-5_1 PoCs, and this week needed no live-external-dependency
 failure-handling design (Compass's `ddgs`+mock layer has no equivalent here).
 
 ## What was actually measured in this build

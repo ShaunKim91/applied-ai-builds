@@ -132,7 +132,7 @@ class BudgetSetting(Base):
 class AuditLog(Base):
     """Every AI inference call AND every tool-execution decision is logged
     here — who, what, how long, success/failure. Mirrors the pattern reused
-    from the Week1-14_1 PoCs."""
+    from the Week1-5_1 PoCs."""
 
     __tablename__ = "audit_logs"
 

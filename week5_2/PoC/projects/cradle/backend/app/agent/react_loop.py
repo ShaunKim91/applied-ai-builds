@@ -7,7 +7,7 @@ format or get arithmetic wrong).
 
 Unlike a typical baseline implementation (one blocking `model.generate()`
 call per step), each step streams token-by-token via `TextIteratorStreamer`
-— the same real-streaming infrastructure validated in the Week4/14_1
+— the same real-streaming infrastructure validated in the Week4/5_1
 PoCs — so the Console page can render the model's reasoning as it's
 actually produced, not just the finished line.
 """

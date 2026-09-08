@@ -56,7 +56,7 @@ class Settings(BaseSettings):
 
     # --- Retrieval / chunking ---
     # 500 words / 50-word overlap — the word-overlap chunking pattern
-    # validated in the Week2/12 PoCs, a real improvement over a naive
+    # validated in the Week2/3 PoCs, a real improvement over a naive
     # character-slicing chunker (which typically implements no overlap at
     # all, even when overlap is discussed conceptually in introductory
     # material).

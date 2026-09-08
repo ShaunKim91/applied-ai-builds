@@ -10,7 +10,7 @@ them raises a clear NotImplementedError instead of silently pretending to
 work. Gemini specifically is a common choice for this kind of task
 (`google-genai`) — named here for parity, but this build's validated cloud
 path is OpenRouter, per the project brief. This mirrors backend/app/ml/llm.py
-from the Week1/11 PoCs almost exactly — the same hybrid "local default,
+from the Week1/2 PoCs almost exactly — the same hybrid "local default,
 cloud opt-in" pattern, applied to a third feature (document-field
 structuring instead of forecast narrative or code generation).
 """

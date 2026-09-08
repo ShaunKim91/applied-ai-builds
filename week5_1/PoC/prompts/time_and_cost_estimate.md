@@ -2,7 +2,7 @@
 
 This document distinguishes **measured** numbers (real data from this actual build session) from
 **estimated** ones (reasoned projections, clearly labeled) — per this project's "no hallucinated
-numbers" rule. See the Week1-13 PoCs' own `prompts/time_and_cost_estimate.md` files for the same
+numbers" rule. See the Week1-4 PoCs' own `prompts/time_and_cost_estimate.md` files for the same
 exercise done for CommerceIQ, VoxIQ, Parchment, and Lucent.
 
 ## What was different about this build
@@ -15,7 +15,7 @@ skeleton shimmer), a second distinct use of the OpenRouter API (its managed web-
 different request/response shape than plain chat completions), and a cost-governance feature with
 no precedent in any prior week's PoC. Offsetting that, the backend infrastructure (auth, bootstrap
 isolation, readiness probing, the reranker/embedding/groundedness modules, the streaming SSE
-plumbing) was reused verbatim from the Week2-13 PoCs.
+plumbing) was reused verbatim from the Week2-4 PoCs.
 
 ## What was actually measured in this build
 

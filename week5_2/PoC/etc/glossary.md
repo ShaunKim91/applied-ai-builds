@@ -6,7 +6,7 @@
 - **What it is**: a multilingual sentence-embedding model (384-dim output) covering 100+ languages
   in one shared embedding space, requiring a task-specific text prefix (`"query: "` / `"passage: "`)
   per its model card.
-- **Why chosen**: the same embedding model validated and reused across the Week2/13/14_1 PoCs.
+- **Why chosen**: the same embedding model validated and reused across the Week2/4/14_1 PoCs.
 - **How Cradle uses it**: embeds every completed agent run's question+answer for History's semantic
   search — the only retrieval role this week, since there is no live search or fixed corpus to
   index.
@@ -15,7 +15,7 @@
 ### 2. Qwen/Qwen2.5-0.5B-Instruct (the ReAct agent's own brain)
 - **What it is**: a 494M-parameter instruction-tuned open-weight LLM from Alibaba's Qwen team.
 - **Why chosen**: a well-suited small instruction-tuned model for a local ReAct agent's own
-  reasoning brain — also the same small local LLM validated across the Week1-14_1 PoCs.
+  reasoning brain — also the same small local LLM validated across the Week1-5_1 PoCs.
 - **How Cradle uses it**: runs the entire Thought→Action→Observation loop locally, greedy-decoded
   (`do_sample=False`) with a few-shot prompt (found necessary in practice — instructions alone
   cause format violations), streamed token by token to the browser.
@@ -47,4 +47,4 @@
 | **Stale-run reaping** | A lazy cleanup pass (`_reap_stale_runs()`) that marks any agent run stuck `RUNNING` with no progress in 180 seconds as `FAILED` with an honest explanation — protecting against a run whose SSE stream was abandoned mid-flight (a closed tab, a navigated-away browser) staying permanently unresolvable. See `debug/issue-03`. |
 | **Few-shot prompting** | Including 1-2 complete worked examples of the desired Thought/Action/Observation format directly in the prompt, rather than only describing the format in instructions — a common introductory technique found necessary for a small local model to reliably follow a structured output format, and `react_loop.py::fewshot_messages()` implements it. |
 | **Claymorphism** | A soft-UI visual style using a two-directional shadow recipe (a light-side highlight plus a hue-tinted soft shadow) to make flat surfaces read as puffy/extruded rather than flat-with-a-drop-shadow — this week's chosen vehicle for the "high-lightness, low-saturation pastel, genuine 3D depth" design brief. See `architecture.md` §3. |
-| **Audit trail** | The `audit_logs` SQL table — every AI inference call and tool-execution decision is recorded with who, what, how long, and success/failure, mirroring the pattern reused from the Week1-14_1 PoCs. This week's own build found and fixed a real gap in it: the `latency_ms` column was hardcoded to `0.0` everywhere, never actually measuring real call duration. See `debug/issue-06`. |
+| **Audit trail** | The `audit_logs` SQL table — every AI inference call and tool-execution decision is recorded with who, what, how long, and success/failure, mirroring the pattern reused from the Week1-5_1 PoCs. This week's own build found and fixed a real gap in it: the `latency_ms` column was hardcoded to `0.0` everywhere, never actually measuring real call duration. See `debug/issue-06`. |

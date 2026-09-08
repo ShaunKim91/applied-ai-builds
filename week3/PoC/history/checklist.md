@@ -18,7 +18,7 @@ Maps every requirement in `request/20260824_request001.md` to how it was satisfi
 | 12 | Reference `reference_skills` where applicable | ✅ | `interface-craft`'s typography-pairing and layout-pattern guides directly drove this week's UI redesign (serif/sans pairing, top-tab nav, elevation tokens) |
 | 13 | Plan before work, checklist to track progress | ✅ | `plan/v1_plan.md` (approved before implementation began); this file |
 | 14 | PoC-level depth, not a toy | ✅ | 6 AI models, auth+admin, SQL+vector DB, real+synthetic data, background jobs, i18n, full E2E test suite |
-| 15 | Reflect prior weeks' content where reasonable | ✅ | Reuses `Qwen2.5-0.5B-Instruct` and `all-MiniLM-L6-v2` (validated in Week1/11) plus the Week1/11 PoCs' own auth/bootstrap/readiness code directly |
+| 15 | Reflect prior weeks' content where reasonable | ✅ | Reuses `Qwen2.5-0.5B-Instruct` and `all-MiniLM-L6-v2` (validated in Week1/2) plus the Week1/2 PoCs' own auth/bootstrap/readiness code directly |
 | 16 | `projects/` subfolder with runnable code, requirements.txt, README.md, architecture.md | ✅ | All present in `projects/parchment/` |
 | 17 | HTML operations guide, all-in-one, KO default / EN toggle, dark default / light toggle | ✅ | `docs/guide.html` |
 | 18 | Minimum hardware requirements documented | ✅ | `docs/guide.html` §Hardware, measured numbers in `history/v1.0.0.md` |
@@ -36,7 +36,7 @@ Maps every requirement in `request/20260824_request001.md` to how it was satisfi
 | 30 | GitHub-quality files | ✅ | Root `.gitignore` (from Week1, covers all weeks) + `.dockerignore`, structured README, no secrets committed (re-audited, see `history/v1.0.0.md`) |
 | 31 | May build on earlier weeks' content (encouraged) | ✅ | See #15 |
 | 32 | SQL or NoSQL DB + Storage; Vector DB/LangChain encouraged regardless of week | ✅ (SQL + Vector DB; LangChain not used) | SQLite (`models.py`) + Chroma (`vectorstore.py`, scoped to duplicate detection — see `architecture.md` §4 for why full RAG/search is deliberately left out of scope) |
-| 33 | Sign-up/login where relevant | ✅ | `routers/auth.py`, JWT + bcrypt, reused from the Week1/11 PoCs' already-hardened implementation |
+| 33 | Sign-up/login where relevant | ✅ | `routers/auth.py`, JWT + bcrypt, reused from the Week1/2 PoCs' already-hardened implementation |
 | 34 | Admin page, double-checked | ✅ | `pages/Admin.tsx` + `routers/admin.py`; role-gated, verified a non-admin is correctly 403'd |
 | 35 | Animated/gif assets allowed (optional) | — not used | Static PNG screenshots were judged sufficient; no functional loss |
 | 36 | Web service bilingual EN default / KO toggle | ✅ | `frontend/src/i18n/` (en.json default, ko.json), opposite default from the HTML guide as specified |

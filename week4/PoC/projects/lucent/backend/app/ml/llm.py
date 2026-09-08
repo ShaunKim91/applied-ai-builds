@@ -1,9 +1,9 @@
 """Model 3 & 4 — the chat assistant's answer-generation brain, with real
 token-by-token streaming (the flagship upgrade this week's brief calls for
-over the plain request/response generation used in the Week1-12 PoCs).
+over the plain request/response generation used in the Week1-3 PoCs).
 
 Local Qwen2.5-0.5B-Instruct is the default, no-key-required path (same
-model validated/reused across the Week1-12 PoCs). OpenRouter's
+model validated/reused across the Week1-3 PoCs). OpenRouter's
 qwen/qwen3-8b is a strictly opt-in, user-toggled upgrade — validated with a
 real key this round. OpenAI/Anthropic/Gemini are scaffolded (config fields
 exist in config.py) but NOT validated: calling them raises a clear

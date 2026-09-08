@@ -8,7 +8,7 @@ Parchment (Week3 PoC) went from an approved plan to a fully verified,
 screenshot-documented product in one continuous build — including this
 round's explicit request for a genuinely different UI, delivered as a warm
 parchment/terracotta palette, serif headings, and a top-tab layout in place
-of the Week1/11 PoCs' identical cool-gray sidebar dashboard look:
+of the Week1/2 PoCs' identical cool-gray sidebar dashboard look:
 
 - **6 AI models wired in** (Tesseract OCR, SmolVLM-256M, Qwen2.5-0.5B,
   distilbart-cnn-12-6, and all-MiniLM-L6-v2 locally; `qwen/qwen3-8b` via

@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     chroma_persist_dir: str = "/app/data/chroma"
 
     # --- Local AI models (HuggingFace model ids, downloaded on first use) ---
-    # Both reused verbatim from the Week2/13 PoCs. cross-encoder/ms-marco is
+    # Both reused verbatim from the Week2/4 PoCs. cross-encoder/ms-marco is
     # also, independently, the same reranker a typical baseline implementation
     # of this pattern uses in its real deployed code — a hash-based toy
     # embedding is sometimes taught as an introductory placeholder, but a real

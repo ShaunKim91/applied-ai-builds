@@ -3,7 +3,7 @@
 Exercises every major feature against a *running* instance over real HTTP —
 no mocking, including actually consuming the streamed research-report
 response as a real client would — and prints a PASS/FAIL checklist,
-matching the verification discipline of the Week1-13 PoCs.
+matching the verification discipline of the Week1-4 PoCs.
 
 Run from inside the container (has network access + all deps installed):
     docker compose exec -T app python verify_e2e.py

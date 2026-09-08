@@ -1,4 +1,4 @@
-"""Groundedness checking — reused pattern from the Week4/14_1(old) PoCs:
+"""Groundedness checking — reused pattern from the Week4/5_1(old) PoCs:
 verify every `[n]` citation marker in a generated answer points at a real
 source index, and verify each cited sentence is embedding-similar enough to
 the source it claims to cite that it's plausibly actually drawn from it

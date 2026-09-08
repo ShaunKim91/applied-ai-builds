@@ -132,7 +132,7 @@ from this build are in [`../../history/v1.0.0.md`](../../history/v1.0.0.md).
 Original work, using publicly documented model IDs, APIs, and libraries cited in
 `docs/guide.html`. Architecture deliberately reuses proven patterns (auth foundations, bootstrap
 isolation, readiness probing, streaming SSE, the daily-budget-cap governance pattern) from this
-project series' own Week1-14_2 PoCs, substantially hardened and extended for this round's
+project series' own Week1-5_2 PoCs, substantially hardened and extended for this round's
 commercial-grade requirement.
 
 ## License

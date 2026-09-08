@@ -6,7 +6,7 @@ import { useI18n } from "../i18n";
 import { useTheme } from "../theme/ThemeContext";
 
 // Top tab bar instead of a left sidebar — a deliberate departure from the
-// Week1/11 PoCs' sidebar+card dashboard shape (see architecture.md's UI
+// Week1/2 PoCs' sidebar+card dashboard shape (see architecture.md's UI
 // differentiation section). Mirrors, and visually elevates, a simple
 // 3-tab structure (🧾/📄/🌐), plus this project's two additional pages
 // (Dashboard, Library).

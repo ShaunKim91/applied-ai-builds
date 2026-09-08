@@ -4,7 +4,7 @@
 
 > 📄 Full bilingual (한국어 default / English) operations guide with screenshots, architecture diagrams, hardware requirements, and cloud-cost estimates: **[`docs/guide.html`](docs/guide.html)**
 > 🏗️ System design: **[`architecture.md`](architecture.md)** · 🔀 Function-level flowcharts: **[`flowchart.md`](flowchart.md)**
-> 🎨 **A third distinct visual identity** — translucent "glass" panels over a gradient mesh background, one geometric sans (Manrope) carrying all hierarchy by weight, and a floating rounded sidebar — a deliberate step up from the Week1-12 PoCs' opaque-surface dashboards, per this round's explicit request for a more advanced, more transparent, more polished UI. See `architecture.md`'s UI section.
+> 🎨 **A third distinct visual identity** — translucent "glass" panels over a gradient mesh background, one geometric sans (Manrope) carrying all hierarchy by weight, and a floating rounded sidebar — a deliberate step up from the Week1-3 PoCs' opaque-surface dashboards, per this round's explicit request for a more advanced, more transparent, more polished UI. See `architecture.md`'s UI section.
 > 🧭 Deliberately engineered beyond a typical first-pass implementation of this pattern — see `architecture.md` §2 for exactly what's upgraded and why.
 
 ## What it does
@@ -16,7 +16,7 @@
 | ⬡ **Retrieval Lab** | Both retrieval models, shown side by side | See exactly how cross-encoder reranking changes (or doesn't change) a bi-encoder's top result for the same query |
 | ⚙ **Admin** | — | Users, an AI-call audit trail, live model status, and a real usage-analytics dashboard (latency chart, groundedness pass rate, retrieval-mode split) |
 
-**Four AI models** are wired in — three run 100% locally with no API key, and one (OpenRouter's `qwen/qwen3-8b`) is a strictly opt-in, user-toggled upgrade, following the same "local-default, cloud-opt-in, fails independently" hybrid pattern used throughout this project series (and the Week1-12 PoCs).
+**Four AI models** are wired in — three run 100% locally with no API key, and one (OpenRouter's `qwen/qwen3-8b`) is a strictly opt-in, user-toggled upgrade, following the same "local-default, cloud-opt-in, fails independently" hybrid pattern used throughout this project series (and the Week1-3 PoCs).
 
 ## Quick start
 
@@ -72,11 +72,11 @@ lucent/
 
 ## Why FastAPI + React instead of Streamlit
 
-Same reasoning as the Week1-12 PoCs, doubly true here: a typical first-pass implementation of this RAG pattern is a Streamlit app, fine for a single-session classroom exercise, but Lucent needs real token-by-token streaming (via `StreamingResponse` + `fetch()`/`ReadableStream` on the client — not something Streamlit's rerun-on-interaction model does natively), a multi-turn chat history, and full control over the glass design system. See `architecture.md` §2 for the specific, concrete upgrades over that baseline.
+Same reasoning as the Week1-3 PoCs, doubly true here: a typical first-pass implementation of this RAG pattern is a Streamlit app, fine for a single-session classroom exercise, but Lucent needs real token-by-token streaming (via `StreamingResponse` + `fetch()`/`ReadableStream` on the client — not something Streamlit's rerun-on-interaction model does natively), a multi-turn chat history, and full control over the glass design system. See `architecture.md` §2 for the specific, concrete upgrades over that baseline.
 
 ## Why TypeScript, not just Python
 
-Same reasoning as the Week1-12 PoCs — the frontend is TypeScript (React + Vite + Tailwind) because that's what real commercial products pair with a Python AI backend; Node itself never runs in the deployed container (see the multi-stage `docker/Dockerfile`).
+Same reasoning as the Week1-3 PoCs — the frontend is TypeScript (React + Vite + Tailwind) because that's what real commercial products pair with a Python AI backend; Node itself never runs in the deployed container (see the multi-stage `docker/Dockerfile`).
 
 ## A note on groundedness checking
 
@@ -95,7 +95,7 @@ Two real, public-source knowledge-base seeds, downloaded automatically (no manua
 
 ## Credit
 
-This PoC is original work, using publicly documented model IDs, APIs, and datasets cited throughout `docs/guide.html` and `data/SOURCES.md`. No application code was copied from another repository — though its architecture deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing, retrieve-then-rerank comparison UX) from this author's own Week1-12 PoCs, and its embedding model choice was made specifically for its multilingual coverage (load-bearing for the cross-lingual retrieval demo).
+This PoC is original work, using publicly documented model IDs, APIs, and datasets cited throughout `docs/guide.html` and `data/SOURCES.md`. No application code was copied from another repository — though its architecture deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing, retrieve-then-rerank comparison UX) from this author's own Week1-3 PoCs, and its embedding model choice was made specifically for its multilingual coverage (load-bearing for the cross-lingual retrieval demo).
 
 ## License
 

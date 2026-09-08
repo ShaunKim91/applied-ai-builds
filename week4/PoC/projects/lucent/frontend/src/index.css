@@ -4,7 +4,7 @@
 
 /*
   Design tokens — a third, deliberately distinct visual language from the
-  Week1-12 PoCs: translucent "glass" panels floating over a soft gradient
+  Week1-3 PoCs: translucent "glass" panels floating over a soft gradient
   mesh background, one geometric sans (Manrope) carrying all hierarchy via
   weight instead of a font pairing. App theme defaults to LIGHT (glass
   reads best against a bright background) with a manual dark toggle, which

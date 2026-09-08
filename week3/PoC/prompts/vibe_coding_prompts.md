@@ -2,7 +2,7 @@
 
 This is the prompt sequence a student could actually use — with an AI coding
 tool such as Claude Code — to reproduce a project like Parchment from
-scratch. It mirrors the Week1/11 PoCs' own playbooks
+scratch. It mirrors the Week1/2 PoCs' own playbooks
 (`../../week1/PoC/prompts/`, `../../week2/PoC/prompts/`) in structure,
 with one new phase this round: an explicit UI-differentiation step.
 
@@ -65,7 +65,7 @@ actually check was followed once the build is done.
 > public PDF and HTML-table URLs you're proposing to hardcode are reachable
 > and contain what you think they contain.
 
-**Why**: exactly the same reasoning as the Week1/11 PoCs' own Phase 2 —
+**Why**: exactly the same reasoning as the Week1/2 PoCs' own Phase 2 —
 and here it specifically caught that Google Fonts' correct family name is
 case- and hyphenation-sensitive, and that a Wikipedia page's table
 structure needed to be confirmed (column headers, row count) before being

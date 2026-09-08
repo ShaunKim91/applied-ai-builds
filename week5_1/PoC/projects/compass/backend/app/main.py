@@ -5,7 +5,7 @@ Responsibilities on startup:
   2. Seed the admin account + default budget row (idempotent).
   3. Kick off a *background* thread that loads the embedding model, the
      reranker, the local LLM, and checks live web-search connectivity —
-     each step isolated in its own try/except (the Week1-13 PoCs'
+     each step isolated in its own try/except (the Week1-4 PoCs'
      `_warm_step()` pattern). /api/health responds immediately regardless;
      use /api/health/ready or /api/admin/system for live model status.
 

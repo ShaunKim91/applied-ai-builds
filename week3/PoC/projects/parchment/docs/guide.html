@@ -213,7 +213,7 @@
   </table>
   </div>
   <p class="ko">다섯 개의 로컬 모델이 기본 경로이며 API 키 없이 항상 동작합니다. OpenRouter 경로는 사용자가 명시적으로 선택할 때만 사용되며, 이번 빌드에서 실제 키로 검증했습니다 — Week1·11 PoC가 이미 쓰고 있는 "로컬 기본, 클라우드는 선택적 업그레이드" 하이브리드 패턴을 그대로 따릅니다.</p>
-  <p class="en">The five local models are always the default path and work with zero API keys. The OpenRouter path is a strictly user-toggled upgrade, validated with a real key during this build — following the same "local default, cloud opt-in" hybrid pattern already used by the Week1/11 PoCs.</p>
+  <p class="en">The five local models are always the default path and work with zero API keys. The OpenRouter path is a strictly user-toggled upgrade, validated with a real key during this build — following the same "local default, cloud opt-in" hybrid pattern already used by the Week1/2 PoCs.</p>
 </section>
 
 <section id="design">
@@ -425,7 +425,7 @@ flowchart TD
 
 <section id="scaling">
   <h2><span class="ko">상용/클라우드 확장 시 고려사항</span><span class="en">Production &amp; Cloud Scaling</span></h2>
-  <p><span class="ko">Week1·11 PoC와 동일한 확장 패턴이 적용되며, Parchment 고유 항목으로 Tesseract/pdf2image 페이지 렌더링을 별도 워커 풀로 분리하는 것이 추가됩니다. 자세한 내용은 </span><span class="en">Same scaling pattern as the Week1/11 PoCs, plus one Parchment-specific item: running Tesseract/pdf2image page-rendering as a separate worker pool. Full detail in </span><code>architecture.md</code> §6.</p>
+  <p><span class="ko">Week1·11 PoC와 동일한 확장 패턴이 적용되며, Parchment 고유 항목으로 Tesseract/pdf2image 페이지 렌더링을 별도 워커 풀로 분리하는 것이 추가됩니다. 자세한 내용은 </span><span class="en">Same scaling pattern as the Week1/2 PoCs, plus one Parchment-specific item: running Tesseract/pdf2image page-rendering as a separate worker pool. Full detail in </span><code>architecture.md</code> §6.</p>
   <div class="table-scroll">
   <table>
     <thead><tr><th><span class="ko">항목</span><span class="en">Item</span></th><th><span class="ko">월 예상 비용</span><span class="en">Est. monthly cost</span></th></tr></thead>
@@ -445,7 +445,7 @@ flowchart TD
 <section id="deployment">
   <h2><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></h2>
   <ul>
-    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS</strong>: Week1·11 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS</strong>: same principles as the Week1/11 PoCs.</span></li>
+    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS</strong>: Week1·11 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS</strong>: same principles as the Week1/2 PoCs.</span></li>
     <li><span class="ko"><strong>업로드 문서의 PII (Parchment 고유)</strong>: 실제 사용자가 영수증/PDF를 업로드하기 시작하면 실제 PII가 포함될 수 있습니다 — 이 빌드의 번들 샘플은 합성/공개도메인이지만, 실제 배포는 업로드 볼륨에 대한 보존정책과 암호화가 필요합니다.</span><span class="en"><strong>PII in uploaded documents (Parchment-specific)</strong>: once real users upload their own receipts/PDFs, real PII may be present — a real deployment needs a data-retention policy and encryption-at-rest for the uploads volume.</span></li>
   </ul>
 </section>

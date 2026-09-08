@@ -8,7 +8,7 @@ import { useTheme } from "../theme/ThemeContext";
 
 // A fixed top "command console" bar + a collapsed-by-default, hover-to-expand
 // icon rail — the fourth distinct navigation pattern in this series (after
-// Week1/11's flush sidebar, Week3's top tabs, Week4's floating glass
+// Week1/2's flush sidebar, Week3's top tabs, Week4's floating glass
 // sidebar). The console bar is functional, not decorative: typing a query
 // and pressing Enter starts a brand-new research session with that query.
 const NAV = [

@@ -5,7 +5,7 @@
 
 ## 1. Authentication (`routers/auth.py`, `security.py`)
 
-Identical to the Week1-14_1 PoCs — same JWT + bcrypt design, same shape-only email validator, reused
+Identical to the Week1-5_1 PoCs — same JWT + bcrypt design, same shape-only email validator, reused
 here from the start rather than rediscovered.
 
 ```mermaid

@@ -5,7 +5,7 @@
 
 ## 1. Authentication (`routers/auth.py`, `security.py`)
 
-Identical to the Week1-13 PoCs — same JWT + bcrypt design, same shape-only email validator (not `EmailStr`, which broke `.local` admin logins in the Week1 PoC — see that project's `debug/issue-02`), reused here from the start rather than rediscovered.
+Identical to the Week1-4 PoCs — same JWT + bcrypt design, same shape-only email validator (not `EmailStr`, which broke `.local` admin logins in the Week1 PoC — see that project's `debug/issue-02`), reused here from the start rather than rediscovered.
 
 ```mermaid
 flowchart TD

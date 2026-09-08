@@ -78,7 +78,7 @@ class ChatMessage(Base):
 
 class AuditLog(Base):
     """Every AI inference call is logged here — who, what model, how long,
-    success/failure. Mirrors the pattern reused from the Week1-12 PoCs."""
+    success/failure. Mirrors the pattern reused from the Week1-3 PoCs."""
 
     __tablename__ = "audit_logs"
 

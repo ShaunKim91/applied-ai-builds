@@ -17,7 +17,7 @@ def ensure_sample_pdf(data_dir: str) -> str | None:
     """Downloads the sample PDF once (idempotent). Returns the local path,
     or None if the download failed (e.g. offline) — callers should treat a
     missing sample gracefully rather than crash the whole bootstrap, same
-    "isolated step" discipline as the Week1/11 PoCs' `_warm_step()`."""
+    "isolated step" discipline as the Week1/2 PoCs' `_warm_step()`."""
     import httpx
 
     out_dir = os.path.join(data_dir, "sample_pdf")

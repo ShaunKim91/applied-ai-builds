@@ -98,7 +98,7 @@ class HtmlScrape(Base):
 class AuditLog(Base):
     """Every AI inference call is logged here — who, what model, how long,
     success/failure. Mirrors the "감사 추적 (audit trail)" pattern reused
-    from the Week1/11 PoCs."""
+    from the Week1/2 PoCs."""
 
     __tablename__ = "audit_logs"
 

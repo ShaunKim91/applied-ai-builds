@@ -101,7 +101,7 @@ cradle/
 
 ## Why FastAPI + React instead of Streamlit
 
-Same reasoning as the Week1-14_1 PoCs, doubly true here: a typical baseline implementation of this
+Same reasoning as the Week1-5_1 PoCs, doubly true here: a typical baseline implementation of this
 pattern is a 2-tab Streamlit demo where the ReAct agent tab and a guardrail-class tab never talk to
 each other, with no persistence, no auth, and HITL approval built as an unused class feature. Cradle
 needs a resumable run that can actually pause for a real human decision — potentially long after the
@@ -145,7 +145,7 @@ This PoC is original work, using publicly documented model IDs, APIs, and librar
 `docs/guide.html`. No application code was copied from another repository — though its architecture
 deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing, streaming SSE
 infrastructure, the daily-budget-cap governance pattern) from this same project series' own
-Week1-14_1 PoCs, and its ReAct loop design and local-agent model choice follow well-documented,
+Week1-5_1 PoCs, and its ReAct loop design and local-agent model choice follow well-documented,
 publicly available patterns for small-model ReAct agents.
 
 ## License

@@ -16,7 +16,7 @@
 
 ### 3. Qwen/Qwen2.5-0.5B-Instruct (local streaming answer generation)
 - **What it is**: a 494M-parameter instruction-tuned open-weight LLM from Alibaba's Qwen team.
-- **Why chosen**: the exact small local LLM validated and reused across the Week1-12 PoCs for fully offline, no-API-key text generation — here extended to support real token-by-token streaming via `transformers.TextIteratorStreamer`.
+- **Why chosen**: the exact small local LLM validated and reused across the Week1-3 PoCs for fully offline, no-API-key text generation — here extended to support real token-by-token streaming via `transformers.TextIteratorStreamer`.
 - **How Lucent uses it**: the default (no-key) provider for chat answer generation, given the retrieved/reranked source chunks as numbered context.
 - **Card**: <https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct>
 
@@ -38,5 +38,5 @@
 | **E5 prefixes** | `intfloat/multilingual-e5-small` (and the E5 model family generally) requires prepending `"query: "` to search queries and `"passage: "` to indexed documents before embedding — not optional formatting, it measurably affects retrieval quality. `ml/embeddings.py` bakes this in so callers never have to remember it. |
 | **Groundedness** | Whether a generated answer's claims actually trace back to the retrieved sources. Lucent checks this two ways: every `[n]` citation must reference a real retrieved source (structural), and every sentence must be similar enough to at least one retrieved chunk by embedding cosine similarity (content) — see `ml/groundedness.py`. |
 | **Streaming generation** | Returning a model's output incrementally, token by token, as it's generated, instead of waiting for the full response — implemented via `transformers.TextIteratorStreamer` (local) and OpenAI-compatible SSE (OpenRouter), both exposed to the browser as Server-Sent-Events-shaped lines over a single `StreamingResponse`. |
-| **Word-overlap chunking** | Splitting a long document into passages with some shared words at each boundary, so content spanning a cut point isn't lost to retrieval — the technique validated in the Week2/12 PoCs, applied here (500 words / 50-word overlap) as a real improvement over a naive overlap-free chunker. |
-| **Audit trail** | The `audit_logs` SQL table — every AI inference call is recorded with who made it, which model, how long it took, and whether it succeeded, mirroring the pattern reused from the Week1-12 PoCs. |
+| **Word-overlap chunking** | Splitting a long document into passages with some shared words at each boundary, so content spanning a cut point isn't lost to retrieval — the technique validated in the Week2/3 PoCs, applied here (500 words / 50-word overlap) as a real improvement over a naive overlap-free chunker. |
+| **Audit trail** | The `audit_logs` SQL table — every AI inference call is recorded with who made it, which model, how long it took, and whether it succeeded, mirroring the pattern reused from the Week1-3 PoCs. |

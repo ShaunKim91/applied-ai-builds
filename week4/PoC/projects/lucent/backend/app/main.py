@@ -6,7 +6,7 @@ Responsibilities on startup:
   3. Kick off a *background* thread that loads the embedding model, indexes
      the two seed corpora (English + Korean), loads the reranker, and loads
      the local LLM — each step isolated in its own try/except (the
-     Week1-12 PoCs' `_warm_step()` pattern, applied here from day one).
+     Week1-3 PoCs' `_warm_step()` pattern, applied here from day one).
      /api/health responds immediately regardless; use /api/health/ready or
      /api/admin/system for live model-loaded status.
 

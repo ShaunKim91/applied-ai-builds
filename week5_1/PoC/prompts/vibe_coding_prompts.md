@@ -1,7 +1,7 @@
 # Vibe-Coding Prompt Playbook — Compass (Week5_1 PoC)
 
 This is the prompt sequence a student could actually use — with an AI coding tool such as Claude
-Code — to reproduce a project like Compass from scratch. It mirrors the Week1-13 PoCs' own
+Code — to reproduce a project like Compass from scratch. It mirrors the Week1-4 PoCs' own
 playbooks in structure, with new phases this round for turning a vague "keep raising the quality
 bar every week" request into something buildable, and for building against a search backend a
 common reference stack for this pattern assumes (Naver/Gemini) that this build doesn't have keys

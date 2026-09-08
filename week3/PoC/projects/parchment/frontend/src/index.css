@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /*
-  Design tokens — deliberately different from the Week1/11 PoCs' cool
+  Design tokens — deliberately different from the Week1/2 PoCs' cool
   gray/blue dashboard palette: a warm "parchment" background with a
   terracotta/amber accent, matching this project's paper/document theme.
   App theme defaults to LIGHT ("parchment" itself only reads correctly in

@@ -2,7 +2,7 @@
 
 This is the prompt sequence a student could actually use — with an AI coding
 tool such as Claude Code — to reproduce a project like Lucent from scratch.
-It mirrors the Week1-12 PoCs' own playbooks in structure, with new phases
+It mirrors the Week1-3 PoCs' own playbooks in structure, with new phases
 this round for streaming and for turning a vague "make it more advanced/
 transparent/valuable" request into something buildable and checkable.
 

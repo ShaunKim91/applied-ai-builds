@@ -1,7 +1,7 @@
 # Vibe-Coding Prompt Playbook — Cradle (Week5_2 PoC)
 
 This is the prompt sequence someone could actually use — with an AI coding tool such as Claude
-Code — to reproduce a project like Cradle from scratch. It mirrors the Week1-14_1 PoCs' own
+Code — to reproduce a project like Cradle from scratch. It mirrors the Week1-5_1 PoCs' own
 playbooks in structure, with new phases this round for a design brief phrased as qualitative
 properties ("genuine 3D," "pastel," "not simply made") rather than a feature list, and for a
 safety-guardrails topic whose typical baseline implementation contains an easy-to-make bug worth

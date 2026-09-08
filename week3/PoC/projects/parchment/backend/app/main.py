@@ -5,7 +5,7 @@ Responsibilities on startup:
   2. Seed the admin account (idempotent).
   3. Kick off a *background* thread that generates the synthetic sample
      receipts, downloads the sample PDF, and warms every local AI model into
-     memory — each step isolated in its own try/except (the Week1/11 PoCs'
+     memory — each step isolated in its own try/except (the Week1/2 PoCs'
      `_warm_step()` pattern, applied here from day one). /api/health responds
      immediately regardless; use /api/health/ready or /api/admin/system for
      live model-loaded status.

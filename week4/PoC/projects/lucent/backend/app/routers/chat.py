@@ -1,6 +1,6 @@
 """Multi-turn RAG chat with real token-by-token streaming — the flagship
 feature this week's brief calls for over the plain request/response
-generation used throughout the Week1-12 PoCs.
+generation used throughout the Week1-3 PoCs.
 
 Streamed as Server-Sent-Events-shaped lines over a POST request (a plain
 GET-only `EventSource` can't carry a request body, so the frontend consumes

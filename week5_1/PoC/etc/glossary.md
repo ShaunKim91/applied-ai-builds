@@ -10,13 +10,13 @@
 
 ### 2. cross-encoder/ms-marco-MiniLM-L-6-v2 (cross-encoder reranker)
 - **What it is**: a MiniLM model fine-tuned on the MS MARCO passage-ranking dataset to jointly score a (query, document) pair — more accurate than a bi-encoder's independent embeddings, at the cost of not being pre-computable.
-- **Why chosen**: reused verbatim from the Week2/13 PoCs — and, independently, the same reranker a typical baseline implementation of this pattern actually uses in production (a hash-based toy embedding is sometimes taught as an introductory placeholder, but a real shipped version never uses that shortcut).
+- **Why chosen**: reused verbatim from the Week2/4 PoCs — and, independently, the same reranker a typical baseline implementation of this pattern actually uses in production (a hash-based toy embedding is sometimes taught as an introductory placeholder, but a real shipped version never uses that shortcut).
 - **How Compass uses it**: an opt-in toggle on the Research page (reorders live search results before they're given to the LLM) and the primary comparison axis inside the Grounding Lab page.
 - **Card**: <https://huggingface.co/cross-encoder/ms-marco-MiniLM-L-6-v2>
 
 ### 3. Qwen/Qwen2.5-0.5B-Instruct (local streaming generation)
 - **What it is**: a 494M-parameter instruction-tuned open-weight LLM from Alibaba's Qwen team.
-- **Why chosen**: the exact small local LLM validated and reused across the Week1-13 PoCs for fully offline, no-API-key text generation.
+- **Why chosen**: the exact small local LLM validated and reused across the Week1-4 PoCs for fully offline, no-API-key text generation.
 - **How Compass uses it**: the default (no-key) provider for both streamed research-report generation and Trend Radar's structured 3-lens extraction.
 - **Card**: <https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct>
 
@@ -45,4 +45,4 @@
 | **Bi-encoder vs. cross-encoder** | A bi-encoder embeds the query and each document independently (fast, used for the first-pass ranking of live search results); a cross-encoder scores a query and document jointly (slower, more accurate — used to re-rank just the top candidates). |
 | **Groundedness** | Whether a generated report's claims actually trace back to the retrieved sources — checked structurally (`[n]` citation validity) and semantically (per-sentence embedding similarity), reused verbatim from Week4's `ml/groundedness.py`. |
 | **Streaming generation** | Returning a model's output incrementally, token by token, instead of waiting for the full response — `transformers.TextIteratorStreamer` (local) and OpenAI-compatible SSE (OpenRouter), both exposed to the browser as Server-Sent-Events-shaped lines. |
-| **Audit trail** | The `audit_logs` SQL table — every AI inference call is recorded with who made it, which model, how long it took, and whether it succeeded, mirroring the pattern reused from the Week1-13 PoCs. |
+| **Audit trail** | The `audit_logs` SQL table — every AI inference call is recorded with who made it, which model, how long it took, and whether it succeeded, mirroring the pattern reused from the Week1-4 PoCs. |

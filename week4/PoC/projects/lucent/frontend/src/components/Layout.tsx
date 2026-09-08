@@ -6,7 +6,7 @@ import { useI18n } from "../i18n";
 import { useTheme } from "../theme/ThemeContext";
 
 // A floating, rounded glass sidebar with margin on every side — a third
-// navigation pattern distinct from the Week1/11 PoCs' flush left sidebar
+// navigation pattern distinct from the Week1/2 PoCs' flush left sidebar
 // and the Week3 PoC's top tab bar (see architecture.md's UI section).
 const NAV = [
   { to: "/", key: "nav.dashboard", icon: "◆" },

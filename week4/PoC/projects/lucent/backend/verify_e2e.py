@@ -4,7 +4,7 @@ Exercises every major feature against a *running* instance over real HTTP —
 no mocking, including actually consuming the streaming chat response as a
 real client would (not just checking the endpoint returns 200) — and
 prints a PASS/FAIL checklist, matching the verification discipline of the
-Week1-12 PoCs.
+Week1-3 PoCs.
 
 Run from inside the container (has network access + all deps installed):
     docker compose exec -T app python verify_e2e.py

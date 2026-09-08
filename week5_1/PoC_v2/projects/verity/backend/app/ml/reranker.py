@@ -1,5 +1,5 @@
 """Lazy-loaded singleton wrapper around `cross-encoder/ms-marco-MiniLM-L-6-v2`
-— reused verbatim from the Week2/13/14_1(old) PoCs, and independently the
+— reused verbatim from the Week2/4/14_1(old) PoCs, and independently the
 same reranker a typical first-pass implementation of this search-plus-rerank
 pattern tends to reach for."""
 import threading

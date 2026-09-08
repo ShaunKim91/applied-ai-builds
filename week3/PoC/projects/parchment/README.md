@@ -4,8 +4,8 @@
 
 > 📄 Full bilingual (한국어 default / English) operations guide with screenshots, architecture diagrams, hardware requirements, and cloud-cost estimates: **[`docs/guide.html`](docs/guide.html)**
 > 🏗️ System design: **[`architecture.md`](architecture.md)** · 🔀 Function-level flowcharts: **[`flowchart.md`](flowchart.md)**
-> 🧭 Built on the same proven template as the Week1/11 PoCs — see `architecture.md` §5 for the hardening this build inherits from day one.
-> 🎨 **A visually distinct UI this round, by request** — a warm "parchment" palette, serif headings (Newsreader), and a top-tab layout, replacing the Week1/11 PoCs' cool-gray sidebar dashboard look. See `architecture.md`'s UI section for the full rationale.
+> 🧭 Built on the same proven template as the Week1/2 PoCs — see `architecture.md` §5 for the hardening this build inherits from day one.
+> 🎨 **A visually distinct UI this round, by request** — a warm "parchment" palette, serif headings (Newsreader), and a top-tab layout, replacing the Week1/2 PoCs' cool-gray sidebar dashboard look. See `architecture.md`'s UI section for the full rationale.
 
 ## What it does
 
@@ -17,7 +17,7 @@
 | 🗂️ **Document Library** | `all-MiniLM-L6-v2` (embeddings) + Chroma | See every processed document and automatically-flagged near-duplicates (embedding similarity — not a search/RAG feature, see below) |
 | 🛠️ **Admin Console** | — | Manage users, browse the AI-call audit trail, see live model/data status |
 
-**Six AI models** are wired in — five run 100% locally with no API key (the project brief's "local models as the primary approach"), and one (OpenRouter's `qwen/qwen3-8b`) is a strictly opt-in, user-toggled upgrade, following the same "local-default, cloud-opt-in, fails independently" hybrid pattern used throughout this project series (and the Week1/11 PoCs).
+**Six AI models** are wired in — five run 100% locally with no API key (the project brief's "local models as the primary approach"), and one (OpenRouter's `qwen/qwen3-8b`) is a strictly opt-in, user-toggled upgrade, following the same "local-default, cloud-opt-in, fails independently" hybrid pattern used throughout this project series (and the Week1/2 PoCs).
 
 ## Quick start
 
@@ -73,11 +73,11 @@ parchment/
 
 ## Why FastAPI + React instead of Streamlit
 
-Same reasoning as the Week1/11 PoCs: a typical first-pass implementation of this kind of tool tends to be Streamlit-based (a few tabs, no auth, no admin) — a fine choice for a quick single-session exercise, but this PoC targets commercial-grade depth: persistent auth, a role-gated admin console, a typed REST API (`/docs` for free via FastAPI), and — this round specifically — full design-system control (a custom serif/parchment visual identity that Streamlit's component set can't express). See `architecture.md` §2.
+Same reasoning as the Week1/2 PoCs: a typical first-pass implementation of this kind of tool tends to be Streamlit-based (a few tabs, no auth, no admin) — a fine choice for a quick single-session exercise, but this PoC targets commercial-grade depth: persistent auth, a role-gated admin console, a typed REST API (`/docs` for free via FastAPI), and — this round specifically — full design-system control (a custom serif/parchment visual identity that Streamlit's component set can't express). See `architecture.md` §2.
 
 ## Why TypeScript, not just Python
 
-Same reasoning as the Week1/11 PoCs — the frontend is TypeScript (React + Vite + Tailwind) because that's what real commercial products pair with a Python AI backend; Node itself never runs in the deployed container (see the multi-stage `docker/Dockerfile`).
+Same reasoning as the Week1/2 PoCs — the frontend is TypeScript (React + Vite + Tailwind) because that's what real commercial products pair with a Python AI backend; Node itself never runs in the deployed container (see the multi-stage `docker/Dockerfile`).
 
 ## A note on the Document Library's "duplicate detection" (not RAG)
 
@@ -97,7 +97,7 @@ Real and synthetic sample data, both handled automatically (no manual step, no a
 
 ## Credit
 
-This PoC is original work, using publicly documented model IDs, APIs, and datasets cited throughout `docs/guide.html` and `data/SOURCES.md`. No application code was copied from another repository — its architecture deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing) from this same author's own Week1/11 PoCs, and its topic/tab structure (image extraction, PDF summarization, HTML table scraping as three tabs) follows a common, general-purpose shape for this kind of document-intake tool.
+This PoC is original work, using publicly documented model IDs, APIs, and datasets cited throughout `docs/guide.html` and `data/SOURCES.md`. No application code was copied from another repository — its architecture deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing) from this same author's own Week1/2 PoCs, and its topic/tab structure (image extraction, PDF summarization, HTML table scraping as three tabs) follows a common, general-purpose shape for this kind of document-intake tool.
 
 ## License
 

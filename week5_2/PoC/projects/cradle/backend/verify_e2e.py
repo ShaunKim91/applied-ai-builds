@@ -3,7 +3,7 @@
 Exercises every major feature against a *running* instance over real HTTP —
 no mocking, including actually consuming the streamed agent-run response as
 a real client would, and actually running a paused-for-approval run through
-to resumption. Matches the verification discipline of the Week1-14_1 PoCs.
+to resumption. Matches the verification discipline of the Week1-5_1 PoCs.
 
 Run from inside the container (has network access + all deps installed):
     docker compose exec -T app python verify_e2e.py

@@ -5,7 +5,7 @@
 
 ## 1. System overview
 
-Compass is a single-container full-stack application: a React (TypeScript) single-page app served as static files by a FastAPI backend, which hosts four AI models (three local, one optional cloud) behind a REST + streaming API, backed by SQLite (structured data) and Chroma (vector data) — the same proven shape as the Week1-13 PoCs, applied to Week5_1's central topic (search APIs, embedding-based reranking, search+LLM grounding) as a genuine flagship product.
+Compass is a single-container full-stack application: a React (TypeScript) single-page app served as static files by a FastAPI backend, which hosts four AI models (three local, one optional cloud) behind a REST + streaming API, backed by SQLite (structured data) and Chroma (vector data) — the same proven shape as the Week1-4 PoCs, applied to Week5_1's central topic (search APIs, embedding-based reranking, search+LLM grounding) as a genuine flagship product.
 
 The key structural difference from Week4's Lucent: **there is no fixed local corpus to index.** Retrieval happens live, per query, against the actual web — so the vector store's role shifts from "the knowledge base itself" to "an archive index over Compass's own past output," and a new `search/` layer replaces last week's `etl/` seed-corpus pipeline.
 
@@ -89,12 +89,12 @@ This isn't a criticism of that baseline approach — it's typically scoped for a
 
 | Choice | Reasoning |
 |---|---|
-| **Same FastAPI + React template as the Week1-13 PoCs** | A proven, already-hardened architecture (auth, admin, Docker, readiness probing, isolated bootstrap steps, streaming SSE infrastructure) is reused deliberately — see §6 for the specific hardening carried over. |
+| **Same FastAPI + React template as the Week1-4 PoCs** | A proven, already-hardened architecture (auth, admin, Docker, readiness probing, isolated bootstrap steps, streaming SSE infrastructure) is reused deliberately — see §6 for the specific hardening carried over. |
 | **`ddgs` as the default search backend, mock-first on failure** | Free, no API key, matches a standard mock-first resilience pattern — but it's an unofficial client scraping DuckDuckGo's own results, so runtime failures are treated as an expected, handled case, not an outage. |
 | **OpenRouter used two distinct ways, one key** | An ordinary chat-completion call synthesizes Compass's own retrieved sources (same mechanism Week4 validated); OpenRouter's own `plugins:[{"id":"web"}]` web-search feature (confirmed live via its own docs during planning) additionally lets Compass compare against a fully-managed alternative — without introducing a second cloud vendor/key, keeping this project's "OpenRouter is the only validated cloud API" rule intact even though a common reference stack for this pattern pairs a different search/LLM vendor combination. |
-| **A fourth, distinct visual identity, and the first dark-default app in this series** | Week1/11 (`CommerceIQ`, `VoxIQ`) share a cool-blue, flush-sidebar look; Week3 (`Parchment`) used a warm serif/terracotta, top-tab look; Week4 (`Lucent`) used translucent indigo/cyan glass, light-default. Compass uses a navy/brass/teal "chart room" palette, a fixed command-console + icon-rail navigation, a 3-way type system (serif/sans/mono), and defaults to dark — per this round's explicit request to keep raising the UI/UX bar each week. See `reference_skills/interface-craft`'s motion-and-microinteractions and typography guides for the specific patterns applied (easing curves, duration tiers, skeleton-vs-spinner tradeoffs). |
+| **A fourth, distinct visual identity, and the first dark-default app in this series** | Week1/2 (`CommerceIQ`, `VoxIQ`) share a cool-blue, flush-sidebar look; Week3 (`Parchment`) used a warm serif/terracotta, top-tab look; Week4 (`Lucent`) used translucent indigo/cyan glass, light-default. Compass uses a navy/brass/teal "chart room" palette, a fixed command-console + icon-rail navigation, a 3-way type system (serif/sans/mono), and defaults to dark — per this round's explicit request to keep raising the UI/UX bar each week. See `reference_skills/interface-craft`'s motion-and-microinteractions and typography guides for the specific patterns applied (easing curves, duration tiers, skeleton-vs-spinner tradeoffs). |
 | **Ghost-citation checking, generalizing a common introductory technique** | A common introductory approach to citation verification teaches regex-extracting cited URLs and diffing against real search-result URLs — Compass implements this as a real, always-on verification pass rather than leaving it as a lecture concept. |
-| **4 AI models, 3 local + 1 optional cloud** | `intfloat/multilingual-e5-small` and `cross-encoder/ms-marco-MiniLM-L-6-v2` are reused verbatim from the Week2/13 PoCs (the latter is also, independently, the same reranker a typical baseline implementation of this pattern uses — an introductory hash-based toy embedding is sometimes taught as a placeholder but was never actually shipped as the real model). `Qwen2.5-0.5B-Instruct` is reused from the Week1-13 PoCs. OpenRouter's `qwen/qwen3-8b` is the one cloud path, opt-in and validated with real keys this round (both call shapes). |
+| **4 AI models, 3 local + 1 optional cloud** | `intfloat/multilingual-e5-small` and `cross-encoder/ms-marco-MiniLM-L-6-v2` are reused verbatim from the Week2/4 PoCs (the latter is also, independently, the same reranker a typical baseline implementation of this pattern uses — an introductory hash-based toy embedding is sometimes taught as a placeholder but was never actually shipped as the real model). `Qwen2.5-0.5B-Instruct` is reused from the Week1-4 PoCs. OpenRouter's `qwen/qwen3-8b` is the one cloud path, opt-in and validated with real keys this round (both call shapes). |
 
 ## 4. Data flow — one representative request (streamed research query)
 
@@ -181,7 +181,7 @@ erDiagram
 
 Every successful report is additionally embedded (`multilingual-e5-small`) and upserted into a **Chroma** `PersistentClient` collection — the SQL rows are the system of record, the vector store is the derived, restart-surviving semantic index that powers Archive search. Unlike Week4, this index holds Compass's *own generated output*, not a fixed external corpus.
 
-## 6. Hardening carried over from the Week1-13 PoCs (applied from day one here)
+## 6. Hardening carried over from the Week1-4 PoCs (applied from day one here)
 
 | Prior finding | Applied here from the start |
 |---|---|
@@ -197,7 +197,7 @@ See `history/v1.0.0.md` for this build's actual `verify_e2e.sh` pass/fail result
 
 ## 7. Production / cloud scaling — what would change
 
-Same shape as the Week1-13 PoCs (see those projects' `architecture.md` for the full table/diagram) — app-tier replication, managed Postgres, a managed/scaled vector DB, a GPU node pool for the local LLM/reranker at volume, session affinity for streaming responses — plus one Compass-specific item: **a real web-search API with an SLA** (rather than `ddgs`'s best-effort, unofficial access) would be the first thing to swap in for anything beyond a demo, since `ddgs`'s own documentation explicitly frames it as educational-use software.
+Same shape as the Week1-4 PoCs (see those projects' `architecture.md` for the full table/diagram) — app-tier replication, managed Postgres, a managed/scaled vector DB, a GPU node pool for the local LLM/reranker at volume, session affinity for streaming responses — plus one Compass-specific item: **a real web-search API with an SLA** (rather than `ddgs`'s best-effort, unofficial access) would be the first thing to swap in for anything beyond a demo, since `ddgs`'s own documentation explicitly frames it as educational-use software.
 
 ### Estimated monthly cost at small commercial scale
 (~500 daily active users, ~1.5k research queries/day; figures below are indicative public list prices as of Aug 2026 — always re-check current provider pricing before budgeting for real)
@@ -218,4 +218,4 @@ Notably higher than Week4's Lucent — a real licensed search API and metered we
 
 ## 8. Deployment considerations
 
-Same core list as the Week1-13 PoCs (environment parity, secrets via a real secret manager, Postgres + alembic migrations, CORS restricted to the real frontend origin, no proxy buffering on streaming endpoints) — with one Compass-specific addition: **a production deployment needs its own budget-cap enforcement to be robust against concurrent requests** (this PoC's single-process, single-DB-transaction check-then-spend is adequate for a demo but is a real TOCTOU race under real concurrent load — a production version would need an atomic reservation, e.g. a DB-level `UPDATE ... WHERE spent + cost <= limit` or a distributed rate limiter, not a fetch-then-compare in application code).
+Same core list as the Week1-4 PoCs (environment parity, secrets via a real secret manager, Postgres + alembic migrations, CORS restricted to the real frontend origin, no proxy buffering on streaming endpoints) — with one Compass-specific addition: **a production deployment needs its own budget-cap enforcement to be robust against concurrent requests** (this PoC's single-process, single-DB-transaction check-then-spend is adequate for a demo but is a real TOCTOU race under real concurrent load — a production version would need an atomic reservation, e.g. a DB-level `UPDATE ... WHERE spent + cost <= limit` or a distributed rate limiter, not a fetch-then-compare in application code).

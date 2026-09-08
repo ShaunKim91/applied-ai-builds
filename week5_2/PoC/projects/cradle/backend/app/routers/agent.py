@@ -186,7 +186,7 @@ def _finalize(run_id: int, user: models.User) -> None:
     """Runs once a stream reaches a 'done' event: logs the audit entry and,
     for a completed run, indexes it into the archive vector store — mirrors
     the exact pattern (fresh session, post-stream side effects) validated
-    in the Week4/14_1 PoCs."""
+    in the Week4/5_1 PoCs."""
     from ..database import SessionLocal
 
     db2 = SessionLocal()

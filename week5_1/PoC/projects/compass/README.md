@@ -71,7 +71,7 @@ compass/
 
 ## Why FastAPI + React instead of Streamlit
 
-Same reasoning as the Week1-13 PoCs, doubly true here: a typical baseline implementation of this pattern is a Streamlit app with no persistence, no auth, and (by default) no generation at all. Compass needs real token-by-token streaming (via `StreamingResponse` + `fetch()`/`ReadableStream` on the client), a persisted, searchable archive of past research, and full control over the navy/brass/teal design system. See `architecture.md` §2 for the specific, concrete upgrades over that baseline.
+Same reasoning as the Week1-4 PoCs, doubly true here: a typical baseline implementation of this pattern is a Streamlit app with no persistence, no auth, and (by default) no generation at all. Compass needs real token-by-token streaming (via `StreamingResponse` + `fetch()`/`ReadableStream` on the client), a persisted, searchable archive of past research, and full control over the navy/brass/teal design system. See `architecture.md` §2 for the specific, concrete upgrades over that baseline.
 
 ## Why the retrieval source has no seed corpus
 
@@ -87,7 +87,7 @@ Every research report is checked two independent ways: `ml/groundedness.py` (reu
 
 ## Credit
 
-This PoC is original work, using publicly documented model IDs, APIs, and libraries cited throughout `docs/guide.html`. No application code was copied from another repository — though its architecture deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing, streaming SSE infrastructure, groundedness checking) from this same project series' own Week1-13 PoCs, and its reranking model choice matches the reranker a typical baseline implementation of this pattern also uses.
+This PoC is original work, using publicly documented model IDs, APIs, and libraries cited throughout `docs/guide.html`. No application code was copied from another repository — though its architecture deliberately reuses proven patterns (auth, bootstrap isolation, readiness probing, streaming SSE infrastructure, groundedness checking) from this same project series' own Week1-4 PoCs, and its reranking model choice matches the reranker a typical baseline implementation of this pattern also uses.
 
 ## License
 

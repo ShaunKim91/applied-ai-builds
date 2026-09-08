@@ -1,5 +1,5 @@
 """Bi-encoder-first, optional cross-encoder-rerank pipeline — reused
-verbatim from the old Compass/Week2/13 PoCs."""
+verbatim from the old Compass/Week2/4 PoCs."""
 from ..ml import embeddings, reranker
 
 

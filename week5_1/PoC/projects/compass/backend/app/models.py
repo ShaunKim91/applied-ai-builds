@@ -95,7 +95,7 @@ class BudgetSetting(Base):
 
 class AuditLog(Base):
     """Every AI inference call is logged here — who, what model, how long,
-    success/failure. Mirrors the pattern reused from the Week1-13 PoCs."""
+    success/failure. Mirrors the pattern reused from the Week1-4 PoCs."""
 
     __tablename__ = "audit_logs"
 

@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     secret_key: str = "verity-dev-secret-change-in-production"
     jwt_algorithm: str = "HS256"
     # Deliberately short-lived — a real commercial-grade upgrade over the
-    # Week1-14_2 PoCs' single flat 24h token. Sessions are kept alive by
+    # Week1-5_2 PoCs' single flat 24h token. Sessions are kept alive by
     # rotating refresh tokens instead (see security.py, models.RefreshToken).
     access_token_expire_minutes: int = 20
     refresh_token_expire_days: int = 7

@@ -15,7 +15,7 @@ _SAFE_EXPR_RE = re.compile(r"[\d\s+\-*/().]+")
 
 
 def calculator(expression: str) -> str:
-    """Arithmetic only — same regex-restricted `eval` pattern as Week1-13's
+    """Arithmetic only — same regex-restricted `eval` pattern as Week1-4's
     own calculator tools: only digits and `+ - * / ( )` are ever allowed
     through."""
     expression = (expression or "").strip()

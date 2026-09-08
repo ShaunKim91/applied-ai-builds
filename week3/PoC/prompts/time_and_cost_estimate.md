@@ -10,7 +10,7 @@ done for CommerceIQ and VoxIQ.
 ## What was different about this build
 
 Like the Week2 PoC, this build's planning phase reused already-established
-context (this session's own accumulated knowledge of the Week1/11 PoCs'
+context (this session's own accumulated knowledge of the Week1/2 PoCs'
 patterns) rather than running a fresh multi-agent research fan-out — a
 single research agent surveyed the target technique set (image/multimodal
 extraction, PDF parsing/summarization, HTML table scraping), which was
@@ -31,7 +31,7 @@ their claimed specs before committing to them in the plan.
 
 ## Estimated cost for the full build (design + implementation + docs)
 
-As with the Week1/11 PoCs, token usage was **not instrumented** in this
+As with the Week1/2 PoCs, token usage was **not instrumented** in this
 environment, so the figures below are a **reasoned estimate**. This build
 had more infrastructure to reuse verbatim than VoxIQ did (Week2 itself
 reused Week1's patterns; this build reused both weeks' proven auth/

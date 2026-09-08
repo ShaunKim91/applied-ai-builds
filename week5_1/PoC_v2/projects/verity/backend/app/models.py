@@ -49,7 +49,7 @@ class User(Base):
     role: Mapped[str] = mapped_column(String(20), default="user")  # "user" | "admin"
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     # Account lockout — a real commercial-grade auth feature none of the
-    # Week1-14_2 PoCs implemented. Reset to 0 on any successful login.
+    # Week1-5_2 PoCs implemented. Reset to 0 on any successful login.
     failed_login_attempts: Mapped[int] = mapped_column(Integer, default=0)
     locked_until: Mapped[dt.datetime | None] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[dt.datetime] = mapped_column(DateTime, default=utcnow)

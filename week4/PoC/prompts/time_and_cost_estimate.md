@@ -3,7 +3,7 @@
 This document distinguishes **measured** numbers (real data from this
 actual build session) from **estimated** ones (reasoned projections,
 clearly labeled) — per this project's "no hallucinated numbers" rule. See
-the Week1-12 PoCs' own `prompts/time_and_cost_estimate.md` files for the
+the Week1-3 PoCs' own `prompts/time_and_cost_estimate.md` files for the
 same exercise done for CommerceIQ, VoxIQ, and Parchment.
 
 ## What was different about this build
@@ -14,7 +14,7 @@ system, and a from-scratch glass design system (gradient mesh background,
 new component library conventions) — none of which existed in any prior
 week's code to copy. Offsetting that, the backend infrastructure (auth,
 bootstrap isolation, readiness probing, the reranker model wrapper) was
-reused verbatim from the Week1-12 PoCs.
+reused verbatim from the Week1-3 PoCs.
 
 ## What was actually measured in this build
 

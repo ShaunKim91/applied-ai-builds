@@ -8,7 +8,7 @@
 Cradle is a single-container full-stack application: a React (TypeScript) single-page app served
 as static files by a FastAPI backend, which hosts two local AI models (embeddings + a local ReAct
 agent LLM) plus one optional cloud escalation model behind a REST + streaming API, backed by SQLite
-(structured data) and Chroma (vector data) — the same proven shape as the Week1-14_1 PoCs.
+(structured data) and Chroma (vector data) — the same proven shape as the Week1-5_1 PoCs.
 
 The key structural difference from every prior week: **an agent run is not necessarily a single
 request/response cycle.** A run can pause mid-execution — waiting on a real human's approve/deny
@@ -113,7 +113,7 @@ color feel; (c) a UI that reads as deliberately designed, not simply built.
 | Real 3D interaction | None | `TiltCard.tsx` tracks the pointer and sets CSS custom properties (`--rx`/`--ry`) consumed by a `perspective` + `rotateX`/`rotateY` transform on `pointermove` — a genuinely spatial response to the user's cursor, not a static illusion. Deliberately reserved for a few hero surfaces (the login card, a stat highlight) rather than applied to every element — "spend boldness in one place, keep everything around it quiet" |
 | Reasoning trace | (no equivalent feature) | A "stacked cards" visualization (`.step-card`): each Thought/Action/Observation card gets a small alternating `rotate()` by index and lifts/straightens on hover — the ReAct loop's own "steps stack up" structure made spatially literal |
 | Typography | Serif + geometric sans + mono (3-way) | **Quicksand** (rounded, soft display headlines) + **Plus Jakarta Sans** (UI body/chrome) + **Space Mono** (audit/data) — a third distinct 3-way pairing, chosen for roundness to match the claymorphism's soft-surface language |
-| Navigation | Fixed command-console + icon-rail | A floating, centered, pill-shaped top nav bar — rounded-full, distinct from every prior week's pattern (Week1/11's flush sidebar, Week3's top tabs, Week4's floating glass sidebar, Week5_1's console+rail) |
+| Navigation | Fixed command-console + icon-rail | A floating, centered, pill-shaped top nav bar — rounded-full, distinct from every prior week's pattern (Week1/2's flush sidebar, Week3's top tabs, Week4's floating glass sidebar, Week5_1's console+rail) |
 | Default theme | Dark (first in the series) | **Light**, reverting deliberately — pastel claymorphism's soft highlight/shadow pairing depends on a light key surface to read as "puffy"; the dark variant lifts the same hues rather than inverting them, so it stays visibly the same design language, not a photonegative |
 
 **Accessibility, measured not assumed**: as in every prior week, running text always uses the
@@ -231,7 +231,7 @@ Every completed run is additionally embedded (`multilingual-e5-small`) and upser
 **Chroma** `PersistentClient` collection — the SQL rows are the system of record, the vector store is
 the derived, restart-surviving semantic index that powers History search.
 
-## 6. Hardening carried over from the Week1-14_1 PoCs (applied from day one here)
+## 6. Hardening carried over from the Week1-5_1 PoCs (applied from day one here)
 
 | Prior finding | Applied here from the start |
 |---|---|
@@ -258,15 +258,15 @@ kept separate from product defects.
 
 | Choice | Reasoning |
 |---|---|
-| **Same FastAPI + React template as the Week1-14_1 PoCs** | A proven, already-hardened architecture (auth, admin, Docker, readiness probing, isolated bootstrap steps, streaming SSE infrastructure) is reused deliberately. |
+| **Same FastAPI + React template as the Week1-5_1 PoCs** | A proven, already-hardened architecture (auth, admin, Docker, readiness probing, isolated bootstrap steps, streaming SSE infrastructure) is reused deliberately. |
 | **A hand-rolled ReAct parser, not a framework** | The ReAct pattern itself (Thought→Action→Observation via prompt structure and string parsing) is the point of this build — reaching for LangChain here would skip the part worth implementing by hand, and would also collide with **Week6_1's own stated scope** (the same agent, framework-ized in LangChain with added conversational memory). Cradle deliberately stays a pure, framework-free ReAct implementation so next week's LangChain upgrade has real, meaningful contrast to build against. |
 | **A hand-rolled, DB-persisted resumable generator over a task queue** | A full task-queue system (Celery/RQ) would be real infrastructure overkill for a single-container PoC; a shared generator function consumed two ways (live SSE, synchronous drain-on-resume) gets genuine resumability with no new moving parts, at the cost of the orchestrator needing to manage its own DB session lifecycle explicitly (see §6). |
-| **Two local models, one optional cloud escalation** | `Qwen2.5-0.5B-Instruct` is a well-suited small instruction-tuned model for a local ReAct agent's own reasoning brain — chosen deliberately for that fit. `multilingual-e5-small` is reused verbatim from the Week2/13/14_1 PoCs. OpenRouter's `qwen/qwen3-8b` fills the same "opt-in, budget-gated cloud upgrade" role Week5_1 Compass validated, now applied to a well-documented model-routing pattern (escalate from a small local model to a larger paid one only when needed) instead of a search feature. |
+| **Two local models, one optional cloud escalation** | `Qwen2.5-0.5B-Instruct` is a well-suited small instruction-tuned model for a local ReAct agent's own reasoning brain — chosen deliberately for that fit. `multilingual-e5-small` is reused verbatim from the Week2/4/14_1 PoCs. OpenRouter's `qwen/qwen3-8b` fills the same "opt-in, budget-gated cloud upgrade" role Week5_1 Compass validated, now applied to a well-documented model-routing pattern (escalate from a small local model to a larger paid one only when needed) instead of a search feature. |
 | **A fifth, distinct visual identity — and the first with real spatial-depth interaction** | Per this round's explicit request: high-lightness/low-saturation pastel claymorphism, a genuine pointer-reactive 3D tilt component, and a layered card-stack trace visualization — see §3. |
 
 ## 9. Production / cloud scaling — what would change
 
-Same shape as the Week1-14_1 PoCs (see those projects' `architecture.md` for the full
+Same shape as the Week1-5_1 PoCs (see those projects' `architecture.md` for the full
 table/diagram) — app-tier replication, managed Postgres, a managed/scaled vector DB, a GPU node pool
 for the local LLM at volume, session affinity for streaming responses — plus two Cradle-specific
 items: **a real task queue** (Celery/RQ/similar) to replace the hand-rolled resumable-generator
@@ -296,7 +296,7 @@ metering, since this week's tools are all free, local Python functions.
 
 ## 10. Deployment considerations
 
-Same core list as the Week1-14_1 PoCs (environment parity, secrets via a real secret manager,
+Same core list as the Week1-5_1 PoCs (environment parity, secrets via a real secret manager,
 Postgres + alembic migrations, CORS restricted to the real frontend origin, no proxy buffering on
 streaming endpoints) — with one Cradle-specific addition: **a production HITL queue needs a real
 notification path** (email/Slack/webhook to the on-call reviewer) — this PoC's queue is

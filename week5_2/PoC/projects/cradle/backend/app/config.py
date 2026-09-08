@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     embedding_dim: int = 384
     # A well-suited small instruction-tuned model for the ReAct agent's own
     # "brain" — also the same small local LLM validated across the
-    # Week1-14_1 PoCs.
+    # Week1-5_1 PoCs.
     local_agent_model: str = "Qwen/Qwen2.5-0.5B-Instruct"
 
     # --- Guardrail defaults (admin-editable at runtime, see models.GuardrailSetting) ---

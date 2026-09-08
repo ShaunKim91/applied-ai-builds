@@ -6,7 +6,7 @@ restarts). A typical baseline implementation of this pattern has **no
 vector store or persistence at all** — every agent run is stateless/
 in-memory (a fresh Streamlit button click each time), so there is nothing
 to compare this against there; the nearest real precedent is the
-Week4/14_1 PoCs' `PersistentClient` usage, reused verbatim here. Falls
+Week4/5_1 PoCs' `PersistentClient` usage, reused verbatim here. Falls
 back automatically to a pure-Python cosine-similarity list if chromadb
 fails to import/initialize, so archive search never hard-fails.
 """

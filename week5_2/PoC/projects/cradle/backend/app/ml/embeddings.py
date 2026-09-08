@@ -1,7 +1,7 @@
 """Model 1 — bi-encoder embeddings for the agent-run archive's semantic search.
 
 intfloat/multilingual-e5-small: the same embedding model validated in the
-Week4/14_1 PoCs — reused here for its multilingual coverage (100+
+Week4/5_1 PoCs — reused here for its multilingual coverage (100+
 languages sharing one embedding space), which
 Cradle relies on for embedding past agent runs (question + final answer)
 so the History page's semantic search works in either language.
