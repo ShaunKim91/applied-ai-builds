@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass</title>
+<meta name="description" content="Compass Week6 PoC — all-in-one bilingual operations guide">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: rgba(255,255,255,0.85);
+    --surface-2: #e3e8f0;
+    --page-plane: #eef1f6;
+    --text-primary: #101826;
+    --text-secondary: #3c4a5e;
+    --text-muted: #74839a;
+    --border-color: rgba(16,24,38,0.14);
+    --accent: #8a6212;
+    --accent-2: #0f766e;
+    --accent-soft: rgba(138,98,18,0.10);
+    --good: #0f7a4f;
+    --warning: #a15c00;
+    --serious: #b3491f;
+    --critical: #b32347;
+    --code-bg: #ffffff;
+    --grid-line: rgba(16,24,38,0.05);
+    --font-serif: "Newsreader", Georgia, serif;
+    --font-sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1: rgba(18,26,42,0.82);
+    --surface-2: #121c2d;
+    --page-plane: #0a0f1a;
+    --text-primary: #eef2f7;
+    --text-secondary: #aab6c8;
+    --text-muted: #748099;
+    --border-color: rgba(255,255,255,0.10);
+    --accent: #d9a441;
+    --accent-2: #2dd4bf;
+    --accent-soft: rgba(217,164,65,0.14);
+    --good: #3ecf8e;
+    --warning: #e3b34d;
+    --serious: #e8875a;
+    --critical: #f0708a;
+    --code-bg: #0d1424;
+    --grid-line: rgba(255,255,255,0.035);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-1: rgba(18,26,42,0.82);
+      --surface-2: #121c2d;
+      --page-plane: #0a0f1a;
+      --text-primary: #eef2f7;
+      --text-secondary: #aab6c8;
+      --text-muted: #748099;
+      --border-color: rgba(255,255,255,0.10);
+      --accent: #d9a441;
+      --accent-2: #2dd4bf;
+      --accent-soft: rgba(217,164,65,0.14);
+      --good: #3ecf8e;
+      --warning: #e3b34d;
+      --serious: #e8875a;
+      --critical: #f0708a;
+      --code-bg: #0d1424;
+      --grid-line: rgba(255,255,255,0.035);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--page-plane);
+    background-image:
+      radial-gradient(at 15% 0%, rgba(138,98,18,0.10) 0, transparent 55%),
+      radial-gradient(at 90% 100%, rgba(15,118,110,0.10) 0, transparent 55%),
+      repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 48px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 48px);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+  [data-lang="ko"] .en, [data-lang="en"] .ko { display: none; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: var(--surface-1);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .topbar .brand { font-weight: 700; font-size: 1.05rem; font-family: var(--font-serif); }
+  .topbar .brand span { color: var(--text-muted); font-weight: 500; font-size: 0.85rem; margin-left: 0.5rem; font-family: var(--font-sans); }
+  .toggles button {
+    font: inherit; font-size: 0.85rem;
+    background: var(--surface-2); color: var(--text-primary);
+    border: 1px solid var(--border-color); border-radius: 999px;
+    padding: 0.4rem 0.8rem; margin-left: 0.5rem; cursor: pointer;
+  }
+  .toggles button:hover { border-color: var(--accent); }
+
+  .shell { display: flex; max-width: 1280px; margin: 0 auto; }
+  nav.toc {
+    width: 240px; flex-shrink: 0; padding: 2rem 1rem;
+    position: sticky; top: 57px; align-self: flex-start;
+    max-height: calc(100vh - 57px); overflow-y: auto;
+  }
+  nav.toc a {
+    display: block; padding: 0.35rem 0.6rem; border-radius: 6px;
+    color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+  }
+  nav.toc a:hover { background: var(--surface-2); color: var(--text-primary); }
+
+  main { flex: 1; min-width: 0; padding: 2rem 2rem 6rem; max-width: 860px; }
+  section { margin-bottom: 3.5rem; scroll-margin-top: 70px; }
+  h1 { font-family: var(--font-serif); font-size: 2.1rem; margin: 0 0 0.5rem; font-weight: 700; }
+  h2 { font-family: var(--font-serif); font-size: 1.4rem; margin: 0 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); font-weight: 700; }
+  h3 { font-size: 1.05rem; margin: 1.5rem 0 0.75rem; font-weight: 700; }
+  p { color: var(--text-secondary); }
+  .lede { font-size: 1.1rem; color: var(--text-secondary); max-width: 68ch; }
+  .eyebrow { color: var(--accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-family: var(--font-mono); }
+
+  a { color: var(--accent-2); }
+  code, pre { font-family: var(--font-mono); }
+  code { background: var(--code-bg); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+  pre.code-block {
+    background: var(--code-bg); border: 1px solid var(--border-color);
+    border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; font-size: 0.85rem;
+  }
+
+  .card { background: var(--surface-1); backdrop-filter: blur(14px); border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem 1.5rem; box-shadow: 0 8px 28px rgba(4,8,20,0.16); }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+  .callout { border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid; margin: 1rem 0; }
+  .callout-info { background: var(--accent-soft); border-color: var(--accent); }
+  .callout-warning { background: rgba(224,179,77,0.10); border-color: var(--warning); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0; }
+  caption { text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
+  th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border-color); }
+  th { color: var(--text-muted); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; font-family: var(--font-mono); }
+  .table-scroll { overflow-x: auto; }
+
+  .shot { border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; background: var(--surface-2); }
+  .shot img { width: 100%; display: block; }
+  .shot figcaption { padding: 0.6rem 0.9rem; font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); }
+  figure { margin: 1.25rem 0; }
+
+  .badge {
+    display: inline-block; font-size: 0.72rem; padding: 0.15rem 0.55rem; font-family: var(--font-mono);
+    border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border-color); color: var(--text-secondary);
+    margin-right: 0.3rem;
+  }
+  .badge.local { color: var(--good); border-color: var(--good); }
+  .badge.cloud { color: var(--warning); border-color: var(--warning); }
+
+  .mermaid { background: var(--surface-1); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem; }
+  footer { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border-color); }
+
+  @media (max-width: 900px) {
+    nav.toc { display: none; }
+    main { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">🧭 Compass <span class="ko">운영 가이드</span><span class="en">Operations Guide</span></div>
+  <div class="toggles">
+    <button id="langBtn" type="button">EN</button>
+    <button id="themeBtn" type="button">☀️ <span class="ko">라이트</span><span class="en">Light</span></button>
+  </div>
+</header>
+
+<div class="shell">
+<nav class="toc">
+  <a href="#overview"><span class="ko">개요</span><span class="en">Overview</span></a>
+  <a href="#advanced"><span class="ko">엔지니어링 완성도</span><span class="en">Engineering Depth</span></a>
+  <a href="#design"><span class="ko">UI 차별화</span><span class="en">UI Differentiation</span></a>
+  <a href="#features"><span class="ko">기능 둘러보기</span><span class="en">Feature Walkthrough</span></a>
+  <a href="#architecture"><span class="ko">아키텍처</span><span class="en">Architecture</span></a>
+  <a href="#flowcharts"><span class="ko">플로우차트</span><span class="en">Flowcharts</span></a>
+  <a href="#hardware"><span class="ko">하드웨어 요구사항</span><span class="en">Hardware Requirements</span></a>
+  <a href="#quickstart"><span class="ko">빠른 시작</span><span class="en">Quick Start</span></a>
+  <a href="#api"><span class="ko">API 개요</span><span class="en">API Overview</span></a>
+  <a href="#verification"><span class="ko">검증</span><span class="en">Verification</span></a>
+  <a href="#foundations"><span class="ko">기초 지식</span><span class="en">Foundational Knowledge</span></a>
+  <a href="#scaling"><span class="ko">상용/클라우드 확장</span><span class="en">Production &amp; Cloud Scaling</span></a>
+  <a href="#deployment"><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></a>
+  <a href="#limitations"><span class="ko">한계 &amp; 로드맵</span><span class="en">Limitations &amp; Roadmap</span></a>
+</nav>
+
+<main>
+
+<section id="overview">
+  <p class="eyebrow">Week6 PoC · <span class="ko">웹검색 근거 기반 리서치 어시스턴트</span><span class="en">Web-Search-Grounded Research Assistant</span></p>
+  <h1>Compass</h1>
+  <p class="lede">
+    <span class="ko">Compass는 Week6의 핵심 주제(검색 API, 임베딩 기반 재정렬, 검색+LLM 그라운딩)를 실제 스트리밍 리서치 제품으로 완성한 PoC입니다 — 정적 지식베이스가 아니라, 실시간 웹을 검색하고 근거를 투명하게 보여주는 어시스턴트입니다.</span>
+    <span class="en">Compass turns Week6's core topic (search APIs, embedding-based reranking, search+LLM grounding) into a real streaming research product — not a static knowledge base, an assistant that searches the live web and shows its work.</span>
+  </p>
+
+  <div class="grid grid-3" style="margin-top:1.5rem">
+    <div class="card">
+      <div class="eyebrow"><span class="ko">AI 모델</span><span class="en">AI Models</span></div>
+      <div style="font-size:1.8rem;font-weight:700;font-family:var(--font-serif)">4</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem"><span class="ko">로컬 3개 + OpenRouter 2가지 활용</span><span class="en">3 local + OpenRouter used 2 ways</span></p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span class="ko">스택</span><span class="en">Stack</span></div>
+      <div style="font-size:1.8rem;font-weight:700;font-family:var(--font-serif)">FastAPI + React</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem">TypeScript · Vite · Tailwind · SSE streaming</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span class="ko">검색</span><span class="en">Search</span></div>
+      <div style="font-size:1.8rem;font-weight:700;font-family:var(--font-serif)">ddgs</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem"><span class="ko">무료·키 불필요, 모의 폴백 포함</span><span class="en">free, keyless, mock fallback included</span></p>
+    </div>
+  </div>
+
+  <h3><span class="ko">4개 AI 모델</span><span class="en">The four AI models</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">모델</span><span class="en">Model</span></th><th><span class="ko">역할</span><span class="en">Role</span></th><th><span class="ko">위치</span><span class="en">Location</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>intfloat/multilingual-e5-small</code></td><td><span class="ko">검색결과 재정렬 + 아카이브 임베딩</span><span class="en">Search-result reranking + archive embedding</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>cross-encoder/ms-marco-MiniLM-L-6-v2</code></td><td><span class="ko">재정렬</span><span class="en">Reranking</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>Qwen/Qwen2.5-0.5B-Instruct</code></td><td><span class="ko">스트리밍 리포트 생성 + 트렌드 레이더 추출</span><span class="en">Streaming report generation + Trend Radar extraction</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>qwen/qwen3-8b</code> <span class="ko">(OpenRouter, 2가지 방식)</span><span class="en">(OpenRouter, 2 ways)</span></td><td><span class="ko">일반 채팅 합성 + 완전관리형 웹검색</span><span class="en">Plain chat synthesis + managed web search</span></td><td><span class="badge cloud">cloud, opt-in, budget-gated</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="ko">세 개의 로컬 모델이 기본 경로이며 API 키 없이 항상 동작합니다. 웹검색도 <code>ddgs</code>로 무료·키 불필요이며 실패 시 모의 결과로 정직하게 폴백합니다. OpenRouter 경로는 사용자가 명시적으로 선택할 때만, 그리고 관리자가 설정한 일일 예산 상한 내에서만 사용됩니다.</p>
+  <p class="en">The three local models are always the default path and work with zero API keys. Web search is also free and keyless via <code>ddgs</code>, honestly falling back to mock results on failure. The OpenRouter path is strictly user-toggled and additionally gated by an admin-configured daily budget cap.</p>
+</section>
+
+<section id="advanced">
+  <h2><span class="ko">엔지니어링 완성도</span><span class="en">Engineering Depth</span></h2>
+  <p><span class="ko">이번 요청은 "주차가 올라갈수록 계속 퀄리티를 상향 조정"할 것을 명시적으로 요구했습니다. 이 표는 이 패턴의 일반적인 기준 구현과 Compass를 구체적으로 비교합니다 — 자세한 내용은 </span><span class="en">This round's request explicitly asked to keep raising the quality bar every week. This table compares Compass against a typical baseline implementation of this pattern concretely — full detail in </span><code>architecture.md</code> §2.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th></th><th><span class="ko">일반적인 기준 구현</span><span class="en">Typical baseline implementation</span></th><th>Compass</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">답변 생성</span><span class="en">Answer generation</span></td><td><span class="ko">LLM 호출 없음 — 규칙기반 템플릿</span><span class="en">No LLM call — rule-based template</span></td><td><span class="ko">실제 LLM이 스트리밍으로 인용 포함 리포트 생성</span><span class="en">Real LLM streams a cited report</span></td></tr>
+      <tr><td><span class="ko">영속성</span><span class="en">Persistence</span></td><td><span class="ko">없음 (단발성)</span><span class="en">None (stateless)</span></td><td>SQLite + Chroma <span class="ko">(재시작에도 유지)</span><span class="en">(survives restarts)</span></td></tr>
+      <tr><td><span class="ko">검증</span><span class="en">Verification</span></td><td><span class="ko">없음</span><span class="en">None</span></td><td><span class="ko">근거충실도 + 고스트 인용 이중 검증</span><span class="en">Groundedness + ghost-citation dual check</span></td></tr>
+      <tr><td><span class="ko">비용 통제</span><span class="en">Cost control</span></td><td><span class="ko">표준 관행이지만 대개 미구현</span><span class="en">A standard practice, but typically not implemented</span></td><td><span class="ko">실제 일일 예산 상한 강제</span><span class="en">Real, enforced daily budget cap</span></td></tr>
+      <tr><td><span class="ko">검색 전략</span><span class="en">Retrieval strategy</span></td><td><span class="ko">단일 순위 목록</span><span class="en">Single ranked list</span></td><td><span class="ko">자체 파이프라인 vs 관리형 웹검색 비교</span><span class="en">Self-hosted vs. managed search, compared</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="design">
+  <h2><span class="ko">UI 차별화</span><span class="en">UI Differentiation</span></h2>
+  <p><span class="ko">Week1·2(파랑/사이드바), Week3(파치먼트/상단탭), Week4(글래스/플로팅 사이드바)에 이어 네 번째로 다른 시각 언어입니다 — 이번엔 처음으로 다크 테마가 기본입니다.</span><span class="en">A fourth distinct visual language after Week1/2, Week3, and Week4 — and the first of these apps to default to dark rather than light.</span></p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th></th><th>Week4 "Lucent"</th><th>Compass</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">팔레트</span><span class="en">Palette</span></td><td><span class="ko">보라~시안 글래스</span><span class="en">Indigo/cyan glass</span></td><td><span class="ko">네이비+브라스+틸 "차트룸"</span><span class="en">Navy+brass+teal "chart room"</span></td></tr>
+      <tr><td><span class="ko">타이포그래피</span><span class="en">Typography</span></td><td><span class="ko">단일 폰트(굵기로 위계)</span><span class="en">Single font, weight-driven</span></td><td><span class="ko">3-way(세리프+산세리프+모노)</span><span class="en">3-way (serif+sans+mono)</span></td></tr>
+      <tr><td><span class="ko">내비게이션</span><span class="en">Navigation</span></td><td><span class="ko">떠 있는 유리 사이드바</span><span class="en">Floating glass sidebar</span></td><td><span class="ko">커맨드 콘솔 + 아이콘 레일</span><span class="en">Command console + icon rail</span></td></tr>
+      <tr><td><span class="ko">기본 테마</span><span class="en">Default theme</span></td><td><span class="ko">라이트</span><span class="en">Light</span></td><td><span class="ko">다크 (첫 사례)</span><span class="en">Dark (first in this series)</span></td></tr>
+      <tr><td><span class="ko">모션</span><span class="en">Motion</span></td><td><span class="ko">정적</span><span class="en">Static</span></td><td><span class="ko">레이더 스윕 + 스켈레톤 시머</span><span class="en">Radar-sweep + skeleton shimmer</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="features">
+  <h2><span class="ko">기능 둘러보기</span><span class="en">Feature Walkthrough</span></h2>
+
+  <h3>◈ <span class="ko">리서치</span><span class="en">Research</span></h3>
+  <p><span class="ko">질문을 입력하면 실시간 웹검색 → 재정렬 → 스트리밍 생성이 실행되며, 실제 URL 인용과 근거충실도·고스트인용 배지가 함께 표시됩니다.</span><span class="en">Ask a question and watch live web search → rerank → streamed generation happen, with real URL citations and groundedness/ghost-citation badges.</span></p>
+  <figure class="shot">
+    <img src="screenshots/02-research.png" alt="Research screen" loading="lazy">
+    <figcaption><span class="ko">리서치 화면 — 실제 검색결과(위키백과, 공식 문서 등), 재정렬 점수, 근거충실도 배지</span><span class="en">Research — real search results (Wikipedia, official docs), rerank scores, groundedness badge</span></figcaption>
+  </figure>
+
+  <h3>▤ <span class="ko">아카이브</span><span class="en">Archive</span></h3>
+  <figure class="shot">
+    <img src="screenshots/03-archive.png" alt="Archive screen" loading="lazy">
+    <figcaption><span class="ko">아카이브 — 과거 리포트에 대한 실제 의미 기반 검색(유사도 %)</span><span class="en">Archive — real semantic search over past reports (similarity %)</span></figcaption>
+  </figure>
+
+  <h3>⬡ <span class="ko">그라운딩 랩</span><span class="en">Grounding Lab</span></h3>
+  <figure class="shot">
+    <img src="screenshots/04-grounding-lab.png" alt="Grounding Lab screen" loading="lazy">
+    <figcaption><span class="ko">그라운딩 랩 — Compass 파이프라인(무료) vs OpenRouter 관리형 웹검색($) 실제 비교</span><span class="en">Grounding Lab — Compass's own pipeline (free) vs. OpenRouter's managed web search ($), a real comparison</span></figcaption>
+  </figure>
+
+  <h3>◎ <span class="ko">트렌드 레이더</span><span class="en">Trend Radar</span></h3>
+  <figure class="shot">
+    <img src="screenshots/05-trend-radar.png" alt="Trend Radar screen" loading="lazy">
+    <figcaption><span class="ko">트렌드 레이더 — 비용/보안/승인 3-lens 평가 (근거 부족시 정직하게 "판단 보류")</span><span class="en">Trend Radar — cost/security/approval 3-lens evaluation (honestly "insufficient evidence" when unsupported)</span></figcaption>
+  </figure>
+
+  <h3>📊 <span class="ko">대시보드</span><span class="en">Dashboard</span></h3>
+  <figure class="shot">
+    <img src="screenshots/01-dashboard.png" alt="Dashboard screen" loading="lazy">
+    <figcaption><span class="ko">개요 대시보드 — 실시간 웹검색 연결 상태 포함</span><span class="en">Overview dashboard, including live web-search connectivity status</span></figcaption>
+  </figure>
+
+  <h3>⚙ <span class="ko">관리자 — 비용 거버넌스</span><span class="en">Admin — Cost Governance</span></h3>
+  <figure class="shot">
+    <img src="screenshots/06-admin-budget.png" alt="Admin budget screen" loading="lazy">
+    <figcaption><span class="ko">일일 예산 상한 설정 + 실시간 사용액 게이지</span><span class="en">Daily budget cap setting + a real-time spend gauge</span></figcaption>
+  </figure>
+
+  <h3>🔐 <span class="ko">로그인</span><span class="en">Login</span></h3>
+  <figure class="shot">
+    <img src="screenshots/00-login-dark.png" alt="Login screen" loading="lazy">
+    <figcaption><span class="ko">로그인 화면 — 네이비 차트룸 UI, 다크 기본</span><span class="en">Login screen — navy chart-room UI, dark by default</span></figcaption>
+  </figure>
+
+  <h3>☀️ <span class="ko">라이트 모드</span><span class="en">Light Mode</span></h3>
+  <figure class="shot">
+    <img src="screenshots/07-research-light.png" alt="Research screen, light mode" loading="lazy">
+    <figcaption><span class="ko">라이트 모드 — "차트룸이 낮에" 톤으로 전환됨</span><span class="en">Light mode — the "chart room by day" tone shift</span></figcaption>
+  </figure>
+</section>
+
+<section id="architecture">
+  <h2><span class="ko">아키텍처</span><span class="en">Architecture</span></h2>
+  <p><span class="ko">전체 시스템 다이어그램은 저장소의 </span><span class="en">The full system diagram also lives in the repository's </span><code>architecture.md</code><span class="ko">에도 동일하게 포함되어 있습니다.</span><span class="en">.</span></p>
+  <pre class="mermaid">
+flowchart TB
+    subgraph Client["Browser"]
+        SPA["React SPA (TypeScript / Vite / Tailwind)<br/>Navy chart-room UI, dark default"]
+    end
+    subgraph Container["Docker container — compass"]
+        API["FastAPI application (Python 3.11)"]
+        SEARCH["Live web search: ddgs -> mock fallback"]
+        subgraph Models["AI models"]
+            EMB["① multilingual-e5-small — rerank + archive embed"]
+            RRK["② ms-marco-MiniLM-L-6-v2 — rerank"]
+            LLM["③ Qwen2.5-0.5B — streaming report generation"]
+            OR["④ qwen3-8b via OpenRouter — synth OR managed web search (opt-in)"]
+        end
+        GROUND["Groundedness + ghost-citation checkers"]
+        BUDGET["Cost governance (daily cap)"]
+        subgraph Storage["Storage"]
+            SQL[("SQLite")]
+            VDB[("Chroma — past-report archive")]
+        end
+        API --> SEARCH
+        API --> Models
+        API --> GROUND
+        API --> BUDGET
+        API --> Storage
+    end
+    subgraph External["External"]
+        WEB[("The live web")]
+        ORAPI["OpenRouter API"]
+    end
+    SPA <-->|"HTTPS / JSON + JWT + streaming"| API
+    SEARCH --> WEB
+    OR --> ORAPI
+  </pre>
+  <p class="callout callout-info">
+    <span class="ko">💡 다이어그램이 보이지 않는다면 인터넷 연결(Mermaid CDN)이 필요합니다.</span>
+    <span class="en">💡 If the diagram doesn't render, it needs an internet connection (Mermaid CDN).</span>
+  </p>
+</section>
+
+<section id="flowcharts">
+  <h2><span class="ko">플로우차트</span><span class="en">Flowcharts</span></h2>
+  <p><span class="ko">각 기능의 함수 단위 플로우차트는 저장소의 </span><span class="en">Per-feature, function-level flowcharts live in the repository's </span><code>flowchart.md</code><span class="ko">에 6개로 정리되어 있습니다. 대표로 스트리밍 리서치 파이프라인을 아래에 재현합니다.</span><span class="en"> as 6 diagrams. The streaming research pipeline is reproduced below as a representative example.</span></p>
+  <pre class="mermaid">
+flowchart TD
+    A["User sends a research query"] --> B["web_search.search() — ddgs, or mock on failure"]
+    B --> C["rerank_pipeline.rerank_results() — bi + optional cross-encoder"]
+    C --> D["llm.stream_generate() — local or OpenRouter, SSE to the browser"]
+    D --> E["groundedness.verify() + ghost_citation.check()"]
+    E --> F["INSERT report_entries + embed into Chroma (Archive search)"]
+    F --> G["final SSE 'done' — sources, groundedness, ghost citations"]
+  </pre>
+</section>
+
+<section id="hardware">
+  <h2><span class="ko">하드웨어 최소 요구사항</span><span class="en">Minimum Hardware Requirements</span></h2>
+  <div class="table-scroll">
+  <table>
+    <caption><span class="ko">이 빌드를 실제로 실행·검증한 환경 기준 (측정치는 <code>../../../history/v1.0.0.md</code> 참조)</span><span class="en">Based on the environment this build was actually run and verified on (measurements in <code>../../../history/v1.0.0.md</code>)</span></caption>
+    <thead><tr><th></th><th><span class="ko">최소</span><span class="en">Minimum</span></th><th><span class="ko">권장</span><span class="en">Recommended</span></th></tr></thead>
+    <tbody>
+      <tr><td>RAM</td><td>8 GB</td><td>16 GB</td></tr>
+      <tr><td><span class="ko">디스크 여유공간</span><span class="en">Free disk space</span></td><td>6 GB</td><td>10 GB</td></tr>
+      <tr><td>CPU</td><td>4 <span class="ko">코어</span><span class="en">cores</span></td><td>8+ <span class="ko">코어</span><span class="en">cores</span></td></tr>
+      <tr><td>GPU</td><td colspan="2"><span class="ko">불필요 — 모든 로컬 모델이 CPU에서 실행되도록 선택됨</span><span class="en">Not required — every local model was chosen to run on CPU</span></td></tr>
+      <tr><td><span class="ko">네트워크</span><span class="en">Network</span></td><td colspan="2"><span class="ko">필요 — 모델 다운로드 및 매 리서치 요청의 실시간 웹검색</span><span class="en">Required — model download, and live web search on every research query</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><span class="ko">측정된 실제 컨테이너 메모리, 이미지 크기, 부트스트랩 소요시간은 </span><span class="en">Measured real container memory, image size, and bootstrap timing are recorded in </span><code>../../../history/v1.0.0.md</code>.</p>
+</section>
+
+<section id="quickstart">
+  <h2><span class="ko">빠른 시작</span><span class="en">Quick Start</span></h2>
+  <pre class="code-block">cd 6th_week/PoC/projects/compass
+./scripts/setup.sh            <span class="ko"># 최초 1회: 이미지 빌드, 빈 포트 탐색, 컨테이너 시작</span><span class="en"># first time: build image, find a free port, start container</span>
+./scripts/run.sh              <span class="ko"># 이후 재시작</span><span class="en"># subsequent restarts</span>
+./scripts/stop.sh             <span class="ko"># 컨테이너 정지 (삭제 아님)</span><span class="en"># stop without deleting</span>
+./scripts/verify_e2e.sh       <span class="ko"># 전체 end-to-end 검증 (실제 OpenRouter 호출 1회 발생)</span><span class="en"># full end-to-end verification (makes 1 real OpenRouter call)</span>
+./scripts/download_models.sh  <span class="ko"># (옵션) CLI로 3개 로컬 AI 모델 강제 다운로드/검증</span><span class="en"># (optional) force-download/verify all 3 local AI models via CLI</span></pre>
+  <p><span class="ko">데모 관리자 계정: </span><span class="en">Demo admin account: </span><code>admin@compass.local</code> / <code>ChangeMe123!</code></p>
+  <p class="callout callout-warning">
+    <span class="ko">⚠️ Windows에서는 Git Bash 또는 WSL2에서 이 스크립트들을 실행하세요.</span>
+    <span class="en">⚠️ On Windows, run these scripts from Git Bash or WSL2.</span>
+  </p>
+</section>
+
+<section id="api">
+  <h2><span class="ko">API 개요</span><span class="en">API Overview</span></h2>
+  <p><span class="ko">FastAPI는 자동 문서를 제공합니다: 컨테이너 실행 중 </span><span class="en">FastAPI provides automatic docs — while the container is running, visit </span><code>http://localhost:&lt;port&gt;/docs</code></p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Endpoint</th><th><span class="ko">설명</span><span class="en">Description</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>POST /api/auth/signup</code> · <code>/login</code> · <code>GET /me</code></td><td><span class="ko">JWT 인증</span><span class="en">JWT auth</span></td></tr>
+      <tr><td><code>POST /api/research/sessions</code> · <code>GET /entries</code> · <code>POST .../entries</code> (SSE)</td><td><span class="ko">스트리밍 리서치</span><span class="en">Streaming research</span></td></tr>
+      <tr><td><code>POST /api/archive/search</code></td><td><span class="ko">과거 리포트 의미 검색</span><span class="en">Semantic search over past reports</span></td></tr>
+      <tr><td><code>POST /api/grounding-lab/compare</code></td><td><span class="ko">자체 파이프라인 vs 관리형 웹검색 비교</span><span class="en">Own pipeline vs. managed web search</span></td></tr>
+      <tr><td><code>POST /api/trend-radar/evaluate</code></td><td><span class="ko">3-lens 도구/트렌드 평가</span><span class="en">3-lens tool/trend evaluation</span></td></tr>
+      <tr><td><code>GET/PUT /api/admin/budget</code></td><td><span class="ko">일일 비용 상한 조회/설정</span><span class="en">Read/set the daily cost cap</span></td></tr>
+      <tr><td><code>GET /api/admin/users</code> · <code>/audit-log</code> · <code>/system</code> · <code>/analytics</code></td><td><span class="ko">관리자 전용</span><span class="en">Admin only</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="verification">
+  <h2><span class="ko">검증</span><span class="en">Verification</span></h2>
+  <p><span class="ko">모든 검수는 </span><span class="en">All verification runs via </span><code>backend/verify_e2e.py</code><span class="ko">를 통해 실행 중인 컨테이너에 실제 HTTP 요청을 보내 검증합니다 — 실제 OpenRouter 웹검색 호출, $0 예산 상한이 실제로 유료 호출을 막는지, 그리고 실제로 관측된 두 가지 실패 사례(근거배지 소실, JSON 추출 실패)에 대한 회귀 테스트를 포함합니다. 실제 실행 결과는 </span><span class="en"> — real HTTP requests against the live container, including a real OpenRouter web-search call, confirming a $0 budget cap actually blocks the paid call, and two deterministic regression tests for real, previously-observed failure cases (a lost groundedness badge, a JSON-extraction failure). Actual run output is recorded in </span><code>../../../history/v1.0.0.md</code>.</p>
+</section>
+
+<section id="foundations">
+  <h2><span class="ko">기초 지식 &amp; 참고문헌</span><span class="en">Foundational Knowledge &amp; References</span></h2>
+  <h3>RAG (Retrieval-Augmented Generation)</h3>
+  <p><span class="ko">검색과 생성을 결합해, 모델의 학습 지식이 아닌 실제 검색된 문서에 근거해 답하도록 하는 기법입니다. Compass는 고정 코퍼스 대신 실시간 웹을 검색 소스로 사용합니다.</span><span class="en">Combines retrieval and generation so an answer is grounded in actually-retrieved documents rather than relying purely on the model's training-time knowledge. Compass uses the live web as its retrieval source instead of a fixed corpus.</span> — Lewis, P. et al. <em>"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks."</em> NeurIPS 2020. <a href="https://arxiv.org/abs/2005.11401">arxiv.org/abs/2005.11401</a></p>
+  <h3>E5 <span class="ko">임베딩</span><span class="en">Embeddings</span></h3>
+  <p>Wang, L. et al. <em>"Text Embeddings by Weakly-Supervised Contrastive Pre-training."</em> 2022. <a href="https://arxiv.org/abs/2212.03533">arxiv.org/abs/2212.03533</a></p>
+  <h3>OpenRouter <span class="ko">웹검색 플러그인</span><span class="en">Web Search Plugin</span></h3>
+  <p><a href="https://openrouter.ai/docs/guides/features/plugins/web-search">openrouter.ai/docs/guides/features/plugins/web-search</a></p>
+  <p><span class="ko">더 자세한 모델 카드는 </span><span class="en">Fuller model cards are in </span><code>../../../etc/glossary.md</code></p>
+</section>
+
+<section id="scaling">
+  <h2><span class="ko">상용/클라우드 확장 시 고려사항</span><span class="en">Production &amp; Cloud Scaling</span></h2>
+  <p><span class="ko">Week1~4 PoC와 유사한 확장 패턴이 적용되며, Compass 고유 항목으로 실제 라이선스 검색 API로의 전환과 예산 상한의 원자적 처리가 추가됩니다. 자세한 내용은 </span><span class="en">Similar scaling pattern to the Week1-4 PoCs, plus two Compass-specific items: swapping in a real licensed search API, and atomic budget-cap enforcement under concurrency. Full detail in </span><code>architecture.md</code> §7-8.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">항목</span><span class="en">Item</span></th><th><span class="ko">월 예상 비용</span><span class="en">Est. monthly cost</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">앱 호스팅</span><span class="en">App hosting</span></td><td>$70–140</td></tr>
+      <tr><td><span class="ko">관리형 Postgres</span><span class="en">Managed Postgres</span></td><td>$60–90</td></tr>
+      <tr><td><span class="ko">벡터 DB</span><span class="en">Vector DB</span></td><td>$0–50</td></tr>
+      <tr><td>GPU <span class="ko">버스트</span><span class="en">burst</span></td><td>$15–30</td></tr>
+      <tr><td><span class="ko">실 라이선스 검색 API</span><span class="en">Real licensed search API</span></td><td>$50–300</td></tr>
+      <tr><td>OpenRouter <span class="ko">(합성)</span><span class="en">(synth)</span></td><td>$6–15</td></tr>
+      <tr><td>OpenRouter <span class="ko">(관리형 웹검색)</span><span class="en">(managed web search)</span></td><td>$40–75</td></tr>
+      <tr><td><span class="ko">모니터링</span><span class="en">Monitoring</span></td><td>$0–20</td></tr>
+      <tr style="font-weight:700"><td><span class="ko">합계 (참고치)</span><span class="en">Total (indicative)</span></td><td>≈ $240–720</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="deployment">
+  <h2><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></h2>
+  <ul>
+    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS·스트리밍 버퍼링 방지</strong>: Week1~4 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS, no proxy buffering on streaming</strong>: same principles as the Week1-4 PoCs.</span></li>
+    <li><span class="ko"><strong>예산 상한의 원자성 (Compass 고유)</strong>: 현재 구현은 "확인 후 지출" 방식이라 동시 요청 하에서 경쟁 조건이 이론상 가능합니다 — 실 서비스에서는 DB 수준의 원자적 예약(예: 조건부 UPDATE)이 필요합니다.</span><span class="en"><strong>Budget-cap atomicity (Compass-specific)</strong>: the current check-then-spend implementation has a theoretical race under concurrent load — a real deployment needs a DB-level atomic reservation (e.g. a conditional UPDATE), not a read-then-compare in application code.</span></li>
+  </ul>
+</section>
+
+<section id="limitations">
+  <h2><span class="ko">한계 &amp; 로드맵</span><span class="en">Known Limitations &amp; Roadmap</span></h2>
+  <ul>
+    <li><span class="ko">근거 충실도 검사는 <strong>문장 단위 임베딩 유사도</strong>에 기반합니다 — 정확한 패러프레이즈는 통과하지만, 유사도 임계값을 교묘히 넘는 미묘한 왜곡까지는 잡아내지 못할 수 있습니다.</span><span class="en">The groundedness check is based on <strong>sentence-level embedding similarity</strong> — it passes accurate paraphrases but may not catch subtle distortions that happen to clear the similarity threshold.</span></li>
+    <li><span class="ko"><strong>실측된 실제 한계</strong>: 로컬 0.5B 모델이 시스템 프롬프트의 지시에도 불구하고 항상 <code>[n]</code> 인용 마커를 답변에 포함하지는 않습니다 — 실제 스크린샷(<code>docs/screenshots/02-research.png</code>)에서 관측됨. 이는 근거검증 코드의 결함이 아니라 초소형 로컬 모델의 지시 순응도 한계이며, 답변 내용 자체가 정확하면 문장 유사도 검사는 여전히 정당하게 통과합니다.</span><span class="en"><strong>A real, measured limitation</strong>: the local 0.5B model does not always include <code>[n]</code> citation markers despite the system prompt asking for one per claim — observed directly in a real screenshot (<code>docs/screenshots/02-research.png</code>). This is an instruction-following limitation of very small local models, not a defect in the groundedness-checking code — the content-similarity check still legitimately passes when the answer's substance is accurate.</span></li>
+    <li><span class="ko"><code>ddgs</code>는 공식 API가 아닌 비공식 클라이언트로, 언제든 차단/레이트리밋될 수 있습니다 — 이 경우 결정론적 모의 결과로 정직하게 폴백하며 UI에 명시적으로 표시됩니다.</span><span class="en"><code>ddgs</code> is an unofficial client, not a formal API — it can be blocked/rate-limited at any time, in which case Compass honestly falls back to deterministic mock results and labels them explicitly in the UI.</span></li>
+    <li><span class="ko">Naver 검색 API, Gemini, Claude/Codex CLI 경로(이 패턴의 일반적인 기준 구현이 실제로 쓰는 메커니즘)는 이번 라운드 키/검증된 메커니즘이 없어 사용하지 않았습니다.</span><span class="en">The Naver Search API, Gemini, and Claude/Codex CLI paths (mechanisms a typical baseline implementation of this pattern actually uses) were not used this round — no key or validated mechanism exists in this repo for them.</span></li>
+    <li><span class="ko">비용 상한 시행은 단일 프로세스 데모 규모에서는 안전하지만 동시성 하에서는 원자적이지 않습니다 (위 "배포 시 고려사항" 참조).</span><span class="en">Budget-cap enforcement is safe at single-process demo scale but not atomic under concurrency (see "Deployment Considerations" above).</span></li>
+  </ul>
+  <p><span class="ko">전체 버전 이력은 </span><span class="en">Full version history is in </span><code>../../../history/</code>.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Compass · Week6 PoC · <span class="ko">AI 엔지니어링 포트폴리오 프로젝트</span><span class="en">part of an AI engineering project portfolio</span>
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const langBtn = document.getElementById('langBtn');
+  const themeBtn = document.getElementById('themeBtn');
+
+  function applyLang(lang) {
+    html.setAttribute('data-lang', lang);
+    langBtn.textContent = lang === 'ko' ? 'EN' : '한국어';
+    try { localStorage.setItem('compass-guide-lang', lang); } catch (e) {}
+  }
+  function applyTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    const isDark = theme === 'dark';
+    themeBtn.innerHTML = (isDark ? '☀️ ' : '🌙 ') +
+      '<span class="ko">' + (isDark ? '라이트' : '다크') + '</span>' +
+      '<span class="en">' + (isDark ? 'Light' : 'Dark') + '</span>';
+    try { localStorage.setItem('compass-guide-theme', theme); } catch (e) {}
+  }
+
+  let savedLang = 'ko', savedTheme = 'dark';
+  try { savedLang = localStorage.getItem('compass-guide-lang') || 'ko'; } catch (e) {}
+  try { savedTheme = localStorage.getItem('compass-guide-theme') || 'dark'; } catch (e) {}
+  applyLang(savedLang);
+  applyTheme(savedTheme);
+
+  langBtn.addEventListener('click', () => applyLang(html.getAttribute('data-lang') === 'ko' ? 'en' : 'ko'));
+  themeBtn.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+
+  if (window.mermaid) {
+    mermaid.initialize({ startOnLoad: true, theme: savedTheme === 'dark' ? 'dark' : 'default' });
+  }
+</script>
+
+</body>
+</html>

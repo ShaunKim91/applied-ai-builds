@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CommerceIQ 운영 가이드 · Operations Guide</title>
+<meta name="description" content="CommerceIQ PoC — all-in-one bilingual operations guide">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --surface-2: #232322;
+    --page-plane: #0d0d0d;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --gridline: #2c2c2a;
+    --border-color: rgba(255,255,255,0.10);
+    --accent: #3987e5;
+    --accent-soft: #16283f;
+    --good: #0ca30c;
+    --warning: #fab219;
+    --serious: #ec835a;
+    --critical: #e66767;
+    --code-bg: #14161a;
+    --font: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --surface-2: #f6f6f4;
+    --page-plane: #f9f9f7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --gridline: #e1e0d9;
+    --border-color: rgba(11,11,11,0.10);
+    --accent: #2a78d6;
+    --accent-soft: #e7f0fc;
+    --good: #0ca30c;
+    --warning: #92610a;
+    --serious: #ec835a;
+    --critical: #d03b3b;
+    --code-bg: #f2f1ee;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--page-plane);
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+  [data-lang="ko"] .en, [data-lang="en"] .ko { display: none; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .topbar .brand { font-weight: 700; font-size: 1.05rem; }
+  .topbar .brand span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; margin-left: 0.5rem; }
+  .toggles button {
+    font: inherit; font-size: 0.85rem;
+    background: var(--surface-2); color: var(--text-primary);
+    border: 1px solid var(--border-color); border-radius: 8px;
+    padding: 0.4rem 0.8rem; margin-left: 0.5rem; cursor: pointer;
+  }
+  .toggles button:hover { border-color: var(--accent); }
+
+  .shell { display: flex; max-width: 1280px; margin: 0 auto; }
+  nav.toc {
+    width: 240px; flex-shrink: 0; padding: 2rem 1rem;
+    position: sticky; top: 57px; align-self: flex-start;
+    max-height: calc(100vh - 57px); overflow-y: auto;
+  }
+  nav.toc a {
+    display: block; padding: 0.35rem 0.6rem; border-radius: 6px;
+    color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+  }
+  nav.toc a:hover { background: var(--surface-2); color: var(--text-primary); }
+
+  main { flex: 1; min-width: 0; padding: 2rem 2rem 6rem; max-width: 860px; }
+  section { margin-bottom: 3.5rem; scroll-margin-top: 70px; }
+  h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+  h2 { font-size: 1.4rem; margin: 0 0 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
+  h3 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; }
+  p { color: var(--text-secondary); }
+  .lede { font-size: 1.1rem; color: var(--text-secondary); max-width: 68ch; }
+  .eyebrow { color: var(--accent); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  a { color: var(--accent); }
+  code, pre { font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  code { background: var(--code-bg); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+  pre.code-block {
+    background: var(--code-bg); border: 1px solid var(--border-color);
+    border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; font-size: 0.85rem;
+  }
+
+  .card { background: var(--surface-1); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem 1.5rem; }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+  .callout { border-radius: 10px; padding: 1rem 1.25rem; border: 1px solid; margin: 1rem 0; }
+  .callout-info { background: var(--accent-soft); border-color: var(--accent); }
+  .callout-warning { background: rgba(250,178,25,0.1); border-color: var(--warning); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0; }
+  caption { text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
+  th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border-color); }
+  th { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.02em; }
+  .table-scroll { overflow-x: auto; }
+
+  .shot { border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; background: var(--surface-2); }
+  .shot img { width: 100%; display: block; }
+  .shot figcaption { padding: 0.6rem 0.9rem; font-size: 0.8rem; color: var(--text-muted); }
+  figure { margin: 1.25rem 0; }
+
+  .badge {
+    display: inline-block; font-size: 0.75rem; padding: 0.15rem 0.55rem;
+    border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border-color); color: var(--text-secondary);
+    margin-right: 0.3rem;
+  }
+  .badge.local { color: var(--good); border-color: var(--good); }
+  .badge.cloud { color: var(--warning); border-color: var(--warning); }
+
+  .mermaid { background: var(--surface-1); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; }
+  footer { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border-color); }
+
+  @media (max-width: 900px) {
+    nav.toc { display: none; }
+    main { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">🛒 CommerceIQ <span class="ko">운영 가이드</span><span class="en">Operations Guide</span></div>
+  <div class="toggles">
+    <button id="langBtn" type="button">EN</button>
+    <button id="themeBtn" type="button">☀️ <span class="ko">라이트</span><span class="en">Light</span></button>
+  </div>
+</header>
+
+<div class="shell">
+<nav class="toc">
+  <a href="#overview"><span class="ko">개요</span><span class="en">Overview</span></a>
+  <a href="#features"><span class="ko">기능 둘러보기</span><span class="en">Feature Walkthrough</span></a>
+  <a href="#architecture"><span class="ko">아키텍처</span><span class="en">Architecture</span></a>
+  <a href="#flowcharts"><span class="ko">플로우차트</span><span class="en">Flowcharts</span></a>
+  <a href="#hardware"><span class="ko">하드웨어 요구사항</span><span class="en">Hardware Requirements</span></a>
+  <a href="#quickstart"><span class="ko">빠른 시작</span><span class="en">Quick Start</span></a>
+  <a href="#api"><span class="ko">API 개요</span><span class="en">API Overview</span></a>
+  <a href="#verification"><span class="ko">검증</span><span class="en">Verification</span></a>
+  <a href="#data"><span class="ko">데이터 &amp; 라이선스</span><span class="en">Data &amp; Licenses</span></a>
+  <a href="#foundations"><span class="ko">기초 지식</span><span class="en">Foundational Knowledge</span></a>
+  <a href="#scaling"><span class="ko">상용/클라우드 확장</span><span class="en">Production &amp; Cloud Scaling</span></a>
+  <a href="#deployment"><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></a>
+  <a href="#limitations"><span class="ko">한계 &amp; 로드맵</span><span class="en">Limitations &amp; Roadmap</span></a>
+</nav>
+
+<main>
+
+<section id="overview">
+  <p class="eyebrow">PoC · <span class="ko">AI 커머스 운영 인텔리전스 플랫폼</span><span class="en">AI Commerce Operations Platform</span></p>
+  <h1>CommerceIQ</h1>
+  <p class="lede">
+    <span class="ko">CommerceIQ는 세 가지 AI 축 — Vision Transformer 이미지 분류, Diffusion 이미지 생성, 시계열 예측/이상탐지 — 를 하나의 상용 수준 제품으로 통합한 PoC입니다. 목적은 "여기까지 만들 수 있다"는 것을 실제로 보여주는 것입니다.</span>
+    <span class="en">CommerceIQ combines three AI pillars — Vision Transformer classification, diffusion image generation, and time-series forecasting/anomaly detection — into a single commercial-grade product, rather than three disconnected demos. The goal is to concretely show how far these techniques can go.</span>
+  </p>
+
+  <div class="grid grid-3" style="margin-top:1.5rem">
+    <div class="card">
+      <div class="eyebrow"><span class="ko">AI 모델</span><span class="en">AI Models</span></div>
+      <div style="font-size:1.8rem;font-weight:700">5</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem"><span class="ko">로컬 4개 + 옵션 클라우드 1개</span><span class="en">4 local + 1 optional cloud</span></p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span class="ko">스택</span><span class="en">Stack</span></div>
+      <div style="font-size:1.8rem;font-weight:700">FastAPI + React</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem">TypeScript · Vite · Tailwind</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span class="ko">배포</span><span class="en">Deployment</span></div>
+      <div style="font-size:1.8rem;font-weight:700">1 <span class="ko">컨테이너</span><span class="en">container</span></div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem">Docker Compose, <span class="ko">자동 포트탐색</span><span class="en">auto port-detect</span></p>
+    </div>
+  </div>
+
+  <h3><span class="ko">5개 AI 모델</span><span class="en">The five AI models</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">모델</span><span class="en">Model</span></th><th><span class="ko">역할</span><span class="en">Role</span></th><th><span class="ko">위치</span><span class="en">Location</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>WinKawaks/vit-tiny-patch16-224</code></td><td><span class="ko">이미지 분류</span><span class="en">Image classification</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>segmind/tiny-sd</code></td><td><span class="ko">이미지 생성</span><span class="en">Image generation</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>intfloat/multilingual-e5-small</code></td><td><span class="ko">임베딩 / 시맨틱 검색</span><span class="en">Embeddings / semantic search</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>Qwen/Qwen2.5-0.5B-Instruct</code></td><td><span class="ko">AI 인사이트 (기본)</span><span class="en">AI insight (default)</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>qwen/qwen3-8b</code> <span class="ko">(OpenRouter)</span><span class="en">(via OpenRouter)</span></td><td><span class="ko">AI 인사이트 (옵션 업그레이드)</span><span class="en">AI insight (opt-in upgrade)</span></td><td><span class="badge cloud">cloud, opt-in</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="ko">네 개의 로컬 모델이 기본 경로이며 API 키 없이 항상 동작합니다. OpenRouter 경로는 사용자가 명시적으로 선택할 때만 사용되며, 이번 빌드에서 실제 키로 검증했습니다 — 이 시리즈의 다른 제품들이 이미 쓰고 있는 "로컬 기본, 클라우드는 선택적 업그레이드" 하이브리드 패턴을 그대로 따릅니다.</p>
+  <p class="en">The four local models are always the default path and work with zero API keys. The OpenRouter path is a strictly user-toggled upgrade, validated with a real key during this build — following the same "local default, cloud opt-in" hybrid pattern used elsewhere across this project series.</p>
+</section>
+
+<section id="features">
+  <h2><span class="ko">기능 둘러보기</span><span class="en">Feature Walkthrough</span></h2>
+
+  <h3>🖼️ <span class="ko">카탈로그 비전</span><span class="en">Catalog Vision</span></h3>
+  <p><span class="ko">상품 사진을 업로드하거나 Grocery Store Dataset 샘플 20장 중 하나를 클릭하면, ViT-tiny가 즉시 Top-5 분류 결과와 신뢰도를 반환합니다.</span><span class="en">Upload a product photo, or click one of 20 Grocery Store Dataset samples, and ViT-tiny returns a top-5 classification with confidence scores in real time.</span></p>
+  <figure class="shot">
+    <img src="screenshots/01-catalog-vision.png" alt="Catalog Vision screen" loading="lazy">
+    <figcaption><span class="ko">카탈로그 비전 화면 — 업로드/샘플 분류, 신뢰도 막대, 최근 분류 갤러리</span><span class="en">Catalog Vision — upload/sample classification, confidence bars, recent-classification gallery</span></figcaption>
+  </figure>
+
+  <h3>🎨 <span class="ko">제너레이티브 스튜디오</span><span class="en">Generative Studio</span></h3>
+  <p><span class="ko">텍스트 프롬프트만으로 마케팅/목업 이미지를 생성합니다. CPU에서도 완료되도록 tiny-sd(경량 증류 Stable Diffusion)를 사용하며, 생성은 백그라운드 잡으로 처리되어 UI가 멈추지 않습니다.</span><span class="en">Generates marketing/mock-up imagery from a text prompt alone, using tiny-sd (a distilled, lightweight Stable Diffusion) so it completes on CPU; generation runs as a background job so the UI never blocks.</span></p>
+  <figure class="shot">
+    <img src="screenshots/02-generative-studio.png" alt="Generative Studio screen" loading="lazy">
+    <figcaption><span class="ko">제너레이티브 스튜디오 — 프롬프트, 스텝/가이던스 슬라이더, 생성 갤러리</span><span class="en">Generative Studio — prompt input, steps/guidance sliders, generation gallery</span></figcaption>
+  </figure>
+
+  <h3>📈 <span class="ko">수요 예측 &amp; 이상탐지 레이더</span><span class="en">Demand Forecasting &amp; Anomaly Radar</span></h3>
+  <p><span class="ko">실제 영국 이커머스 거래 데이터(UCI Online Retail)에 Holt-Winters 삼중지수평활을 적용해 일별 매출을 예측하고, 잔차 기반 방법으로 이상치를 탐지합니다. 예측 결과는 로컬 Qwen2.5-0.5B(기본) 또는 OpenRouter qwen3-8b(옵션)가 사람이 읽을 수 있는 인사이트로 요약합니다.</span><span class="en">Applies Holt-Winters triple exponential smoothing to real UK e-commerce transactions (UCI Online Retail) to forecast daily revenue, and flags anomalies via a residual-based method. The result is summarized into a business-readable insight by the local Qwen2.5-0.5B model (default) or OpenRouter's qwen3-8b (opt-in).</span></p>
+  <figure class="shot">
+    <img src="screenshots/03-forecasting.png" alt="Demand Forecasting screen" loading="lazy">
+    <figcaption><span class="ko">수요 예측 화면 — 과거 실적/예측/95% 신뢰구간/이상치가 표시된 차트, MAE·MAPE, AI 인사이트</span><span class="en">Demand Forecasting — chart with history/forecast/95% CI/anomalies, MAE·MAPE, AI insight</span></figcaption>
+  </figure>
+
+  <h3>🔎 <span class="ko">시맨틱 카탈로그 검색</span><span class="en">Semantic Catalog Search</span></h3>
+  <p><span class="ko">분류된 카탈로그 항목을 다국어 임베딩(e5-small)과 벡터 스토어(Chroma)로 자연어 검색합니다. 한국어와 영어 질의 모두 지원합니다.</span><span class="en">Searches classified catalog items with natural language, using multilingual embeddings (e5-small) and a vector store (Chroma). Works with both Korean and English queries.</span></p>
+  <figure class="shot">
+    <img src="screenshots/04-search.png" alt="Semantic Search screen" loading="lazy">
+    <figcaption><span class="ko">시맨틱 검색 화면 — 질의, 유사도 순 결과, 벡터 백엔드 표시</span><span class="en">Semantic Search — query, similarity-ranked results, vector backend indicator</span></figcaption>
+  </figure>
+
+  <h3>🛠️ <span class="ko">관리자 콘솔</span><span class="en">Admin Console</span></h3>
+  <p><span class="ko">사용자 관리(권한/활성 상태), 모든 AI 호출의 감사 로그(누가/무엇을/어떤 모델/지연시간/성공여부), 실시간 모델·데이터·디스크 상태를 확인합니다.</span><span class="en">Manages users (role/active status), an audit log of every AI call (who/what/which model/latency/success), and live model/data/disk status.</span></p>
+  <figure class="shot">
+    <img src="screenshots/05-admin.png" alt="Admin Console screen" loading="lazy">
+    <figcaption><span class="ko">관리자 콘솔 — 시스템 상태, 사용자 테이블, 감사 로그</span><span class="en">Admin Console — system status, user table, audit log</span></figcaption>
+  </figure>
+
+  <h3>🔐 <span class="ko">로그인 / 회원가입</span><span class="en">Login / Sign-up</span></h3>
+  <figure class="shot">
+    <img src="screenshots/00-login.png" alt="Login screen" loading="lazy">
+    <figcaption><span class="ko">로그인 화면 — 언어/테마 토글, 로그인·회원가입 전환</span><span class="en">Login screen — language/theme toggles, login/signup switch</span></figcaption>
+  </figure>
+</section>
+
+<section id="architecture">
+  <h2><span class="ko">아키텍처</span><span class="en">Architecture</span></h2>
+  <p><span class="ko">전체 시스템 다이어그램, 저장소 모델, 프로덕션 확장 다이어그램은 저장소의 </span><span class="en">The full system diagram, storage model, and production-scaling diagram also live in the repository's </span><code>architecture.md</code> <span class="ko">에도 동일하게 포함되어 있습니다 (GitHub에서 바로 렌더링됩니다). 아래는 핵심 시스템 다이어그램입니다.</span><span class="en">(renders natively on GitHub). The core system diagram is reproduced below.</span></p>
+  <pre class="mermaid">
+flowchart TB
+    subgraph Client["Browser"]
+        SPA["React SPA (TypeScript / Vite / Tailwind)"]
+    end
+    subgraph Container["Docker container — commerceiq"]
+        API["FastAPI application (Python 3.11)"]
+        subgraph Models["AI models"]
+            VIT["① ViT-tiny — classification"]
+            SD["② tiny-sd — image generation"]
+            E5["③ e5-small — embeddings"]
+            QWEN["④ Qwen2.5-0.5B — local LLM"]
+            OR["⑤ qwen3-8b via OpenRouter (opt-in)"]
+        end
+        subgraph Storage["Storage"]
+            SQL[("SQLite")]
+            VDB[("Chroma vector store")]
+        end
+        API --> Models
+        API --> Storage
+    end
+    subgraph External["External (opt-in only)"]
+        ORAPI["OpenRouter API"]
+    end
+    SPA <-->|"HTTPS / JSON + JWT"| API
+    OR --> ORAPI
+  </pre>
+  <p class="callout callout-info">
+    <span class="ko">💡 다이어그램이 보이지 않는다면 인터넷 연결(Mermaid CDN)이 필요합니다. 오프라인에서는 저장소의 <code>architecture.md</code> / <code>flowchart.md</code>를 GitHub 또는 VS Code 미리보기로 확인하세요.</span>
+    <span class="en">💡 If the diagram doesn't render, it needs an internet connection (Mermaid CDN). Offline, view the repository's <code>architecture.md</code> / <code>flowchart.md</code> on GitHub or in an editor preview instead.</span>
+  </p>
+
+  <h3><span class="ko">왜 이 스택인가</span><span class="en">Why this stack</span></h3>
+  <p><span class="ko">Streamlit이 아닌 FastAPI + React를 택한 이유, 단일 컨테이너로 유지한 이유 등 상세한 설계 근거는 </span><span class="en">The detailed reasoning behind choosing FastAPI + React over Streamlit, keeping everything in a single container, etc. is in </span><code>architecture.md</code> §2.</p>
+</section>
+
+<section id="flowcharts">
+  <h2><span class="ko">플로우차트</span><span class="en">Flowcharts</span></h2>
+  <p><span class="ko">각 기능의 함수 단위 플로우차트는 저장소의 </span><span class="en">Per-feature, function-level flowcharts live in the repository's </span><code>flowchart.md</code><span class="ko">에 7개(인증, 카탈로그 비전, 제너레이티브 스튜디오, 수요 예측, 시맨틱 검색, 관리자 콘솔, 컨테이너 부트스트랩)로 정리되어 있습니다. 대표로 수요 예측 파이프라인을 아래에 재현합니다.</span><span class="en"> as 7 diagrams (auth, catalog vision, generative studio, forecasting, semantic search, admin console, container bootstrap). The forecasting pipeline is reproduced below as a representative example.</span></p>
+  <pre class="mermaid">
+flowchart TD
+    A["horizon_days, use_openrouter, lang"] --> B["POST /api/forecast/run"]
+    B --> C["ensure_online_retail_daily()"]
+    C --> D{"cached parquet exists?"}
+    D -- no --> E["download UCI zip -> parse xlsx -> filter -> resample daily -> cache"]
+    D -- yes --> F["load cached daily series"]
+    E --> F
+    F --> G["forecast.run_forecast()"]
+    G --> G1["Holt-Winters .fit()"]
+    G1 --> G2["backtest MAE/MAPE"]
+    G1 --> G3["seasonal_decompose -> anomalies"]
+    G1 --> G4["forecast + 95% CI"]
+    G2 & G3 & G4 --> H["result JSON"]
+    H --> I["llm.generate(system, user_msg, provider)"]
+    I --> J{"provider"}
+    J -- local --> K["Qwen2.5-0.5B-Instruct"]
+    J -- openrouter --> L["qwen/qwen3-8b via OpenRouter API"]
+    K --> M["business insight text"]
+    L --> M
+    M --> N["INSERT forecast_runs + audit_logs"]
+    N --> O["200 OK"]
+  </pre>
+</section>
+
+<section id="hardware">
+  <h2><span class="ko">하드웨어 최소 요구사항</span><span class="en">Minimum Hardware Requirements</span></h2>
+  <div class="table-scroll">
+  <table>
+    <caption><span class="ko">이 빌드를 실제로 실행·검증한 환경 기준 (측정치는 <code>../../../history/v1.0.0.md</code> 참조)</span><span class="en">Based on the environment this build was actually run and verified on (measurements in <code>../../../history/v1.0.0.md</code>)</span></caption>
+    <thead><tr><th></th><th><span class="ko">최소</span><span class="en">Minimum</span></th><th><span class="ko">권장</span><span class="en">Recommended</span></th></tr></thead>
+    <tbody>
+      <tr><td>RAM</td><td>8 GB</td><td>16 GB</td></tr>
+      <tr><td><span class="ko">디스크 여유공간</span><span class="en">Free disk space</span></td><td>10 GB</td><td>20 GB</td></tr>
+      <tr><td>CPU</td><td>4 <span class="ko">코어</span><span class="en">cores</span></td><td>8+ <span class="ko">코어</span><span class="en">cores</span></td></tr>
+      <tr><td>GPU</td><td colspan="2"><span class="ko">불필요 — 모든 로컬 모델이 CPU에서 실행되도록 선택됨 (NVIDIA GPU가 있으면 자동 감지하여 CUDA 휠 사용)</span><span class="en">Not required — every local model was chosen to run on CPU (an NVIDIA GPU, if present, is auto-detected and used via the CUDA wheel)</span></td></tr>
+      <tr><td>OS</td><td colspan="2">macOS / Windows (Docker Desktop) / Linux</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><span class="ko">측정된 실제 컨테이너 메모리 사용량, 모델별 파라미터 수, 이미지 생성/예측 소요 시간은 </span><span class="en">Measured real container memory usage, per-model parameter counts, and generation/forecast timing are recorded in </span><code>../../../history/v1.0.0.md</code>.</p>
+</section>
+
+<section id="quickstart">
+  <h2><span class="ko">빠른 시작</span><span class="en">Quick Start</span></h2>
+  <pre class="code-block">cd 1st_week/PoC/projects/commerceiq
+./scripts/setup.sh            # <span class="ko">최초 1회: 이미지 빌드, 빈 포트 탐색, 컨테이너 시작</span><span class="en"># first time: build image, find a free port, start container</span>
+./scripts/run.sh              # <span class="ko">이후 재시작</span><span class="en"># subsequent restarts</span>
+./scripts/stop.sh             # <span class="ko">컨테이너 정지 (삭제 아님)</span><span class="en"># stop without deleting</span>
+./scripts/verify_e2e.sh       # <span class="ko">전체 end-to-end 검증</span><span class="en"># full end-to-end verification</span>
+./scripts/download_models.sh  # <span class="ko">(옵션) CLI로 4개 로컬 AI 모델 강제 다운로드/검증</span><span class="en"># (optional) force-download/verify all 4 local AI models via CLI</span>
+./scripts/download_data.sh    # <span class="ko">(옵션) 공개 데이터셋 2종 강제 재다운로드</span><span class="en"># (optional) force-refresh the 2 public datasets</span></pre>
+  <p class="ko">모델 다운로드를 포함한 모든 설치·실행 과정은 오직 셸 스크립트로만 이루어집니다 — UI 클릭이나 수동 <code>docker exec</code>가 전혀 필요 없습니다. <code>setup.sh</code>/<code>run.sh</code>가 이미 백그라운드에서 모델을 자동 다운로드하며, <code>download_models.sh</code>는 그 과정을 명시적·동기적 CLI 명령으로 노출한 것입니다.</p>
+  <p class="en">Every install/run step — including model downloads — is driven entirely by shell scripts, with no UI clicks or manual <code>docker exec</code> required. <code>setup.sh</code>/<code>run.sh</code> already download models automatically in the background; <code>download_models.sh</code> just exposes that same step as an explicit, synchronous CLI command.</p>
+  <p><span class="ko">데모 관리자 계정: </span><span class="en">Demo admin account: </span><code>admin@commerceiq.local</code> / <code>ChangeMe123!</code></p>
+  <p class="callout callout-warning">
+    <span class="ko">⚠️ Windows에서는 Git Bash 또는 WSL2에서 이 스크립트들을 실행하세요 (이 프로젝트 시리즈의 다른 <code>env_set_up.sh</code>/<code>run.sh</code>와 동일한 관례입니다).</span>
+    <span class="en">⚠️ On Windows, run these scripts from Git Bash or WSL2 — the same convention already used by this project series' other <code>env_set_up.sh</code>/<code>run.sh</code> scripts.</span>
+  </p>
+</section>
+
+<section id="api">
+  <h2><span class="ko">API 개요</span><span class="en">API Overview</span></h2>
+  <p><span class="ko">FastAPI는 자동 문서를 제공합니다: 컨테이너 실행 중 </span><span class="en">FastAPI provides automatic docs — while the container is running, visit </span><code>http://localhost:&lt;port&gt;/docs</code></p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Endpoint</th><th><span class="ko">설명</span><span class="en">Description</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>POST /api/auth/signup</code> · <code>/login</code> · <code>/logout</code> · <code>GET /me</code></td><td><span class="ko">JWT 인증 (쿠키 또는 Bearer)</span><span class="en">JWT auth (cookie or Bearer)</span></td></tr>
+      <tr><td><code>GET /api/vision/samples</code> · <code>POST /classify</code> · <code>/classify-sample/{f}</code></td><td><span class="ko">이미지 분류</span><span class="en">Image classification</span></td></tr>
+      <tr><td><code>POST /api/generate</code> · <code>GET /jobs/{id}</code> · <code>/gallery</code></td><td><span class="ko">이미지 생성 (백그라운드 잡)</span><span class="en">Image generation (background job)</span></td></tr>
+      <tr><td><code>POST /api/forecast/run</code> · <code>GET /datasets</code> · <code>/runs</code></td><td><span class="ko">수요 예측</span><span class="en">Demand forecasting</span></td></tr>
+      <tr><td><code>POST /api/search</code> · <code>GET /status</code></td><td><span class="ko">시맨틱 검색</span><span class="en">Semantic search</span></td></tr>
+      <tr><td><code>GET /api/admin/users</code> · <code>/audit-log</code> · <code>/system</code> · <code>PATCH /users/{id}</code></td><td><span class="ko">관리자 전용</span><span class="en">Admin only</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="verification">
+  <h2><span class="ko">검증</span><span class="en">Verification</span></h2>
+  <p><span class="ko">모든 검수는 </span><span class="en">All verification runs via </span><code>backend/verify_e2e.py</code><span class="ko">를 통해 실행 중인 컨테이너에 실제 HTTP 요청을 보내 검증합니다 (모킹 없음). 헬스체크 → 4개 로컬 모델 워밍업 대기(<code>/api/health/ready</code>) → 회원가입 → 인증 → 이미지 분류(업로드/샘플) → 이미지 생성(잡 제출·폴링) → 예측 실행(AI 인사이트 포함) → 시맨틱 검색 → 일반 사용자의 관리자 접근 차단 확인 → 관리자 접근 확인까지 총 12단계입니다. 실제 실행 결과는 </span><span class="en"> — real HTTP requests against the live container, no mocking. 12 steps: health check → wait for all 4 local models to warm up (<code>/api/health/ready</code>) → signup → auth → image classification (upload + sample) → image generation (submit + poll) → forecast run (incl. AI insight) → semantic search → confirm a regular user is blocked from admin → confirm an admin can access it. Actual run output is recorded in </span><code>../../../history/v1.0.0.md</code>.</p>
+</section>
+
+<section id="data">
+  <h2><span class="ko">데이터 &amp; 라이선스</span><span class="en">Data &amp; Licenses</span></h2>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">데이터셋</span><span class="en">Dataset</span></th><th><span class="ko">출처</span><span class="en">Source</span></th><th><span class="ko">라이선스</span><span class="en">License</span></th><th><span class="ko">용도</span><span class="en">Used for</span></th></tr></thead>
+    <tbody>
+      <tr><td>UCI Online Retail</td><td><a href="https://archive.ics.uci.edu/dataset/352/online+retail">archive.ics.uci.edu/dataset/352</a></td><td>CC BY 4.0</td><td><span class="ko">수요 예측</span><span class="en">Demand forecasting</span></td></tr>
+      <tr><td>GroceryStoreDataset (sample)</td><td><a href="https://github.com/marcusklasson/GroceryStoreDataset">github.com/marcusklasson/GroceryStoreDataset</a></td><td>MIT</td><td><span class="ko">카탈로그 비전 데모</span><span class="en">Catalog Vision demo</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><span class="ko">전체 인용 정보와 직접 다운로드 링크는 </span><span class="en">Full citations and direct download links are in </span><code>data/SOURCES.md</code>.</p>
+</section>
+
+<section id="foundations">
+  <h2><span class="ko">기초 지식 &amp; 참고문헌</span><span class="en">Foundational Knowledge &amp; References</span></h2>
+  <h3>Vision Transformer</h3>
+  <p><span class="ko">이미지를 16×16 패치로 잘라 "단어"처럼 취급하고, 셀프 어텐션으로 패치 간 관계를 학습합니다.</span><span class="en">Cuts an image into 16×16 patches, treats each as a "word," and learns relationships between patches via self-attention.</span> — Dosovitskiy, A. et al. <em>"An Image is Worth 16x16 Words."</em> ICLR 2021. <a href="https://arxiv.org/abs/2010.11929">arxiv.org/abs/2010.11929</a></p>
+  <h3>Latent Diffusion / Stable Diffusion</h3>
+  <p><span class="ko">노이즈를 점진적으로 제거하도록 학습된 모델이 텍스트 조건에 따라 이미지를 생성합니다. VAE로 압축된 잠재공간에서 동작해 계산량을 크게 줄입니다.</span><span class="en">A model trained to progressively remove noise generates images conditioned on text, operating in a VAE-compressed latent space to cut compute cost dramatically.</span> — Rombach, R. et al. <em>"High-Resolution Image Synthesis with Latent Diffusion Models."</em> CVPR 2022. <a href="https://arxiv.org/abs/2112.10752">arxiv.org/abs/2112.10752</a></p>
+  <h3>Holt-Winters <span class="ko">지수평활</span><span class="en">Exponential Smoothing</span></h3>
+  <p><span class="ko">수준(level)·추세(trend)·계절성(seasonality) 세 성분을 각각의 평활계수(α, β, γ)로 추정하는 고전적 시계열 예측 기법입니다.</span><span class="en">A classic forecasting technique estimating three components — level, trend, seasonality — each with its own smoothing coefficient (α, β, γ).</span> — Winters, P.R. <em>"Forecasting Sales by Exponentially Weighted Moving Averages."</em> Management Science, 1960.</p>
+  <h3>E5 <span class="ko">임베딩</span><span class="en">Embeddings</span></h3>
+  <p>Wang, L. et al. <em>"Text Embeddings by Weakly-Supervised Contrastive Pre-training."</em> 2022. <a href="https://arxiv.org/abs/2212.03533">arxiv.org/abs/2212.03533</a></p>
+  <p><span class="ko">더 자세한 모델 카드와 용어집은 </span><span class="en">Fuller model cards and a glossary are in </span><code>../../../etc/glossary.md</code>.</p>
+</section>
+
+<section id="scaling">
+  <h2><span class="ko">상용/클라우드 확장 시 고려사항</span><span class="en">Production &amp; Cloud Scaling</span></h2>
+  <p><span class="ko">이 PoC는 의도적으로 단일 컨테이너·단일 호스트로 동작합니다. 실제 상용 배포 시 바뀌는 부분은 </span><span class="en">This PoC intentionally runs as a single container on a single host. What changes for a real commercial deployment is detailed in </span><code>architecture.md</code> §5<span class="ko">에 표로 정리되어 있습니다 (앱 계층 다중화, 관리형 Postgres, 관리형 벡터DB, Redis/Celery 작업 큐, 오브젝트 스토리지+CDN, GPU 노드풀, 시크릿 매니저, 관측성).</span><span class="en"> (app-tier replication, managed Postgres, a managed vector DB, a Redis/Celery task queue, object storage + CDN, a GPU node pool, a secret manager, observability).</span></p>
+
+  <h3><span class="ko">추정 월 운영비용</span><span class="en">Estimated monthly operating cost</span></h3>
+  <p style="font-size:0.85rem"><span class="ko">(일일 활성 사용자 약 500명, 전체 기능 합산 하루 약 5,000회 AI 호출 가정 · 2026년 8월 기준 공개 정가 참고치 — 실제 예산 수립 전 최신 가격을 반드시 재확인하세요)</span><span class="en">(assuming ~500 daily active users, ~5,000 AI calls/day across all features · indicative public list prices as of Aug 2026 — always re-check current pricing before budgeting)</span></p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">항목</span><span class="en">Item</span></th><th><span class="ko">가정</span><span class="en">Assumption</span></th><th><span class="ko">월 예상 비용</span><span class="en">Est. monthly cost</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">앱 호스팅</span><span class="en">App hosting</span> (Cloud Run/Fargate, 2 vCPU/4GB)</td><td>1–2 <span class="ko">인스턴스, 상시구동</span><span class="en">instances, always-on</span></td><td>$70–140</td></tr>
+      <tr><td><span class="ko">관리형 Postgres</span><span class="en">Managed Postgres</span></td><td>1 <span class="ko">인스턴스 + 백업</span><span class="en">instance + backup</span></td><td>$60–90</td></tr>
+      <tr><td><span class="ko">벡터 DB</span><span class="en">Vector DB</span></td><td>pgvector <span class="ko">또는 Pinecone starter</span><span class="en">or Pinecone starter</span></td><td>$0–50</td></tr>
+      <tr><td><span class="ko">오브젝트 스토리지 + CDN</span><span class="en">Object storage + CDN</span></td><td>~50GB, <span class="ko">중간 egress</span><span class="en">moderate egress</span></td><td>$10–25</td></tr>
+      <tr><td>GPU <span class="ko">버스트</span><span class="en">burst</span> (diffusion)</td><td>~20 GPU-<span class="ko">시간</span><span class="en">hours</span>/mo</td><td>$15–30</td></tr>
+      <tr><td>OpenRouter (qwen3-8b, <span class="ko">옵션</span><span class="en">opt-in</span>)</td><td>~150k tok/day</td><td>$10–25</td></tr>
+      <tr><td><span class="ko">모니터링</span><span class="en">Monitoring</span></td><td><span class="ko">기본 티어</span><span class="en">basic tier</span></td><td>$0–20</td></tr>
+      <tr style="font-weight:600"><td colspan="2"><span class="ko">합계 (참고치)</span><span class="en">Total (indicative)</span></td><td>≈ $165–380</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="deployment">
+  <h2><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></h2>
+  <ul>
+    <li><span class="ko"><strong>환경 일치</strong>: 로컬에서 쓰는 동일한 <code>docker/Dockerfile</code>을 그대로 배포에 사용하세요.</span><span class="en"><strong>Environment parity</strong>: deploy the exact same <code>docker/Dockerfile</code> used locally — no separate "prod" Dockerfile.</span></li>
+    <li><span class="ko"><strong>시크릿</strong>: <code>api_keys/*.md</code> 파일 마운트 방식을 대상 플랫폼의 시크릿 매니저로 교체하세요.</span><span class="en"><strong>Secrets</strong>: replace the <code>api_keys/*.md</code> file-mount convention with the target platform's secret manager.</span></li>
+    <li><span class="ko"><strong>DB 마이그레이션</strong>: <code>DATABASE_URL</code>을 Postgres로 교체하고 alembic으로 스키마 마이그레이션을 추가하세요 (현재는 SQLite 단일 writer를 가정한 <code>create_all</code> 방식).</span><span class="en"><strong>DB migration</strong>: switch <code>DATABASE_URL</code> to Postgres and add alembic migrations (the PoC's <code>create_all</code> assumes a single SQLite writer).</span></li>
+    <li><span class="ko"><strong>CORS</strong>: 현재 <code>allow_origins=["*"]</code>는 SPA와 API가 같은 오리진이라 가능한 설정입니다 — 분리 배포 시 실제 프론트엔드 오리진으로 제한하세요.</span><span class="en"><strong>CORS</strong>: currently <code>allow_origins=["*"]</code> because the SPA and API share an origin — restrict this once they're split across a CDN/subdomain.</span></li>
+    <li><span class="ko"><strong>모델 메모리</strong>: 레플리카마다 4개 로컬 모델을 각각 메모리에 올립니다 — 대규모 확장 시 공유 추론 서비스 구조를 고려하세요.</span><span class="en"><strong>Model memory</strong>: each replica loads its own copy of all 4 local models — consider a shared inference service at larger scale.</span></li>
+    <li><span class="ko"><strong>속도 제한</strong>: 이 PoC에는 없습니다 — 특히 이미지 생성/OpenRouter 엔드포인트는 실제 한계비용이 있으므로 사용자별 rate limit이 필요합니다.</span><span class="en"><strong>Rate limiting</strong>: not implemented in the PoC — needed per-user, especially on the generation and OpenRouter-backed endpoints, which carry real marginal cost.</span></li>
+  </ul>
+</section>
+
+<section id="limitations">
+  <h2><span class="ko">한계 &amp; 로드맵</span><span class="en">Known Limitations &amp; Roadmap</span></h2>
+  <ul>
+    <li><span class="ko">ViT-tiny는 커스텀 소매 카테고리가 아닌 범용 ImageNet-1000 클래스로 분류합니다 — "바나나"·"레몬"·"피망"처럼 ImageNet에 정확히 대응하는 클래스는 잘 맞지만, 우유팩·요거트 용기처럼 ImageNet에 없는 포장 상품은 그럴듯하지만 틀린 라벨(예: "자판기")을 반환합니다. 실측 데이터는 <code>../../../history/v1.0.0.md</code> 참조. 실제 카탈로그에는 소매 카테고리로 파인튜닝된 분류기가 필요합니다.</span><span class="en">ViT-tiny classifies into generic ImageNet-1000 classes, not custom retail categories — items with an exact ImageNet match ("banana," "lemon," "bell pepper") classify well, but packaged goods without one (milk cartons, yogurt tubs) get a plausible-but-wrong label (e.g. "vending machine"). See <code>../../../history/v1.0.0.md</code> for real measured examples. A production catalog would need a classifier fine-tuned on real retail categories.</span></li>
+    <li><span class="ko">CPU에서 이미지 생성은 초당 아닌 수십 초 단위입니다 — 프로덕션은 GPU 노드 필요.</span><span class="en">Image generation on CPU takes tens of seconds, not seconds — production would need a GPU node.</span></li>
+    <li><span class="ko">OpenAI/Claude/Gemini 프로바이더는 설정만 되어 있고 이번 라운드에는 검증되지 않았습니다 (<code>ml/llm.py</code> 참고).</span><span class="en">OpenAI/Claude/Gemini providers are scaffolded but not validated this round (see <code>ml/llm.py</code>).</span></li>
+    <li><span class="ko">속도 제한, 이메일 인증, 비밀번호 재설정은 PoC 범위 밖입니다.</span><span class="en">Rate limiting, email verification, and password reset are out of scope for this PoC.</span></li>
+  </ul>
+  <p><span class="ko">전체 버전 이력은 </span><span class="en">Full version history is in </span><code>../../../history/</code>.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+  CommerceIQ · PoC · <span class="ko">AI 엔지니어링 포트폴리오 프로젝트</span><span class="en">part of an AI engineering project portfolio</span>
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const langBtn = document.getElementById('langBtn');
+  const themeBtn = document.getElementById('themeBtn');
+
+  function applyLang(lang) {
+    html.setAttribute('data-lang', lang);
+    langBtn.textContent = lang === 'ko' ? 'EN' : '한국어';
+    try { localStorage.setItem('commerceiq-guide-lang', lang); } catch (e) {}
+  }
+  function applyTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    const isDark = theme === 'dark';
+    themeBtn.innerHTML = (isDark ? '☀️ ' : '🌙 ') +
+      '<span class="ko">' + (isDark ? '라이트' : '다크') + '</span>' +
+      '<span class="en">' + (isDark ? 'Light' : 'Dark') + '</span>';
+    try { localStorage.setItem('commerceiq-guide-theme', theme); } catch (e) {}
+  }
+
+  let savedLang = 'ko', savedTheme = 'dark';
+  try { savedLang = localStorage.getItem('commerceiq-guide-lang') || 'ko'; } catch (e) {}
+  try { savedTheme = localStorage.getItem('commerceiq-guide-theme') || 'dark'; } catch (e) {}
+  applyLang(savedLang);
+  applyTheme(savedTheme);
+
+  langBtn.addEventListener('click', () => applyLang(html.getAttribute('data-lang') === 'ko' ? 'en' : 'ko'));
+  themeBtn.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+
+  if (window.mermaid) {
+    mermaid.initialize({ startOnLoad: true, theme: savedTheme === 'dark' ? 'dark' : 'default' });
+  }
+</script>
+
+</body>
+</html>

@@ -8,7 +8,7 @@ LLM 내부 구조 & 문서 AI, RAG, 에이전틱 AI를 다룹니다. 각각 실�
 > 모든 제품은 로컬 우선(HuggingFace 모델, CPU 전용)으로 동작하며, OpenRouter를 통한 예산 제한형
 > 선택적 클라우드 에스컬레이션을 지원합니다 — 유료 API 키 없이도 전부 실행됩니다.
 > 같은 주차별 주제를 다루는 재작성된 학습 노트 컴패니언 레포:
-> [`ai-curriculum`](https://github.com/ShaunKim91/ai-curriculum).
+> [`applied-ai-notes`](https://github.com/ShaunKim91/applied-ai-notes).
 
 ## 🧵 주목할 만한: "Fenwick Mutual" 스위트 (Week 6–8)
 
@@ -19,9 +19,9 @@ LLM 내부 구조 & 문서 AI, RAG, 에이전틱 AI를 다룹니다. 각각 실�
 
 | 제품 | 대상 | 하는 일 |
 |---|---|---|
-| **[Verity](week6/PoC_v2/projects/verity/)** | Dana Whitfield, 시니어 클레임 리서치 애널리스트 | 근거 기반 리서치 어시스턴트 — 인용된 판례 요약, 환각 인용 검사, 가상의(실제가 아닌) 규제 코퍼스 대상 사기 신호 탐지 |
-| **[Threshold](week7/PoC_v2/projects/threshold/)** | Priya Nakamura, 클레임 처리 팀 리드 | 안전장치를 갖춘 ReAct 에이전트 콘솔 — 금액을 인식하는 휴먼인더루프 승인으로 임계값 이상의 지급은 검토를 우회할 수 없음 |
-| **[Throughline](week8/PoC/projects/throughline/)** | Marcus Webb, 보험계약자 서비스 담당자 | LangChain 대화 메모리 코파일럿 — 영속화된 이중 전략 메모리, 구조화된 사실 추출, 메모리 쓰기 충돌 안전장치 |
+| **[Verity](6th_week/PoC_v2/projects/verity/)** | Dana Whitfield, 시니어 클레임 리서치 애널리스트 | 근거 기반 리서치 어시스턴트 — 인용된 판례 요약, 환각 인용 검사, 가상의(실제가 아닌) 규제 코퍼스 대상 사기 신호 탐지 |
+| **[Threshold](7th_week/PoC_v2/projects/threshold/)** | Priya Nakamura, 클레임 처리 팀 리드 | 안전장치를 갖춘 ReAct 에이전트 콘솔 — 금액을 인식하는 휴먼인더루프 승인으로 임계값 이상의 지급은 검토를 우회할 수 없음 |
+| **[Throughline](8th_week/PoC/projects/throughline/)** | Marcus Webb, 보험계약자 서비스 담당자 | LangChain 대화 메모리 코파일럿 — 영속화된 이중 전략 메모리, 구조화된 사실 추출, 메모리 쓰기 충돌 안전장치 |
 
 각각 자체 이중언어 운영 가이드(`docs/guide.html`), Mermaid 다이어그램이 포함된 아키텍처 문서,
 수동 테스트로 발견한 실제 버그를 정직하게 기록한 디버그 로그, 실측치 기반 빌드 로그
@@ -32,13 +32,13 @@ LLM 내부 구조 & 문서 AI, RAG, 에이전틱 AI를 다룹니다. 각각 실�
 
 | 주차 | 주제 | 제품 |
 |---|---|---|
-| 1 | 컴퓨터 비전 & 생성 이미지 모델 | [CommerceIQ](week1/PoC/projects/commerceiq/) — 커머스 운영: 카탈로그 비전, 생성형 스튜디오, 수요 예측, 시맨틱 검색 |
-| 2 | LLM 내부 구조, 임베딩, 오디오 AI | [VoxIQ](week2/PoC/projects/voxiq/) — 회의 & 지식 인텔리전스: 전사, 검색 재정렬, 분석 에이전트 |
-| 3 | 멀티모달 문서 AI | [Parchment](week3/PoC/projects/parchment/) — 문서 인텔리전스: 영수증 OCR+VLM, PDF 요약, 표 스크래핑 |
-| 4 | RAG | [Lucent](week4/PoC/projects/lucent/) — 인라인 인용과 자동 근거성 검사를 갖춘 스트리밍 RAG 챗 |
-| 6 | 검색 기반 리서치 | [Compass](week6/PoC/projects/compass/) → **[Verity](week6/PoC_v2/projects/verity/)** (위 스위트 참고) |
-| 7 | 에이전틱 AI 기초 | [Cradle](week7/PoC/projects/cradle/) → **[Threshold](week7/PoC_v2/projects/threshold/)** (위 스위트 참고) |
-| 8 | LangChain 에이전트 & 메모리 | **[Throughline](week8/PoC/projects/throughline/)** (위 스위트 참고) |
+| 1 | 컴퓨터 비전 & 생성 이미지 모델 | [CommerceIQ](1st_week/PoC/projects/commerceiq/) — 커머스 운영: 카탈로그 비전, 생성형 스튜디오, 수요 예측, 시맨틱 검색 |
+| 2 | LLM 내부 구조, 임베딩, 오디오 AI | [VoxIQ](2nd_week/PoC/projects/voxiq/) — 회의 & 지식 인텔리전스: 전사, 검색 재정렬, 분석 에이전트 |
+| 3 | 멀티모달 문서 AI | [Parchment](3rd_week/PoC/projects/parchment/) — 문서 인텔리전스: 영수증 OCR+VLM, PDF 요약, 표 스크래핑 |
+| 4 | RAG | [Lucent](4th_week/PoC/projects/lucent/) — 인라인 인용과 자동 근거성 검사를 갖춘 스트리밍 RAG 챗 |
+| 6 | 검색 기반 리서치 | [Compass](6th_week/PoC/projects/compass/) → **[Verity](6th_week/PoC_v2/projects/verity/)** (위 스위트 참고) |
+| 7 | 에이전틱 AI 기초 | [Cradle](7th_week/PoC/projects/cradle/) → **[Threshold](7th_week/PoC_v2/projects/threshold/)** (위 스위트 참고) |
+| 8 | LangChain 에이전트 & 메모리 | **[Throughline](8th_week/PoC/projects/throughline/)** (위 스위트 참고) |
 
 `PoC/` = 최초 주차 빌드. `PoC_v2/` = 이전 결과물에 대한 직접 피드백("모든 제품에 더 명확한
 타깃 설정이 필요하다")을 받은 뒤 처음부터 다시 만든 상용급 재구축 버전이며, 전후 비교가 보이도록
