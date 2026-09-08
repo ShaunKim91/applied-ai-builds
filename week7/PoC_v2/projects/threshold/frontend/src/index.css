@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fenwick Ledger — shared with Verity (Week6's companion), a deliberate
+   departure from this project series' usual "new identity every round"
+   convention: these two products are one company's connected suite, not
+   two unrelated builds. Threshold uses copper as ITS primary accent
+   (Verity uses bottle-green as its own) while sharing every other token —
+   see architecture.md §3. */
+:root {
+  color-scheme: light;
+  --page-plane: #f4efe4;
+  --surface-1: #fffdf8;
+  --surface-2: #ece3d1;
+  --text-primary: #241f18;
+  --text-secondary: #57503f;
+  --text-muted: #8a8271;
+  --border-color: rgba(36, 31, 24, 0.14);
+  --accent: #a85d2e; /* copper — Threshold's primary */
+  --accent-2: #1f4d3d; /* bottle-green — shared suite color, Verity's own primary */
+  --accent-soft: rgba(168, 93, 46, 0.1);
+  --critical: #a83a2e; /* brick-red — guardrail-blocked / deadline-risk states */
+  --warning: #b8862e; /* amber — awaiting-approval state */
+  --good: #1f4d3d;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-plane: #1c1712;
+  --surface-1: #241f18;
+  --surface-2: #2d271e;
+  --text-primary: #f2ead9;
+  --text-secondary: #cbc0a8;
+  --text-muted: #93876d;
+  --border-color: rgba(242, 234, 217, 0.12);
+  --accent: #d18a53;
+  --accent-2: #4f9c7f;
+  --accent-soft: rgba(209, 138, 83, 0.14);
+  --critical: #d97a68;
+  --warning: #e0b463;
+  --good: #4f9c7f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page-plane: #1c1712;
+    --surface-1: #241f18;
+    --surface-2: #2d271e;
+    --text-primary: #f2ead9;
+    --text-secondary: #cbc0a8;
+    --text-muted: #93876d;
+    --border-color: rgba(242, 234, 217, 0.12);
+    --accent: #d18a53;
+    --accent-2: #4f9c7f;
+    --accent-soft: rgba(209, 138, 83, 0.14);
+    --critical: #d97a68;
+    --warning: #e0b463;
+    --good: #4f9c7f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--page-plane);
+  color: var(--text-primary);
+  font-family: theme("fontFamily.sans");
+  line-height: 1.6;
+}
+h1,
+h2,
+h3,
+.font-display {
+  font-family: theme("fontFamily.display");
+}
+.font-mono-num {
+  font-family: theme("fontFamily.mono");
+  font-variant-numeric: tabular-nums;
+}
+a {
+  color: var(--accent-2);
+}
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-color);
+  border-radius: theme("borderRadius.ledger");
+  box-shadow: theme("boxShadow.ledger");
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fdfaf3;
+  border-radius: theme("borderRadius.ledger-sm");
+  font-weight: 600;
+  transition: filter 0.15s ease;
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: theme("borderRadius.ledger-sm");
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-family: theme("fontFamily.mono");
+  font-size: 0.72rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-2);
+  color: var(--text-secondary);
+}
+.badge-good {
+  color: var(--good);
+  border-color: var(--good);
+}
+.badge-warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+.badge-critical {
+  color: var(--critical);
+  border-color: var(--critical);
+}
+
+/* --- Dossier tab-binder navigation (shared metaphor with Verity) ------ */
+.tab-binder {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tab-binder-item {
+  position: relative;
+  padding: 0.85rem 1.1rem 0.85rem 1.4rem;
+  border-radius: 4px 12px 12px 4px;
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  cursor: pointer;
+  font-weight: 500;
+  transform: translateX(0);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  display: block;
+}
+.tab-binder-item:not(.active) {
+  transform: translateX(-10px);
+  opacity: 0.85;
+}
+.tab-binder-item.active {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  font-weight: 700;
+  box-shadow: theme("boxShadow.ledger-lift");
+  transform: translateX(4px);
+  z-index: 2;
+}
+.tab-binder-item:hover:not(.active) {
+  transform: translateX(-4px);
+  opacity: 1;
+}
+
+/* --- Ledger-entry trace cards — the ReAct step visualization. Each kind
+   gets a colored left rule, like a case-log entry stamp, rather than
+   reusing the predecessor Cradle PoC's claymorphism card-stack treatment
+   verbatim — a distinct visual grammar fitting THIS identity's own
+   "ledger/dossier" metaphor. ------------------------------------------ */
+.step-entry {
+  border-left: 3px solid var(--border-color);
+  padding-left: 1rem;
+}
+.step-entry.kind-thought_action {
+  border-left-color: var(--accent);
+}
+.step-entry.kind-observation {
+  border-left-color: var(--accent-2);
+}
+.step-entry.kind-blocked {
+  border-left-color: var(--critical);
+}
+.step-entry.kind-awaiting_approval,
+.step-entry.kind-resumed {
+  border-left-color: var(--warning);
+}
+.step-entry.kind-final_answer {
+  border-left-color: var(--good);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-color);
+  border-radius: theme("borderRadius.ledger");
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th,
+td {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--border-color);
+}
+th {
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-family: theme("fontFamily.mono");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-binder-item {
+    transition: none;
+  }
+}

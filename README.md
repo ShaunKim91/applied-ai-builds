@@ -10,7 +10,7 @@ console, and bilingual (EN/KO) documentation.
 > Companion repo of rewritten lesson notes covering the same weekly topics:
 > [`ai-curriculum`](https://github.com/ShaunKim91/ai-curriculum).
 
-## 🧵 Featured: the "Fenwick Mutual" suite (Week 5.1–6.1)
+## 🧵 Featured: the "Fenwick Mutual" suite (Week 6–8)
 
 Three connected products for one fictional regional insurer, sharing one design system and one
 commercial-grade security/observability architecture (JWT access+refresh rotation, CSRF, account
@@ -19,9 +19,9 @@ specific, named persona rather than a generic feature list.
 
 | Product | For | What it does |
 |---|---|---|
-| **[Verity](week5_1/PoC_v2/projects/verity/)** | Dana Whitfield, Senior Claims Research Analyst | A grounded research assistant — cited precedent briefs, hallucinated-citation checking, fraud-signal detection over a fictional (never real) regulatory corpus |
-| **[Threshold](week5_2/PoC_v2/projects/threshold/)** | Priya Nakamura, Claims Processing Team Lead | A guardrailed ReAct agent console — amount-aware Human-in-the-Loop approval so no payout above a threshold can bypass review |
-| **[Throughline](week6_1/PoC/projects/throughline/)** | Marcus Webb, Policyholder Services Rep | A LangChain conversational-memory copilot — persisted dual-strategy memory, structured fact extraction, a memory-write conflict guardrail |
+| **[Verity](week6/PoC_v2/projects/verity/)** | Dana Whitfield, Senior Claims Research Analyst | A grounded research assistant — cited precedent briefs, hallucinated-citation checking, fraud-signal detection over a fictional (never real) regulatory corpus |
+| **[Threshold](week7/PoC_v2/projects/threshold/)** | Priya Nakamura, Claims Processing Team Lead | A guardrailed ReAct agent console — amount-aware Human-in-the-Loop approval so no payout above a threshold can bypass review |
+| **[Throughline](week8/PoC/projects/throughline/)** | Marcus Webb, Policyholder Services Rep | A LangChain conversational-memory copilot — persisted dual-strategy memory, structured fact extraction, a memory-write conflict guardrail |
 
 Each has its own bilingual operations guide (`docs/guide.html`), architecture doc with Mermaid
 diagrams, an honest debug log of real bugs found via manual testing, and a real-numbers build log
@@ -36,9 +36,9 @@ measured.
 | 2 | LLM internals, embeddings, audio AI | [VoxIQ](week2/PoC/projects/voxiq/) — meeting & knowledge intelligence: transcription, retrieval reranking, an analytics agent |
 | 3 | Multimodal document AI | [Parchment](week3/PoC/projects/parchment/) — document intelligence: receipt OCR+VLM, PDF summarization, table scraping |
 | 4 | RAG | [Lucent](week4/PoC/projects/lucent/) — streaming RAG chat with inline citations and an automated groundedness check |
-| 5.1 | Search-grounded research | [Compass](week5_1/PoC/projects/compass/) → **[Verity](week5_1/PoC_v2/projects/verity/)** (see suite above) |
-| 5.2 | Agentic AI fundamentals | [Cradle](week5_2/PoC/projects/cradle/) → **[Threshold](week5_2/PoC_v2/projects/threshold/)** (see suite above) |
-| 6.1 | LangChain agents & memory | **[Throughline](week6_1/PoC/projects/throughline/)** (see suite above) |
+| 6 | Search-grounded research | [Compass](week6/PoC/projects/compass/) → **[Verity](week6/PoC_v2/projects/verity/)** (see suite above) |
+| 7 | Agentic AI fundamentals | [Cradle](week7/PoC/projects/cradle/) → **[Threshold](week7/PoC_v2/projects/threshold/)** (see suite above) |
+| 8 | LangChain agents & memory | **[Throughline](week8/PoC/projects/throughline/)** (see suite above) |
 
 `PoC/` = the original weekly build. `PoC_v2/` = a from-scratch, commercial-grade rebuild of that same
 product, done after direct feedback that every prior product needed a clearer stated target — both

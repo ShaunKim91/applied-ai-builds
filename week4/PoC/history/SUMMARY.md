@@ -54,4 +54,4 @@ Full write-ups: `../debug/`. Full timing, counts, and re-verification: `v1.0.0.m
 
 ## Status
 
-Complete and self-verified. Awaiting user review before proceeding to Week5_1.
+Complete and self-verified. Awaiting user review before proceeding to Week6.
