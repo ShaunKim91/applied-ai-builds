@@ -9,7 +9,7 @@ __pycache__/
 .port
 
 # Data (downloaded/generated at runtime — see scripts/download_data.sh)
-data/
+data/*
 !data/SOURCES.md
 
 # Frontend

@@ -9,8 +9,9 @@ __pycache__/
 .port
 
 # Data (created/populated at runtime — SQLite DB + Chroma vector store)
-data/
+data/*
 !data/README.md
+!data/README.ko.md
 
 # Frontend
 frontend/node_modules/
