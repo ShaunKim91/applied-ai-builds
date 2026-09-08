@@ -1,0 +1,34 @@
+# Lucent backend dependencies
+# torch is installed separately (CPU wheel by default, GPU wheel if
+# nvidia-smi is detected) — see scripts/setup.sh and docker/Dockerfile.
+
+# --- Web framework ---
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+python-multipart>=0.0.9
+
+# --- Data / DB ---
+sqlalchemy>=2.0,<3.0
+pydantic>=2.7,<3.0
+pydantic-settings>=2.3,<3.0
+
+# --- Auth ---
+passlib[bcrypt]>=1.7,<2.0
+bcrypt>=4.0,<4.1
+python-jose[cryptography]>=3.3,<4.0
+
+# --- AI / ML models (local) ---
+transformers>=4.40,<5.0
+sentence-transformers>=3.0,<4.0
+
+# --- Vector store ---
+chromadb>=0.5,<1.0
+
+# --- Document parsing (user uploads) ---
+pypdf>=4.0
+
+# --- HTTP client (OpenRouter streaming, seed-corpus downloads) ---
+httpx>=0.27,<1.0
+
+# --- Misc ---
+python-dotenv>=1.0

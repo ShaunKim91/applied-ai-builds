@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens — validated categorical/sequential/status palette from the
+  dataviz skill (references/palette.md). App theme defaults to LIGHT with a
+  manual dark toggle (enterprise-dashboard convention); the bundled
+  docs/guide.html defaults to DARK instead, per the project's documentation
+  convention — the two are intentionally different defaults.
+*/
+:root {
+  --surface-1: #fcfcfb;
+  --page-plane: #f9f9f7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --gridline: #e1e0d9;
+  --baseline: #c3c2b7;
+  --border-color: rgba(11, 11, 11, 0.1);
+  --accent: #2a78d6;
+  --accent-soft: #e7f0fc;
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+}
+
+.dark {
+  --surface-1: #1a1a19;
+  --page-plane: #0d0d0d;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --gridline: #2c2c2a;
+  --baseline: #383835;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --accent: #3987e5;
+  --accent-soft: #16283f;
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #e66767;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+}
+
+body {
+  background-color: var(--page-plane);
+  color: var(--text-primary);
+}
+
+.card {
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+}

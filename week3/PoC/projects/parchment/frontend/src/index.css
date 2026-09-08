@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens — deliberately different from the Week1/11 PoCs' cool
+  gray/blue dashboard palette: a warm "parchment" background with a
+  terracotta/amber accent, matching this project's paper/document theme.
+  App theme defaults to LIGHT ("parchment" itself only reads correctly in
+  light mode) with a manual dark toggle; the bundled docs/guide.html
+  defaults to DARK instead, per this project family's documentation
+  convention — the two are intentionally different defaults.
+*/
+:root {
+  --surface-1: #fbf7ee;
+  --page-plane: #f6efdf;
+  --text-primary: #2b2016;
+  --text-secondary: #5c4f3d;
+  --text-muted: #8a7d68;
+  --border-color: rgba(43, 32, 22, 0.14);
+  --accent: #b5601f;
+  --accent-soft: #f3e3d0;
+  --status-good: #3f6b45;
+  --status-warning: #a3720f;
+  --status-serious: #c1622f;
+  --status-critical: #a83a2c;
+}
+
+.dark {
+  --surface-1: #262019;
+  --page-plane: #1c1710;
+  --text-primary: #f3ead9;
+  --text-secondary: #cbbfa9;
+  --text-muted: #8f8370;
+  --border-color: rgba(243, 234, 217, 0.12);
+  --accent: #d97a34;
+  --accent-soft: #3a2a1a;
+  --status-good: #5c9463;
+  --status-warning: #d0a039;
+  --status-serious: #d97a52;
+  --status-critical: #d9584a;
+}
+
+body {
+  background-color: var(--page-plane);
+  color: var(--text-primary);
+}
+
+h1, h2, h3 {
+  font-family: "Newsreader", Georgia, "Times New Roman", serif;
+}
+
+.card {
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(43, 32, 22, 0.07), 0 2px 8px rgba(43, 32, 22, 0.08);
+}
+
+.dark .card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 2px 10px rgba(0, 0, 0, 0.3);
+}

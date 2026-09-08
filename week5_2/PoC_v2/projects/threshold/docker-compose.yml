@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        TORCH_INDEX: ${TORCH_INDEX:-https://download.pytorch.org/whl/cpu}
+    image: threshold:latest
+    container_name: threshold
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8790}:8000"
+    environment:
+      APP_ENV: production
+      SECRET_KEY: ${SECRET_KEY:-threshold-dev-secret-change-in-production}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@fenwickmutual.example}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe123!}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-qwen/qwen3-8b}
+    volumes:
+      - threshold_data:/app/data
+      - threshold_hf_cache:/app/hf_cache
+      - ../../../../api_keys:/app/secrets:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 20
+
+volumes:
+  threshold_data:
+  threshold_hf_cache:

@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        TORCH_INDEX: ${TORCH_INDEX:-https://download.pytorch.org/whl/cpu}
+    image: verity:latest
+    container_name: verity
+    # Never auto-removed: `docker compose stop` (used by scripts/stop.sh)
+    # keeps the container on disk with all its state; only an explicit
+    # `docker compose down` deletes it.
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8780}:8000"
+    environment:
+      APP_ENV: production
+      SECRET_KEY: ${SECRET_KEY:-verity-dev-secret-change-in-production}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@fenwickmutual.example}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe123!}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-qwen/qwen3-8b}
+    volumes:
+      # Persistent app data: SQLite DB and the Chroma vector store.
+      - verity_data:/app/data
+      # HuggingFace model cache — downloaded once, reused on every restart.
+      - verity_hf_cache:/app/hf_cache
+      # Read-only reference to the repo-level API key files. Never baked
+      # into the image; the app reads the file at call-time.
+      - ../../../../api_keys:/app/secrets:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 20
+
+volumes:
+  verity_data:
+  verity_hf_cache:

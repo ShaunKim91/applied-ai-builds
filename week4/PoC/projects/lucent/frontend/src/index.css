@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens — a third, deliberately distinct visual language from the
+  Week1-12 PoCs: translucent "glass" panels floating over a soft gradient
+  mesh background, one geometric sans (Manrope) carrying all hierarchy via
+  weight instead of a font pairing. App theme defaults to LIGHT (glass
+  reads best against a bright background) with a manual dark toggle, which
+  also swaps the mesh gradient's tone — not just surface colors — so the
+  atmosphere genuinely changes, not just the ink/paper contrast.
+*/
+:root {
+  --page-plane: #f4f3fc;
+  --surface-1: rgba(255, 255, 255, 0.6);
+  --surface-1-solid: #ffffff;
+  --text-primary: #1a1533;
+  --text-secondary: #4d4670;
+  --text-muted: #8781a3;
+  --border-color: rgba(109, 92, 231, 0.16);
+  --accent: #6d5ce7;
+  --accent-2: #22d3ee;
+  --accent-soft: rgba(109, 92, 231, 0.12);
+  --status-good: #1a9c6d;
+  --status-warning: #b8860b;
+  --status-serious: #d9714e;
+  --status-critical: #d93a5c;
+  --mesh-background: radial-gradient(at 15% 15%, rgba(109, 92, 231, 0.22) 0, transparent 55%),
+    radial-gradient(at 85% 5%, rgba(34, 211, 238, 0.18) 0, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(232, 121, 186, 0.14) 0, transparent 55%);
+}
+
+.dark {
+  --page-plane: #0e0c1e;
+  --surface-1: rgba(30, 26, 58, 0.55);
+  --surface-1-solid: #1b1836;
+  --text-primary: #f2f0fb;
+  --text-secondary: #c4bfe0;
+  --text-muted: #8f89b3;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --accent: #9b8cfb;
+  --accent-2: #3fe3f5;
+  --accent-soft: rgba(155, 140, 251, 0.16);
+  --status-good: #4ecf9d;
+  --status-warning: #e0b34d;
+  --status-serious: #ef9273;
+  --status-critical: #f0708a;
+  --mesh-background: radial-gradient(at 15% 15%, rgba(139, 92, 246, 0.35) 0, transparent 55%),
+    radial-gradient(at 85% 5%, rgba(34, 211, 238, 0.16) 0, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(232, 121, 186, 0.12) 0, transparent 55%);
+}
+
+body {
+  background-color: var(--page-plane);
+  background-image: var(--mesh-background);
+  background-attachment: fixed;
+  color: var(--text-primary);
+}
+
+.card {
+  background-color: var(--surface-1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 32px rgba(31, 20, 90, 0.12);
+}
+
+.dark .card {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}

@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens — the fifth distinct visual language in this series
+  (Week1/11 blue/sidebar -> Week3 parchment/top-tabs -> Week4 indigo-cyan
+  glass -> Week5_1 navy/brass/teal dark -> now a high-lightness,
+  low-saturation PASTEL palette (dusty lilac + sage) executed as
+  CLAYMORPHISM: soft, "puffy" extruded surfaces from a two-directional
+  shadow (bright highlight from the light source, tinted shadow opposite
+  it) rather than a flat card or a blurred-glass panel. Real spatial depth
+  also comes from mouse-tracked perspective tilt on hero surfaces (see
+  components/TiltCard.tsx) and a genuinely 3D-staggered trace-card stack on
+  the Console page (see pages/Console.tsx) — not just a shadow, an actual
+  `perspective`/`rotateX/Y` transform responding to the pointer.
+
+  Accent colors (lilac/sage) intentionally sit at 3:1 contrast, not 4.5:1 —
+  by design they are used ONLY for icons, borders, large headings, and
+  non-text surfaces, never small body text (which always uses --text-* one
+  of, both comfortably 4.5:1+). See docs/guide.html for the measured ratios.
+*/
+:root {
+  --page-plane: #f6f4fb;
+  --surface-1: #ffffff;
+  --surface-1-tint: #f1eef9;
+  --surface-2: #ece8f6;
+  --text-primary: #332f42;
+  --text-secondary: #5c5670;
+  --text-muted: #8a84a0;
+  --border-color: rgba(51, 47, 66, 0.10);
+  --accent: #8b7cc7;
+  --accent-2: #2f7a5c;
+  --accent-soft: rgba(139, 124, 199, 0.12);
+  --status-good: #2f7a52;
+  --status-warning: #8f6524;
+  --status-serious: #a05a38;
+  --status-critical: #a3415a;
+  --cloud-background: radial-gradient(at 12% 8%, rgba(180, 167, 230, 0.22) 0, transparent 50%),
+    radial-gradient(at 85% 15%, rgba(143, 196, 174, 0.18) 0, transparent 50%),
+    radial-gradient(at 50% 95%, rgba(240, 200, 180, 0.16) 0, transparent 55%);
+  --clay-shadow: -10px -10px 22px rgba(255, 255, 255, 0.9), 12px 14px 28px rgba(139, 124, 199, 0.18);
+  --clay-shadow-sm: -6px -6px 14px rgba(255, 255, 255, 0.85), 7px 8px 16px rgba(139, 124, 199, 0.16);
+  --clay-shadow-inset: inset 4px 4px 10px rgba(139, 124, 199, 0.12), inset -4px -4px 10px rgba(255, 255, 255, 0.8);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --dur-short: 120ms;
+  --dur-medium: 220ms;
+}
+
+.dark {
+  --page-plane: #232030;
+  --surface-1: #2e2a3d;
+  --surface-1-tint: #34304a;
+  --surface-2: #3a3550;
+  --text-primary: #f1eef9;
+  --text-secondary: #c7c1d9;
+  --text-muted: #948da8;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --accent: #b6a8e8;
+  --accent-2: #7fc9a8;
+  --accent-soft: rgba(182, 168, 232, 0.14);
+  --status-good: #7fcf9d;
+  --status-warning: #e0b36c;
+  --status-serious: #e2a17e;
+  --status-critical: #e5899a;
+  --cloud-background: radial-gradient(at 12% 8%, rgba(180, 167, 230, 0.14) 0, transparent 50%),
+    radial-gradient(at 85% 15%, rgba(143, 196, 174, 0.10) 0, transparent 50%),
+    radial-gradient(at 50% 95%, rgba(240, 200, 180, 0.08) 0, transparent 55%);
+  --clay-shadow: -8px -8px 18px rgba(255, 255, 255, 0.04), 12px 14px 26px rgba(0, 0, 0, 0.35);
+  --clay-shadow-sm: -5px -5px 12px rgba(255, 255, 255, 0.035), 7px 8px 16px rgba(0, 0, 0, 0.32);
+  --clay-shadow-inset: inset 4px 4px 10px rgba(0, 0, 0, 0.28), inset -4px -4px 10px rgba(255, 255, 255, 0.03);
+}
+
+* {
+  border-color: var(--border-color);
+}
+
+body {
+  background-color: var(--page-plane);
+  background-image: var(--cloud-background);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: theme("fontFamily.sans");
+}
+
+h1, h2, h3, .font-display {
+  font-family: theme("fontFamily.display");
+}
+
+/* --- Claymorphism surfaces --- */
+
+.clay {
+  background: linear-gradient(150deg, var(--surface-1), var(--surface-1-tint));
+  border-radius: theme("borderRadius.clay");
+  box-shadow: var(--clay-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.clay-sm {
+  background: linear-gradient(150deg, var(--surface-1), var(--surface-1-tint));
+  border-radius: theme("borderRadius.clay-sm");
+  box-shadow: var(--clay-shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.clay-inset {
+  background: var(--surface-2);
+  border-radius: theme("borderRadius.clay-sm");
+  box-shadow: var(--clay-shadow-inset);
+  border: 1px solid var(--border-color);
+}
+
+/* --- Motion & microinteractions (interface-craft guidance, reused across this series) --- */
+
+button, a, input, textarea, select {
+  transition: background-color var(--dur-short) var(--ease-standard),
+    border-color var(--dur-short) var(--ease-standard),
+    box-shadow var(--dur-medium) var(--ease-standard),
+    color var(--dur-short) var(--ease-standard),
+    transform var(--dur-medium) var(--ease-standard);
+}
+
+button:active {
+  transform: scale(0.97);
+  transition-duration: 80ms;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* 3D perspective stage for pointer-tracked tilt cards — see
+   components/TiltCard.tsx, which sets --rx/--ry inline via JS on
+   pointermove. A genuine spatial transform, not a decorative shadow. */
+.tilt-stage {
+  perspective: 900px;
+}
+.tilt-card {
+  transform: perspective(900px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 120ms var(--ease-standard), box-shadow var(--dur-medium) var(--ease-standard);
+}
+.tilt-card:hover {
+  box-shadow: var(--clay-shadow), 0 18px 30px rgba(139, 124, 199, 0.14);
+}
+
+/* The ReAct trace "stacked cards" — each step sits at a slight alternating
+   rotation with depth-scaled shadow, like a loose stack of cards rather
+   than a flat list, while staying fully readable (see pages/Console.tsx
+   for the per-index rotation/depth values passed in as inline styles). */
+.step-card {
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform var(--dur-medium) var(--ease-standard), box-shadow var(--dur-medium) var(--ease-standard);
+}
+.step-card:hover {
+  transform: rotate(0deg) translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .tilt-card {
+    transform: none !important;
+  }
+}

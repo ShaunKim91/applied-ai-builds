@@ -1,0 +1,30 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Environment / secrets — never commit real credentials
+.env
+.port
+
+# Data (created/populated at runtime — SQLite DB + Chroma vector store)
+*/data/*
+!*/data/README.md
+!*/data/SOURCES.md

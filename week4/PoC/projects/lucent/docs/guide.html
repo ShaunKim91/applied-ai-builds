@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucent 운영 가이드 · Operations Guide</title>
+<meta name="description" content="Lucent Week4 PoC — all-in-one bilingual operations guide">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    color-scheme: dark;
+    --surface-1: #1b1836;
+    --surface-2: #241f47;
+    --page-plane: #0e0c1e;
+    --text-primary: #f2f0fb;
+    --text-secondary: #c4bfe0;
+    --text-muted: #8f89b3;
+    --gridline: #2c2755;
+    --border-color: rgba(255,255,255,0.10);
+    --accent: #9b8cfb;
+    --accent-2: #3fe3f5;
+    --accent-soft: rgba(155,140,251,0.16);
+    --good: #4ecf9d;
+    --warning: #e0b34d;
+    --serious: #ef9273;
+    --critical: #f0708a;
+    --code-bg: #14112b;
+    --font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --surface-1: rgba(255,255,255,0.75);
+    --surface-2: #f4f3fc;
+    --page-plane: #f4f3fc;
+    --text-primary: #1a1533;
+    --text-secondary: #4d4670;
+    --text-muted: #8781a3;
+    --gridline: #e2defa;
+    --border-color: rgba(109,92,231,0.16);
+    --accent: #6d5ce7;
+    --accent-2: #22d3ee;
+    --accent-soft: rgba(109,92,231,0.12);
+    --good: #1a9c6d;
+    --warning: #b8860b;
+    --serious: #d9714e;
+    --critical: #d93a5c;
+    --code-bg: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--page-plane);
+    background-image: radial-gradient(at 15% 15%, rgba(139,92,246,0.25) 0, transparent 55%), radial-gradient(at 85% 5%, rgba(34,211,238,0.16) 0, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+  [data-lang="ko"] .en, [data-lang="en"] .ko { display: none; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: var(--surface-1);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .topbar .brand { font-weight: 800; font-size: 1.05rem; }
+  .topbar .brand span { color: var(--text-muted); font-weight: 500; font-size: 0.85rem; margin-left: 0.5rem; }
+  .toggles button {
+    font: inherit; font-size: 0.85rem;
+    background: var(--surface-2); color: var(--text-primary);
+    border: 1px solid var(--border-color); border-radius: 999px;
+    padding: 0.4rem 0.8rem; margin-left: 0.5rem; cursor: pointer;
+  }
+  .toggles button:hover { border-color: var(--accent); }
+
+  .shell { display: flex; max-width: 1280px; margin: 0 auto; }
+  nav.toc {
+    width: 240px; flex-shrink: 0; padding: 2rem 1rem;
+    position: sticky; top: 57px; align-self: flex-start;
+    max-height: calc(100vh - 57px); overflow-y: auto;
+  }
+  nav.toc a {
+    display: block; padding: 0.35rem 0.6rem; border-radius: 6px;
+    color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+  }
+  nav.toc a:hover { background: var(--surface-2); color: var(--text-primary); }
+
+  main { flex: 1; min-width: 0; padding: 2rem 2rem 6rem; max-width: 860px; }
+  section { margin-bottom: 3.5rem; scroll-margin-top: 70px; }
+  h1 { font-size: 2.1rem; margin: 0 0 0.5rem; font-weight: 800; }
+  h2 { font-size: 1.4rem; margin: 0 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); font-weight: 800; }
+  h3 { font-size: 1.05rem; margin: 1.5rem 0 0.75rem; font-weight: 700; }
+  p { color: var(--text-secondary); }
+  .lede { font-size: 1.1rem; color: var(--text-secondary); max-width: 68ch; }
+  .eyebrow { color: var(--accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  a { color: var(--accent); }
+  code, pre { font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  code { background: var(--code-bg); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+  pre.code-block {
+    background: var(--code-bg); border: 1px solid var(--border-color);
+    border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; font-size: 0.85rem;
+  }
+
+  .card { background: var(--surface-1); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+  .callout { border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid; margin: 1rem 0; }
+  .callout-info { background: var(--accent-soft); border-color: var(--accent); }
+  .callout-warning { background: rgba(224,179,77,0.12); border-color: var(--warning); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0; }
+  caption { text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
+  th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border-color); }
+  th { color: var(--text-muted); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.02em; }
+  .table-scroll { overflow-x: auto; }
+
+  .shot { border-radius: 14px; border: 1px solid var(--border-color); overflow: hidden; background: var(--surface-2); }
+  .shot img { width: 100%; display: block; }
+  .shot figcaption { padding: 0.6rem 0.9rem; font-size: 0.8rem; color: var(--text-muted); }
+  figure { margin: 1.25rem 0; }
+
+  .badge {
+    display: inline-block; font-size: 0.75rem; padding: 0.15rem 0.55rem;
+    border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border-color); color: var(--text-secondary);
+    margin-right: 0.3rem;
+  }
+  .badge.local { color: var(--good); border-color: var(--good); }
+  .badge.cloud { color: var(--warning); border-color: var(--warning); }
+
+  .mermaid { background: var(--surface-1); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; }
+  footer { padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border-color); }
+
+  @media (max-width: 900px) {
+    nav.toc { display: none; }
+    main { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">💎 Lucent <span class="ko">운영 가이드</span><span class="en">Operations Guide</span></div>
+  <div class="toggles">
+    <button id="langBtn" type="button">EN</button>
+    <button id="themeBtn" type="button">☀️ <span class="ko">라이트</span><span class="en">Light</span></button>
+  </div>
+</header>
+
+<div class="shell">
+<nav class="toc">
+  <a href="#overview"><span class="ko">개요</span><span class="en">Overview</span></a>
+  <a href="#advanced"><span class="ko">엔지니어링 완성도</span><span class="en">Engineering Depth</span></a>
+  <a href="#design"><span class="ko">UI 차별화</span><span class="en">UI Differentiation</span></a>
+  <a href="#features"><span class="ko">기능 둘러보기</span><span class="en">Feature Walkthrough</span></a>
+  <a href="#architecture"><span class="ko">아키텍처</span><span class="en">Architecture</span></a>
+  <a href="#flowcharts"><span class="ko">플로우차트</span><span class="en">Flowcharts</span></a>
+  <a href="#hardware"><span class="ko">하드웨어 요구사항</span><span class="en">Hardware Requirements</span></a>
+  <a href="#quickstart"><span class="ko">빠른 시작</span><span class="en">Quick Start</span></a>
+  <a href="#api"><span class="ko">API 개요</span><span class="en">API Overview</span></a>
+  <a href="#verification"><span class="ko">검증</span><span class="en">Verification</span></a>
+  <a href="#data"><span class="ko">데이터 &amp; 라이선스</span><span class="en">Data &amp; Licenses</span></a>
+  <a href="#foundations"><span class="ko">기초 지식</span><span class="en">Foundational Knowledge</span></a>
+  <a href="#scaling"><span class="ko">상용/클라우드 확장</span><span class="en">Production &amp; Cloud Scaling</span></a>
+  <a href="#deployment"><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></a>
+  <a href="#limitations"><span class="ko">한계 &amp; 로드맵</span><span class="en">Limitations &amp; Roadmap</span></a>
+</nav>
+
+<main>
+
+<section id="overview">
+  <p class="eyebrow">Week4 PoC · <span class="ko">AI 지식 어시스턴트</span><span class="en">AI Knowledge Assistant</span></p>
+  <h1>Lucent</h1>
+  <p class="lede">
+    <span class="ko">Lucent는 Week4의 핵심 주제(임베딩, VectorDB 검색, 근거 기반 생성)를 실제 스트리밍 RAG 채팅 제품으로 완성한 PoC입니다 — 단일 질의응답이 아니라, 실시간 토큰 스트리밍·인용 표시·자동 근거검증을 갖춘 다중턴 어시스턴트입니다.</span>
+    <span class="en">Lucent turns Week4's core topic (embeddings, VectorDB retrieval, citation-grounded generation) into a real streaming RAG chat product — not a single-question search box, a multi-turn assistant with real-time token streaming, inline citations, and an automated groundedness check.</span>
+  </p>
+
+  <div class="grid grid-3" style="margin-top:1.5rem">
+    <div class="card">
+      <div class="eyebrow"><span class="ko">AI 모델</span><span class="en">AI Models</span></div>
+      <div style="font-size:1.8rem;font-weight:800">4</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem"><span class="ko">로컬 3개 + 옵션 클라우드 1개</span><span class="en">3 local + 1 optional cloud</span></p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span class="ko">스택</span><span class="en">Stack</span></div>
+      <div style="font-size:1.8rem;font-weight:800">FastAPI + React</div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem">TypeScript · Vite · Tailwind · SSE streaming</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow"><span class="ko">배포</span><span class="en">Deployment</span></div>
+      <div style="font-size:1.8rem;font-weight:800">1 <span class="ko">컨테이너</span><span class="en">container</span></div>
+      <p style="margin:0.25rem 0 0;font-size:0.85rem">Docker Compose, <span class="ko">자동 포트탐색</span><span class="en">auto port-detect</span></p>
+    </div>
+  </div>
+
+  <h3><span class="ko">4개 AI 모델</span><span class="en">The four AI models</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">모델</span><span class="en">Model</span></th><th><span class="ko">역할</span><span class="en">Role</span></th><th><span class="ko">위치</span><span class="en">Location</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>intfloat/multilingual-e5-small</code></td><td><span class="ko">다국어 bi-encoder 임베딩</span><span class="en">Multilingual bi-encoder embeddings</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>cross-encoder/ms-marco-MiniLM-L-6-v2</code></td><td><span class="ko">재정렬(옵션)</span><span class="en">Reranking (opt-in)</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>Qwen/Qwen2.5-0.5B-Instruct</code></td><td><span class="ko">스트리밍 답변 생성</span><span class="en">Streaming answer generation</span></td><td><span class="badge local">local</span></td></tr>
+      <tr><td><code>qwen/qwen3-8b</code> <span class="ko">(OpenRouter)</span><span class="en">(via OpenRouter)</span></td><td><span class="ko">스트리밍 답변 생성 업그레이드</span><span class="en">Streaming answer generation upgrade</span></td><td><span class="badge cloud">cloud, opt-in</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="ko">세 개의 로컬 모델이 기본 경로이며 API 키 없이 항상 동작합니다. OpenRouter 경로는 사용자가 명시적으로 선택할 때만 사용되며, 이번 빌드에서 실제 키로 검증했습니다.</p>
+  <p class="en">The three local models are always the default path and work with zero API keys. The OpenRouter path is a strictly user-toggled upgrade, validated with a real key during this build.</p>
+</section>
+
+<section id="advanced">
+  <h2><span class="ko">엔지니어링 완성도</span><span class="en">Engineering Depth</span></h2>
+  <p><span class="ko">이번 요청은 "이전 차수보다 훨씬 상품 가치가 높을 것"을 명시적으로 요구했습니다. 이 표는 이 패턴의 일반적인 베이스라인 구현과 Lucent를 구체적으로 비교합니다 — 자세한 내용은 </span><span class="en">This round's request explicitly asked for a much higher product value than prior weeks. This table compares Lucent against a typical baseline implementation of this pattern concretely — full detail in </span><code>architecture.md</code> §2.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th></th><th><span class="ko">베이스라인</span><span class="en">Baseline</span></th><th>Lucent</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">답변 생성</span><span class="en">Answer generation</span></td><td><span class="ko">LLM 호출 없음 — 규칙기반 템플릿</span><span class="en">No LLM call — rule-based template</span></td><td><span class="ko">실제 LLM이 스트리밍으로 합성 답변 생성</span><span class="en">Real LLM synthesizes a streamed answer</span></td></tr>
+      <tr><td>VectorDB</td><td><span class="ko">인메모리(재시작시 초기화)</span><span class="en">In-memory (resets on restart)</span></td><td>PersistentClient</td></tr>
+      <tr><td><span class="ko">청킹</span><span class="en">Chunking</span></td><td><span class="ko">overlap 없음</span><span class="en">No overlap</span></td><td>500<span class="ko">단어</span><span class="en">-word</span>/50<span class="ko">단어 overlap</span><span class="en">-word overlap</span></td></tr>
+      <tr><td><span class="ko">대화</span><span class="en">Conversation</span></td><td><span class="ko">단발성 질의응답</span><span class="en">Single Q&amp;A</span></td><td><span class="ko">다중턴 세션</span><span class="en">Multi-turn sessions</span></td></tr>
+      <tr><td><span class="ko">근거 검증</span><span class="en">Grounding check</span></td><td><span class="ko">없음</span><span class="en">None</span></td><td><span class="ko">인용+유사도 이중 검증</span><span class="en">Citation + similarity dual check</span></td></tr>
+      <tr><td><span class="ko">코퍼스</span><span class="en">Corpus</span></td><td><span class="ko">한국어 FAQ 8건</span><span class="en">8 Korean FAQ entries</span></td><td><span class="ko">영어 85편 + 한국어 위키(교차언어 실증)</span><span class="en">85 English essays + Korean Wikipedia (cross-lingual)</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="design">
+  <h2><span class="ko">UI 차별화</span><span class="en">UI Differentiation</span></h2>
+  <p><span class="ko">Week1·11(파랑/사이드바), Week3(파치먼트/상단탭)에 이어 세 번째로 다른 시각 언어입니다 — 이번엔 "투명도"라는 명시적 요청에 따라 그라데이션 메시 배경 위에 반투명 유리 패널을 얹은 글래스모피즘을 적용했습니다.</span><span class="en">A third distinct visual language after Week1/11 (blue/sidebar) and Week3 (parchment/top-tabs) — per this round's explicit request for transparency, translucent glass panels float over a gradient mesh background.</span></p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th></th><th>Week1~12</th><th>Lucent</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">배경</span><span class="en">Background</span></td><td><span class="ko">단색</span><span class="en">Solid color</span></td><td><span class="ko">그라데이션 메시</span><span class="en">Gradient mesh</span></td></tr>
+      <tr><td><span class="ko">카드</span><span class="en">Cards</span></td><td><span class="ko">불투명</span><span class="en">Opaque</span></td><td><code>backdrop-blur</code> <span class="ko">진짜 유리</span><span class="en">real glass</span></td></tr>
+      <tr><td><span class="ko">폰트</span><span class="en">Font</span></td><td><span class="ko">페어링 또는 산세리프만</span><span class="en">Pairing or sans-only</span></td><td>Manrope <span class="ko">단일, 굵기로 위계</span><span class="en">alone, weight-driven</span></td></tr>
+      <tr><td><span class="ko">액센트</span><span class="en">Accent</span></td><td><span class="ko">파랑/테라코타</span><span class="en">Blue/terracotta</span></td><td><span class="ko">인디고→시안 그라데이션</span><span class="en">Indigo→cyan gradient</span></td></tr>
+      <tr><td><span class="ko">내비게이션</span><span class="en">Navigation</span></td><td><span class="ko">고정 사이드바/상단탭</span><span class="en">Fixed sidebar/top tabs</span></td><td><span class="ko">떠 있는 둥근 유리 사이드바</span><span class="en">Floating rounded glass sidebar</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="features">
+  <h2><span class="ko">기능 둘러보기</span><span class="en">Feature Walkthrough</span></h2>
+
+  <h3>◈ <span class="ko">채팅</span><span class="en">Chat</span></h3>
+  <p><span class="ko">질문을 입력하면 검색된 근거를 바탕으로 답변이 토큰 단위로 실시간 스트리밍되며, <code>[n]</code> 인용 마커를 클릭하면 우측 출처 패널의 해당 항목이 강조됩니다. 답변마다 근거 충실도 배지가 표시됩니다.</span><span class="en">Ask a question and watch the grounded answer stream in token by token; click a <code>[n]</code> citation to highlight its entry in the sources panel. Every answer shows a live groundedness badge.</span></p>
+  <figure class="shot">
+    <img src="screenshots/02-chat.png" alt="Chat screen" loading="lazy">
+    <figcaption><span class="ko">채팅 화면 — 스트리밍 답변, 인용 마커, 출처 패널, 근거충실도 배지</span><span class="en">Chat — streamed answer, citation markers, sources panel, groundedness badge</span></figcaption>
+  </figure>
+
+  <h3>▤ <span class="ko">문서</span><span class="en">Documents</span></h3>
+  <figure class="shot">
+    <img src="screenshots/03-documents.png" alt="Documents screen" loading="lazy">
+    <figcaption><span class="ko">문서 화면 — 시드 코퍼스(연방주의자 논집 85편 + 한국어 위키) + 업로드</span><span class="en">Documents — seed corpus (85 Federalist essays + Korean Wikipedia) + uploads</span></figcaption>
+  </figure>
+
+  <h3>⬡ <span class="ko">검색 실험실</span><span class="en">Retrieval Lab</span></h3>
+  <figure class="shot">
+    <img src="screenshots/04-retrieval-lab.png" alt="Retrieval Lab screen" loading="lazy">
+    <figcaption><span class="ko">검색 실험실 — bi-encoder vs cross-encoder 재정렬 비교</span><span class="en">Retrieval Lab — bi-encoder vs. cross-encoder reranking compared</span></figcaption>
+  </figure>
+
+  <h3>📊 <span class="ko">대시보드</span><span class="en">Dashboard</span></h3>
+  <figure class="shot">
+    <img src="screenshots/01-dashboard.png" alt="Dashboard screen" loading="lazy">
+    <figcaption><span class="ko">개요 대시보드</span><span class="en">Overview dashboard</span></figcaption>
+  </figure>
+
+  <h3>⚙ <span class="ko">관리자</span><span class="en">Admin</span></h3>
+  <figure class="shot">
+    <img src="screenshots/05-admin.png" alt="Admin screen" loading="lazy">
+    <figcaption><span class="ko">관리자 콘솔 — 실사용 데이터 기반 분석 차트</span><span class="en">Admin console — analytics charts from real usage data</span></figcaption>
+  </figure>
+
+  <h3>🔐 <span class="ko">로그인</span><span class="en">Login</span></h3>
+  <figure class="shot">
+    <img src="screenshots/00-login.png" alt="Login screen" loading="lazy">
+    <figcaption><span class="ko">로그인 화면 — 글래스 UI, 그라데이션 메시 배경</span><span class="en">Login screen — glass UI, gradient mesh background</span></figcaption>
+  </figure>
+
+  <h3>🌙 <span class="ko">다크 모드</span><span class="en">Dark Mode</span></h3>
+  <figure class="shot">
+    <img src="screenshots/06-chat-dark.png" alt="Chat screen, dark mode" loading="lazy">
+    <figcaption><span class="ko">다크 모드 — 배경 그라데이션 톤 자체가 전환됨</span><span class="en">Dark mode — the background gradient's tone shifts, not just surface colors</span></figcaption>
+  </figure>
+</section>
+
+<section id="architecture">
+  <h2><span class="ko">아키텍처</span><span class="en">Architecture</span></h2>
+  <p><span class="ko">전체 시스템 다이어그램은 저장소의 </span><span class="en">The full system diagram also lives in the repository's </span><code>architecture.md</code><span class="ko">에도 동일하게 포함되어 있습니다.</span><span class="en">.</span></p>
+  <pre class="mermaid">
+flowchart TB
+    subgraph Client["Browser"]
+        SPA["React SPA (TypeScript / Vite / Tailwind)<br/>Glass UI over gradient mesh"]
+    end
+    subgraph Container["Docker container — lucent"]
+        API["FastAPI application (Python 3.11)"]
+        subgraph Models["AI models"]
+            EMB["① multilingual-e5-small — embeddings"]
+            RRK["② ms-marco-MiniLM-L-6-v2 — rerank (opt-in)"]
+            LLM["③ Qwen2.5-0.5B — streaming generation"]
+            OR["④ qwen3-8b via OpenRouter (opt-in, streaming)"]
+        end
+        GROUND["Groundedness checker"]
+        subgraph Storage["Storage"]
+            SQL[("SQLite")]
+            VDB[("Chroma PersistentClient")]
+        end
+        API --> Models
+        API --> GROUND
+        API --> Storage
+    end
+    subgraph External["External (opt-in only)"]
+        ORAPI["OpenRouter API"]
+    end
+    SPA <-->|"HTTPS / JSON + JWT + streaming"| API
+    OR --> ORAPI
+  </pre>
+  <p class="callout callout-info">
+    <span class="ko">💡 다이어그램이 보이지 않는다면 인터넷 연결(Mermaid CDN)이 필요합니다.</span>
+    <span class="en">💡 If the diagram doesn't render, it needs an internet connection (Mermaid CDN).</span>
+  </p>
+</section>
+
+<section id="flowcharts">
+  <h2><span class="ko">플로우차트</span><span class="en">Flowcharts</span></h2>
+  <p><span class="ko">각 기능의 함수 단위 플로우차트는 저장소의 </span><span class="en">Per-feature, function-level flowcharts live in the repository's </span><code>flowchart.md</code><span class="ko">에 6개로 정리되어 있습니다. 대표로 스트리밍 채팅 파이프라인을 아래에 재현합니다.</span><span class="en"> as 6 diagrams. The streaming chat pipeline is reproduced below as a representative example.</span></p>
+  <pre class="mermaid">
+flowchart TD
+    A["User sends a message"] --> B["POST /api/chat/sessions/{id}/messages"]
+    B --> C["rag.retrieve() — embed + Chroma query + optional rerank"]
+    C --> D["llm.stream_generate() — local TextIteratorStreamer\nor OpenRouter SSE"]
+    D --> E["each fragment -> SSE 'data: {delta}' to the browser"]
+    E --> F["groundedness.verify(answer, sources)"]
+    F --> G["final SSE 'data: {done, citations, groundedness}'"]
+  </pre>
+</section>
+
+<section id="hardware">
+  <h2><span class="ko">하드웨어 최소 요구사항</span><span class="en">Minimum Hardware Requirements</span></h2>
+  <div class="table-scroll">
+  <table>
+    <caption><span class="ko">이 빌드를 실제로 실행·검증한 환경 기준 (측정치는 <code>../../../history/v1.0.0.md</code> 참조)</span><span class="en">Based on the environment this build was actually run and verified on (measurements in <code>../../../history/v1.0.0.md</code>)</span></caption>
+    <thead><tr><th></th><th><span class="ko">최소</span><span class="en">Minimum</span></th><th><span class="ko">권장</span><span class="en">Recommended</span></th></tr></thead>
+    <tbody>
+      <tr><td>RAM</td><td>8 GB</td><td>16 GB</td></tr>
+      <tr><td><span class="ko">디스크 여유공간</span><span class="en">Free disk space</span></td><td>8 GB</td><td>12 GB</td></tr>
+      <tr><td>CPU</td><td>4 <span class="ko">코어</span><span class="en">cores</span></td><td>8+ <span class="ko">코어</span><span class="en">cores</span></td></tr>
+      <tr><td>GPU</td><td colspan="2"><span class="ko">불필요 — 모든 로컬 모델이 CPU에서 실행되도록 선택됨</span><span class="en">Not required — every local model was chosen to run on CPU</span></td></tr>
+      <tr><td>OS</td><td colspan="2">macOS / Windows (Docker Desktop) / Linux</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><span class="ko">측정된 실제 컨테이너 메모리, 이미지 크기, 부트스트랩 소요시간은 </span><span class="en">Measured real container memory, image size, and bootstrap timing are recorded in </span><code>../../../history/v1.0.0.md</code>.</p>
+</section>
+
+<section id="quickstart">
+  <h2><span class="ko">빠른 시작</span><span class="en">Quick Start</span></h2>
+  <pre class="code-block">cd week4/PoC/projects/lucent
+./scripts/setup.sh            # <span class="ko">최초 1회: 이미지 빌드, 빈 포트 탐색, 컨테이너 시작</span><span class="en"># first time: build image, find a free port, start container</span>
+./scripts/run.sh              # <span class="ko">이후 재시작</span><span class="en"># subsequent restarts</span>
+./scripts/stop.sh             # <span class="ko">컨테이너 정지 (삭제 아님)</span><span class="en"># stop without deleting</span>
+./scripts/verify_e2e.sh       # <span class="ko">전체 end-to-end 검증</span><span class="en"># full end-to-end verification</span>
+./scripts/download_models.sh  # <span class="ko">(옵션) CLI로 3개 로컬 AI 모델 강제 다운로드/검증</span><span class="en"># (optional) force-download/verify all 3 local AI models via CLI</span>
+./scripts/download_data.sh    # <span class="ko">(옵션) 시드 코퍼스 강제 재색인</span><span class="en"># (optional) force-refresh the seed corpus index</span></pre>
+  <p><span class="ko">데모 관리자 계정: </span><span class="en">Demo admin account: </span><code>admin@lucent.local</code> / <code>ChangeMe123!</code></p>
+  <p class="callout callout-warning">
+    <span class="ko">⚠️ Windows에서는 Git Bash 또는 WSL2에서 이 스크립트들을 실행하세요.</span>
+    <span class="en">⚠️ On Windows, run these scripts from Git Bash or WSL2.</span>
+  </p>
+</section>
+
+<section id="api">
+  <h2><span class="ko">API 개요</span><span class="en">API Overview</span></h2>
+  <p><span class="ko">FastAPI는 자동 문서를 제공합니다: 컨테이너 실행 중 </span><span class="en">FastAPI provides automatic docs — while the container is running, visit </span><code>http://localhost:&lt;port&gt;/docs</code></p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Endpoint</th><th><span class="ko">설명</span><span class="en">Description</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>POST /api/auth/signup</code> · <code>/login</code> · <code>GET /me</code></td><td><span class="ko">JWT 인증</span><span class="en">JWT auth</span></td></tr>
+      <tr><td><code>GET /api/documents</code> · <code>POST /upload</code></td><td><span class="ko">지식베이스 관리</span><span class="en">Knowledge base management</span></td></tr>
+      <tr><td><code>POST /api/chat/sessions</code> · <code>GET /sessions/{id}/messages</code> · <code>POST .../messages</code> (SSE)</td><td><span class="ko">스트리밍 채팅</span><span class="en">Streaming chat</span></td></tr>
+      <tr><td><code>POST /api/retrieval/compare</code></td><td><span class="ko">검색 전략 비교</span><span class="en">Retrieval strategy comparison</span></td></tr>
+      <tr><td><code>GET /api/admin/users</code> · <code>/audit-log</code> · <code>/system</code> · <code>/analytics</code></td><td><span class="ko">관리자 전용</span><span class="en">Admin only</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="verification">
+  <h2><span class="ko">검증</span><span class="en">Verification</span></h2>
+  <p><span class="ko">모든 검수는 </span><span class="en">All verification runs via </span><code>backend/verify_e2e.py</code><span class="ko">를 통해 실행 중인 컨테이너에 실제 HTTP 요청을 보내 검증합니다 — 스트리밍 응답을 실제 클라이언트처럼 조립해 검증하는 것을 포함합니다. 실제 실행 결과는 </span><span class="en"> — real HTTP requests against the live container, including actually assembling the streamed SSE response like a real client would, not just checking for a 200. Actual run output is recorded in </span><code>../../../history/v1.0.0.md</code>.</p>
+</section>
+
+<section id="data">
+  <h2><span class="ko">데이터 &amp; 라이선스</span><span class="en">Data &amp; Licenses</span></h2>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">데이터</span><span class="en">Data</span></th><th><span class="ko">출처</span><span class="en">Source</span></th><th><span class="ko">라이선스</span><span class="en">License</span></th></tr></thead>
+    <tbody>
+      <tr><td>The Federalist Papers (85 <span class="ko">편</span><span class="en">essays</span>)</td><td><a href="https://www.gutenberg.org/ebooks/18">Project Gutenberg #18</a></td><td><span class="ko">공개 도메인</span><span class="en">Public domain</span></td></tr>
+      <tr><td>연방주의자 논집 (<span class="ko">한국어 위키백과</span><span class="en">Korean Wikipedia</span>)</td><td><a href="https://ko.wikipedia.org/wiki/연방주의자_논집">ko.wikipedia.org</a></td><td>CC BY-SA 4.0</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><span class="ko">전체 인용 정보는 </span><span class="en">Full citations are in </span><code>data/SOURCES.md</code>.</p>
+</section>
+
+<section id="foundations">
+  <h2><span class="ko">기초 지식 &amp; 참고문헌</span><span class="en">Foundational Knowledge &amp; References</span></h2>
+  <h3>RAG (Retrieval-Augmented Generation)</h3>
+  <p><span class="ko">검색과 생성을 결합해, 모델의 학습 지식이 아닌 실제 검색된 문서에 근거해 답하도록 하는 기법입니다.</span><span class="en">Combines retrieval and generation so an answer is grounded in actually-retrieved documents rather than relying purely on the model's training-time knowledge.</span> — Lewis, P. et al. <em>"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks."</em> NeurIPS 2020. <a href="https://arxiv.org/abs/2005.11401">arxiv.org/abs/2005.11401</a></p>
+  <h3>E5 <span class="ko">임베딩</span><span class="en">Embeddings</span></h3>
+  <p>Wang, L. et al. <em>"Text Embeddings by Weakly-Supervised Contrastive Pre-training."</em> 2022. <a href="https://arxiv.org/abs/2212.03533">arxiv.org/abs/2212.03533</a></p>
+  <p><span class="ko">더 자세한 모델 카드는 </span><span class="en">Fuller model cards are in </span><code>../../../etc/glossary.md</code></p>
+</section>
+
+<section id="scaling">
+  <h2><span class="ko">상용/클라우드 확장 시 고려사항</span><span class="en">Production &amp; Cloud Scaling</span></h2>
+  <p><span class="ko">Week1~12 PoC와 동일한 확장 패턴이 적용되며, Lucent 고유 항목으로 스트리밍 응답의 세션 어피니티/메시지 큐 처리가 추가됩니다. 자세한 내용은 </span><span class="en">Same scaling pattern as the Week1-12 PoCs, plus one Lucent-specific item: session affinity or a message-queue-backed streaming layer for load-balanced streaming responses. Full detail in </span><code>architecture.md</code> §7.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th><span class="ko">항목</span><span class="en">Item</span></th><th><span class="ko">월 예상 비용</span><span class="en">Est. monthly cost</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="ko">앱 호스팅</span><span class="en">App hosting</span></td><td>$70–140</td></tr>
+      <tr><td><span class="ko">관리형 Postgres</span><span class="en">Managed Postgres</span></td><td>$60–90</td></tr>
+      <tr><td><span class="ko">벡터 DB</span><span class="en">Vector DB</span></td><td>$0–50</td></tr>
+      <tr><td>GPU <span class="ko">버스트</span><span class="en">burst</span></td><td>$15–30</td></tr>
+      <tr><td>OpenRouter</td><td>$10–25</td></tr>
+      <tr><td><span class="ko">모니터링</span><span class="en">Monitoring</span></td><td>$0–20</td></tr>
+      <tr style="font-weight:700"><td><span class="ko">합계 (참고치)</span><span class="en">Total (indicative)</span></td><td>≈ $155–355</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="deployment">
+  <h2><span class="ko">배포 시 고려사항</span><span class="en">Deployment Considerations</span></h2>
+  <ul>
+    <li><span class="ko"><strong>환경 일치·시크릿·DB 마이그레이션·CORS</strong>: Week1~12 PoC와 동일한 원칙.</span><span class="en"><strong>Environment parity, secrets, DB migration, CORS</strong>: same principles as the Week1-12 PoCs.</span></li>
+    <li><span class="ko"><strong>스트리밍 버퍼링 방지 (Lucent 고유)</strong>: 리버스 프록시/로드밸런서가 응답을 버퍼링하지 않도록 설정해야 합니다 — 그렇지 않으면 스트리밍 답변이 다시 블로킹 응답으로 바뀝니다.</span><span class="en"><strong>Disable proxy buffering (Lucent-specific)</strong>: the reverse proxy/load balancer must not buffer responses, or a streaming answer silently becomes a blocking one.</span></li>
+  </ul>
+</section>
+
+<section id="limitations">
+  <h2><span class="ko">한계 &amp; 로드맵</span><span class="en">Known Limitations &amp; Roadmap</span></h2>
+  <ul>
+    <li><span class="ko">근거 충실도 검사는 <strong>문장 단위 임베딩 유사도</strong>에 기반합니다 — 문체를 바꿔 쓴 정확한 사실은 통과하지만, 유사도 임계값을 교묘히 넘는 미묘한 왜곡까지는 잡아내지 못할 수 있습니다.</span><span class="en">The groundedness check is based on <strong>sentence-level embedding similarity</strong> — it passes accurate paraphrases but may not catch subtle distortions that happen to clear the similarity threshold.</span></li>
+    <li><span class="ko"><strong>실측된 실제 한계</strong>: 질문에 정확한 개체 번호가 들어가면("Federalist No. 51은...") 소형 다국어 bi-encoder(<code>multilingual-e5-small</code>)가 해당 문서를 상위 후보군에서 놓칠 수 있습니다 — 실제로 이 빌드에서 해당 질문에 대해 Federalist No. 51은 bi-encoder 상위 40개 후보 중 29위에 그쳤고(top_k=5 재정렬 풀 밖), 이 경우 시스템은 답을 지어내지 않고 "제공된 출처에 없다"고 올바르게 답했습니다 — 근거 없으면 모른다고 답하게 한 설계가 의도대로 작동한 사례입니다. 이 한계가 바로 <strong>검색 실험실(Retrieval Lab)</strong> 페이지가 필요한 이유입니다.</span><span class="en"><strong>A real, measured limitation</strong>: when a question names an exact entity number ("Federalist No. 51 argues..."), the small multilingual bi-encoder (<code>multilingual-e5-small</code>) can miss that document in the first-stage candidate pool — in this actual build, that exact question ranked Federalist No. 51 only 29th of the top-40 bi-encoder candidates (outside the top_k=5 rerank pool), and the system correctly said "not in the provided sources" rather than inventing an answer — the "say you don't know" design working as intended. This is precisely why the <strong>Retrieval Lab</strong> page exists.</span></li>
+    <li><span class="ko">Claude/Codex CLI, OpenAI, Anthropic, Gemini 경로는 설정만 되어 있고 이번 라운드에는 검증되지 않았습니다.</span><span class="en">The Claude/Codex CLI, OpenAI, Anthropic, and Gemini paths are scaffolded but not validated this round.</span></li>
+    <li><span class="ko">속도 제한, 이메일 인증, 비밀번호 재설정은 PoC 범위 밖입니다.</span><span class="en">Rate limiting, email verification, and password reset are out of scope for this PoC.</span></li>
+  </ul>
+  <p><span class="ko">전체 버전 이력은 </span><span class="en">Full version history is in </span><code>../../../history/</code>.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Lucent · Week4 PoC · <span class="ko">AI 엔지니어링 포트폴리오 프로젝트</span><span class="en">part of an AI engineering project portfolio</span>
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const langBtn = document.getElementById('langBtn');
+  const themeBtn = document.getElementById('themeBtn');
+
+  function applyLang(lang) {
+    html.setAttribute('data-lang', lang);
+    langBtn.textContent = lang === 'ko' ? 'EN' : '한국어';
+    try { localStorage.setItem('lucent-guide-lang', lang); } catch (e) {}
+  }
+  function applyTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    const isDark = theme === 'dark';
+    themeBtn.innerHTML = (isDark ? '☀️ ' : '🌙 ') +
+      '<span class="ko">' + (isDark ? '라이트' : '다크') + '</span>' +
+      '<span class="en">' + (isDark ? 'Light' : 'Dark') + '</span>';
+    try { localStorage.setItem('lucent-guide-theme', theme); } catch (e) {}
+  }
+
+  let savedLang = 'ko', savedTheme = 'dark';
+  try { savedLang = localStorage.getItem('lucent-guide-lang') || 'ko'; } catch (e) {}
+  try { savedTheme = localStorage.getItem('lucent-guide-theme') || 'dark'; } catch (e) {}
+  applyLang(savedLang);
+  applyTheme(savedTheme);
+
+  langBtn.addEventListener('click', () => applyLang(html.getAttribute('data-lang') === 'ko' ? 'en' : 'ko'));
+  themeBtn.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+
+  if (window.mermaid) {
+    mermaid.initialize({ startOnLoad: true, theme: savedTheme === 'dark' ? 'dark' : 'default' });
+  }
+</script>
+
+</body>
+</html>

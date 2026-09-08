@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        TORCH_INDEX: ${TORCH_INDEX:-https://download.pytorch.org/whl/cpu}
+    image: compass:latest
+    container_name: compass
+    # Never auto-removed: `docker compose stop` (used by scripts/stop.sh)
+    # keeps the container on disk with all its state; only an explicit
+    # `docker compose down` deletes it.
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8760}:8000"
+    environment:
+      APP_ENV: production
+      SECRET_KEY: ${SECRET_KEY:-compass-dev-secret-change-in-production}
+      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-1440}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@compass.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe123!}
+      LLM_PROVIDER: ${LLM_PROVIDER:-local}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-qwen/qwen3-8b}
+    volumes:
+      # Persistent app data: SQLite DB (research sessions/reports/budget)
+      # and the Chroma vector store (past-report archive index). Survives
+      # container restarts/rebuilds.
+      - compass_data:/app/data
+      # HuggingFace model cache — downloaded once, reused on every restart.
+      - compass_hf_cache:/app/hf_cache
+      # Read-only reference to the repo-level API key files. Never baked
+      # into the image; the app reads the file at call-time (see
+      # backend/app/config.py's *_api_key_file settings).
+      - ../../../../api_keys:/app/secrets:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 20
+
+volumes:
+  compass_data:
+  compass_hf_cache:
